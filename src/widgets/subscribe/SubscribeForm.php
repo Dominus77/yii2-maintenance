@@ -1,15 +1,15 @@
 <?php
 
 
-namespace dominus77\maintenance\widgets;
+namespace dominus77\maintenance\widgets\subscribe;
 
 use yii\base\Widget;
 use dominus77\maintenance\models\SubscribeForm as SubscribeFormModel;
-use dominus77\maintenance\widgets\assets\SubscribeFormAsset;
+use dominus77\maintenance\widgets\subscribe\assets\SubscribeFormAsset;
 
 /**
  * Class SubscribeForm
- * @package dominus77\maintenance\widgets
+ * @package dominus77\maintenance\widgets\subscribe
  */
 class SubscribeForm extends Widget
 {

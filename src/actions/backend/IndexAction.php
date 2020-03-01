@@ -48,6 +48,9 @@ class IndexAction extends Action
         if ($this->layout !== null) {
             $this->controller->layout = $this->layout;
         }
+        if ($this->view !== null) {
+            $this->controller->view = $this->view;
+        }
         $model = new FileStateForm();
         if (($post = Yii::$app->request->post()) && $model->load($post) && $model->validate() && $model->save()) {
             return $this->controller->refresh();

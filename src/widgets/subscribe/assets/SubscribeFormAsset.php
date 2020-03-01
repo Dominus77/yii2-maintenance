@@ -1,13 +1,13 @@
 <?php
 
-namespace dominus77\maintenance\widgets\assets;
+namespace dominus77\maintenance\widgets\subscribe\assets;
 
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
 
 /**
  * Class SubscribeFormAsset
- * @package dominus77\maintenance\widgets\assets
+ * @package dominus77\maintenance\widgets\subscribe\assets
  */
 class SubscribeFormAsset extends AssetBundle
 {

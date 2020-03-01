@@ -3,7 +3,7 @@
 use yii\web\View;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\bootstrap\ActiveForm;
+use yii\widgets\ActiveForm;
 use dominus77\maintenance\models\SubscribeForm;
 
 /** @var $this View */
