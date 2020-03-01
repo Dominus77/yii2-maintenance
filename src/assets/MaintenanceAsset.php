@@ -4,6 +4,7 @@ namespace dominus77\maintenance\assets;
 
 use yii\web\AssetBundle;
 use yii\web\YiiAsset;
+use yii\bootstrap\BootstrapPluginAsset;
 
 /**
  * Class MaintenanceAsset
@@ -38,5 +39,6 @@ class MaintenanceAsset extends AssetBundle
      */
     public $depends = [
         YiiAsset::class,
+        BootstrapPluginAsset::class
     ];
 }
