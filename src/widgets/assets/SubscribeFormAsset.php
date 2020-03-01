@@ -2,7 +2,6 @@
 
 namespace dominus77\maintenance\widgets\assets;
 
-use yii\bootstrap\BootstrapAsset;
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
 
@@ -39,6 +38,5 @@ class SubscribeFormAsset extends AssetBundle
      */
     public $depends = [
         JqueryAsset::class,
-        BootstrapAsset::class,
     ];
 }

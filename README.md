@@ -1,6 +1,6 @@
-# Yii2 Maintenance mode component
+# Maintenance mode for Yii2
 
-Switching the site into maintenance mode with a timer and user subscription form displayed.
+Switching the site on the Yii2 into maintenance mode with a timer and user subscription form displayed.
 
 ## Use
 Add to your config file:
@@ -9,13 +9,13 @@ Add to your config file:
 $config = [
     'bootstrap' => [
         //...
-        'common\components\maintenance\Maintenance'
+        'dominus77\maintenance\Maintenance'
     ],
     //...
     'container' => [
         'singletons' => [
-            'common\components\maintenance\Maintenance' => [
-                'class' => 'common\components\maintenance\Maintenance',
+            'dominus77\maintenance\Maintenance' => [
+                'class' => 'dominus77\maintenance\Maintenance',
     
                 // Route to action
                 'route' => 'maintenance/index',
@@ -23,7 +23,7 @@ $config = [
                 // Filters. Read Filters for more info.
                 'filters' => [
                     [
-                        'class' => 'common\components\maintenance\filters\URIFilter',
+                        'class' => 'dominus77\maintenance\filters\URIFilter',
                         'uri' => [
                             'debug/default/view',
                             'debug/default/toolbar',
@@ -41,8 +41,8 @@ $config = [
                 //Retry-After header
                 'retryAfter' => 120 // or Wed, 21 Oct 2015 07:28:00 GMT for example
             ],
-            'common\components\maintenance\interfaces\StateInterface' => [
-                'class' => 'common\components\maintenance\states\FileState',
+            'dominus77\maintenance\interfaces\StateInterface' => [
+                'class' => 'dominus77\maintenance\states\FileState',
                 // optional: format datetime
                 // 'dateFormat' => 'd-m-Y H:i:s',
     
@@ -69,15 +69,15 @@ $config = [
     //...
     'container' => [
         'singletons' => [
-            'common\components\maintenance\Maintenance' => [
-                'class' => 'common\components\maintenance\Maintenance',
+            'dominus77\maintenance\Maintenance' => [
+                'class' => 'dominus77\maintenance\Maintenance',
                 // Route to action
                 'route' => 'maintenance/index',
                 // Filters. Read Filters for more info.
                 'filters' => [
                     //Allowed URIs filter. Your can allow debug panel URI.
                     [
-                        'class' => 'common\components\maintenance\filters\URIFilter',
+                        'class' => 'dominus77\maintenance\filters\URIFilter',
                         'uri' => [
                             'debug/default/view',
                             'debug/default/toolbar',
@@ -89,21 +89,19 @@ $config = [
                     ],
                     // Allowed roles filter
                     [
-                        'class' => 'common\components\maintenance\filters\RoleFilter',
-                        'roles' => [
-                            modules\rbac\models\Permission::PERMISSION_MAINTENANCE,
-                        ]
+                        'class' => 'dominus77\maintenance\filters\RoleFilter',
+                        'roles' => ['admin']
                     ],
                     // Allowed IP addresses filter
                     [
-                        'class' => 'common\components\maintenance\filters\IpFilter',
+                        'class' => 'dominus77\maintenance\filters\IpFilter',
                         'ips' => [
                             '127.0.0.1',
                         ]
                     ],
                     //Allowed user names
                     [
-                        'class' => 'common\components\maintenance\filters\UserFilter',
+                        'class' => 'dominus77\maintenance\filters\UserFilter',
                         'checkedAttribute' => 'username',
                         'users' => [
                             'admin',
@@ -118,7 +116,7 @@ $config = [
 ```
 You can create custom filter:
 ```php
-use common\components\maintenance\Filter;
+use dominus77\maintenance\Filter;
 
 class MyCustomFilter extends Filter
 {
@@ -142,8 +140,8 @@ $config = [
     //...
     'container' => [
         'singletons' => [
-            'common\components\maintenance\interfaces\StateInterface' => [
-                'class' => 'common\components\maintenance\states\FileState',
+            'dominus77\maintenance\interfaces\StateInterface' => [
+                'class' => 'dominus77\maintenance\states\FileState',
                 // optional: format datetime
                 // 'dateFormat' => 'd-m-Y H:i:s',
                 // optional: use different filename for controlling maintenance state:
@@ -158,7 +156,7 @@ $config = [
     'controllerMap' => [
           //...
           'maintenance' => [
-              'class' => 'common\components\maintenance\commands\MaintenanceController',
+              'class' => 'dominus77\maintenance\commands\MaintenanceController',
           ],
     ],
     //..

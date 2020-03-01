@@ -371,25 +371,6 @@ class FileState extends BaseObject implements StateInterface
     }
 
     /**
-     * Create file
-     *
-     * @param $file string
-     */
-    /*protected function createFile($file)
-    {
-        try {
-            if ($file && !file_exists($file)) {
-                file_put_contents($file, '');
-                chmod($file, 0765);
-            }
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Failed to create $file file."
-            );
-        }
-    }*/
-
-    /**
      * @return bool will return true if on timer
      */
     public function isTimer()

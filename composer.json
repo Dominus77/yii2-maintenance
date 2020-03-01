@@ -1,6 +1,6 @@
 {
     "name": "dominus77/yii2-maintenance",
-    "description": "Switching the site into maintenance mode with a timer and user subscription form displayed for Yii2.",
+    "description": "Switching the site on the Yii2 into maintenance mode with a timer and user subscription form displayed.",
     "type": "yii2-extension",
     "keywords": ["dominus77","yii2","maintenance","module","component","widget"],
     "license": "MIT",
@@ -14,8 +14,7 @@
         "yiisoft/yii2": "~2.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "6.*"
+        "roave/security-advisories": "dev-master"
     },
     "repositories":[
         {
