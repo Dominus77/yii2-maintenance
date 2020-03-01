@@ -10,7 +10,7 @@ use yii\helpers\Url;
 
 $link = Url::to(Yii::$app->urlManager->hostInfo);
 ?>
-<div class="email-notice">
+<div class="email-maintenance-notice">
     <h2><?= Yii::t('app', 'Technical work completed.') ?></h2>
     <p><?= Yii::t('app', 'Please follow the link below to visit the site.') ?></p>
     <?= Html::a($link, $link) ?>

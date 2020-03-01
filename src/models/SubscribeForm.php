@@ -80,8 +80,8 @@ class SubscribeForm extends Model
         $mailer = Yii::$app->mailer;
         foreach ($emails as $email) {
             $messages[] = $mailer->compose([
-                'html' => '@common/components/maintenance/mail/emailNotice-html',
-                'text' => '@common/components/maintenance/mail/emailNotice-text'
+                'html' => '@dominus77/maintenance/mail/emailNotice-html',
+                'text' => '@dominus77/maintenance/mail/emailNotice-text'
             ], [])
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
                 ->setTo($email)
