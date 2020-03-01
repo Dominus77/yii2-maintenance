@@ -4,6 +4,7 @@ namespace dominus77\maintenance;
 
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
 use yii\web\Application;
 use yii\base\BaseObject;
 use yii\base\BootstrapInterface;
@@ -62,14 +63,17 @@ class Maintenance extends BaseObject implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+        $rules = [
+            'maintenance' => 'maintenance/index',
+            'maintenance/<_a:\w+>' => 'maintenance/<_a>'
+        ];
         if (YII_DEBUG) {
-            $urlManager = $app->urlManager;
-            $urlManager->addRules(
-                [
-                    '<_m:debug>/<_c:\w+>/<_a:\w+>' => '<_m>/<_c>/<_a>',
-                ]
-            );
+            $rules = ArrayHelper::merge($rules, [
+                '<_m:debug>/<_c:\w+>/<_a:\w+>' => '<_m>/<_c>/<_a>',
+            ]);
         }
+        $urlManager = $app->urlManager;
+        $urlManager->addRules($rules);
 
         $response = $app->response;
         if ($app->request->isAjax) {
