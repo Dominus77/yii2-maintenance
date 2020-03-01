@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use dominus77\maintenance\widgets\timer\CountDown;
 use dominus77\maintenance\models\SubscribeForm as ModelSubscribeForm;
 use dominus77\maintenance\widgets\subscribe\SubscribeForm;
+use dominus77\maintenance\Maintenance;
 
 /* @var $this yii\web\View */
 /* @var $name string */
@@ -19,7 +20,7 @@ $this->title = $name;
 <?= CountDown::widget([
     'status' => $model->isTimer(),
     'timestamp' => $model->timestamp,
-    'message' => Yii::t('app', 'The site will work soon! Please refresh the page.'),
+    'message' => Maintenance::t('maintenance', 'The site will work soon! Please refresh the page.'),
 ]) ?>
 <div class="form-container">
     <?php if (($status = $model->isSubscribe()) && $status === true) { ?>

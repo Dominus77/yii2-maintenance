@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\Application;
 use yii\base\BaseObject;
 use yii\base\BootstrapInterface;
+use yii\i18n\PhpMessageSource;
 use dominus77\maintenance\interfaces\StateInterface;
 
 /**
@@ -53,6 +54,14 @@ class Maintenance extends BaseObject implements BootstrapInterface
      */
     public function __construct(StateInterface $state, array $config = [])
     {
+        $i18n = Yii::$app->i18n;
+        $i18n->translations['dominus77/maintenance/*'] = [
+            'class' => PhpMessageSource::class,
+            'basePath' => '@dominus77/maintenance/messages',
+            'fileMap' => [
+                'dominus77/maintenance' => 'maintenance.php',
+            ]
+        ];
         $this->state = $state;
         parent::__construct($config);
     }
@@ -113,5 +122,17 @@ class Maintenance extends BaseObject implements BootstrapInterface
             }
         }
         return false;
+    }
+
+    /**
+     * @param $category
+     * @param $message
+     * @param array $params
+     * @param null $language
+     * @return string
+     */
+    public static function t($category, $message, $params = [], $language = null)
+    {
+        return Yii::t('dominus77/maintenance/' . $category, $message, $params, $language);
     }
 }
