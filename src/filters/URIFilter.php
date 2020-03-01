@@ -3,6 +3,7 @@
 namespace dominus77\maintenance\filters;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
 use dominus77\maintenance\Filter;
@@ -40,6 +41,7 @@ class URIFilter extends Filter
     public function isAllowed()
     {
         if (is_array($this->uri) && !empty($this->uri) && $resolve = $this->request->resolve()) {
+            $this->uri = ArrayHelper::merge($this->uri, ['maintenance/subscribe']);
             return (bool)in_array($resolve[0], $this->uri, true);
         }
         return false;
