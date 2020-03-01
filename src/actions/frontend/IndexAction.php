@@ -23,7 +23,7 @@ class IndexAction extends Action
     public $defaultMessage;
 
     /** @var string */
-    public $layout = 'maintenance';
+    public $layout;
 
     /** @var string */
     public $view;
