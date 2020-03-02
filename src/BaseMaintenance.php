@@ -15,22 +15,12 @@ use yii\web\Application;
  */
 class BaseMaintenance extends BaseObject implements BootstrapInterface
 {
-
-    /**
-     * BaseMaintenance constructor.
-     * @param array $config
-     */
-    public function __construct($config = [])
-    {
-        $this->addI18n();
-        parent::__construct($config);
-    }
-
     /**
      * @param Application $app
      */
     public function bootstrap($app)
     {
+        $this->addI18n();
         $this->addRules($app);
     }
 
