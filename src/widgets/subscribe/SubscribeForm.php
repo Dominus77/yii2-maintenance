@@ -22,6 +22,9 @@ class SubscribeForm extends Widget
      */
     public $model;
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();

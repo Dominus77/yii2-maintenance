@@ -2,12 +2,10 @@
 
 use yii\web\View;
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 use dominus77\maintenance\models\FileStateForm;
 use dominus77\maintenance\widgets\timer\CountDown;
-use yii\data\ArrayDataProvider;
-use yii\widgets\ListView;
+use dominus77\maintenance\widgets\maintenance\MaintenanceForm;
+use dominus77\maintenance\widgets\followers\Followers;
 use dominus77\maintenance\BackendMaintenance;
 
 /**
@@ -15,44 +13,9 @@ use dominus77\maintenance\BackendMaintenance;
  * @var $name string
  * @var $model FileStateForm
  * @var $isEnable bool
- * @var $listDataProvider ArrayDataProvider
  */
 
-$modeOn = FileStateForm::MODE_MAINTENANCE_ON;
-$modeOff = FileStateForm::MODE_MAINTENANCE_OFF;
-$script = "
-    let maintenance = $('#filestateform-mode'),
-        settings = $('#maintenance-setting-container'),
-        on = '{$modeOn}',
-        off = '{$modeOff}';
-
-    function toggleSettings(mode)
-    {
-        if(mode === off) {            
-            settings.hide('slow');
-        }        
-        if(mode === on) {            
-            settings.show('slow');
-        }
-    }
-    
-    toggleSettings(maintenance.val());
-    
-    maintenance.on('change', function(){
-        toggleSettings(this.value);
-    });
-    
-    setTimeout(function(){
-        $('.notify').fadeOut(2000,'swing');
-    }, 3000);
-";
-$this->registerJs($script);
-$cssStyle = '
-    #list-followers .summary {
-        margin-bottom: 15px;
-    }
-';
-$this->registerCss($cssStyle);
+$isEnable = $model->isEnabled();
 
 $this->title = $name;
 $this->params['breadcrumbs'][] = $this->title;
@@ -66,35 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">
-                    <?php $form = ActiveForm::begin([
-                        'id' => 'maintenance-update-form',
-                        'action' => Url::to(['/maintenance/index']),
-                    ]); ?>
-                    <?= $form->field($model, 'mode')->dropDownList($model::getModesArray()) ?>
-
-                    <div style="display:none" id="maintenance-setting-container">
-                        <?= $form->field($model, 'date')->textInput([
-                            'placeholder' => date($model->dateFormat),
-                        ]) ?>
-
-                        <?= $form->field($model, 'title')->textInput([
-                            'placeholder' => true,
-                        ]) ?>
-
-                        <?= $form->field($model, 'text')->textarea([
-                            'placeholder' => true,
-                            'rows' => 6,
-                            'class' => 'form-control'
-                        ]) ?>
-
-                        <?= $form->field($model, 'subscribe')->checkbox() ?>
-                    </div>
-
-                    <?= Html::submitButton(BackendMaintenance::t('app', 'Save'), [
-                        'class' => 'btn btn-primary',
-                        'name' => 'maintenance-subscribe-button'
-                    ]) ?>
-                    <?php ActiveForm::end(); ?>
+                    <?= MaintenanceForm::widget() ?>
                 </div>
                 <div class="box-footer">
                     <div class="pull-left">
@@ -126,18 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">
-                    <?= ListView::widget([
-                        'dataProvider' => $listDataProvider,
-                        'layout' => "{summary}\n{items}\n{pager}",
-                        'options' => [
-                            'tag' => 'div',
-                            'class' => 'list-wrapper',
-                            'id' => 'list-followers',
-                        ],
-                        'itemView' => static function ($model) {
-                            return Html::a($model['email'], 'mailto:' . $model['email']);
-                        }
-                    ]) ?>
+                    <?= Followers::widget() ?>
                 </div>
                 <div class="box-footer">
                     <div class="pull-left">

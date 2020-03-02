@@ -4,7 +4,6 @@ namespace dominus77\maintenance\actions\backend;
 
 use Yii;
 use yii\base\Action;
-use yii\data\ArrayDataProvider;
 use yii\web\Response;
 use dominus77\maintenance\models\FileStateForm;
 use dominus77\maintenance\BackendMaintenance;
@@ -65,18 +64,9 @@ class IndexAction extends Action
      */
     protected function getViewRenderParams($model)
     {
-        $listDataProvider = new ArrayDataProvider([
-            'allModels' => $model->followers,
-            'pagination' => [
-                'pageSize' => 18
-            ],
-        ]);
-
         return [
             'name' => $this->defaultName,
             'model' => $model,
-            'isEnable' => $model->isEnabled(),
-            'listDataProvider' => $listDataProvider
         ];
     }
 }
