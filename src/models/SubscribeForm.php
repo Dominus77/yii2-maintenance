@@ -45,13 +45,14 @@ class SubscribeForm extends Model
     {
         parent::init();
         $this->state = Yii::$container->get(StateInterface::class);
+        $urlManager = Yii::$app->urlManager;
         $subscribeOptions = [
             'template' => [
                 'html' => '@dominus77/maintenance/mail/emailNotice-html',
                 'text' => '@dominus77/maintenance/mail/emailNotice-text'
             ],
-            'backLink' => $this->getBackLink(), // Link in a letter to the site
-            'from' => Yii::$app->params['supportEmail'],
+            'backLink' => $urlManager->hostInfo, // Link in a letter to the site
+            'from' => $this->getFrom('noreply@mail.com'),
             'subject' => BaseMaintenance::t('app', 'Notification of completion of technical work')
         ];
         $this->subscribeOptions = ArrayHelper::merge($subscribeOptions, $this->state->subscribeOptions);
@@ -180,16 +181,17 @@ class SubscribeForm extends Model
     }
 
     /**
-     * Link in a letter to the site
-     * @return string
+     * From
+     * @param $from
+     * @return mixed|string
      */
-    public function getBackLink()
+    protected function getFrom($from)
     {
-        if ($urlManager = Yii::$app->urlManager) {
-            return (isset($urlManager->hostInfo) && !empty($urlManager->hostInfo)) ?
-                $urlManager->hostInfo :
-                Yii::$app->params['frontendUrl'];
+        if (isset(Yii::$app->params['senderEmail']) && !empty(Yii::$app->params['senderEmail'])) {
+            $from = Yii::$app->params['senderEmail'];
+        } else if (isset(Yii::$app->params['supportEmail']) && !empty(Yii::$app->params['supportEmail'])) {
+            $from = Yii::$app->params['supportEmail'];
         }
-        return Yii::$app->params['frontendUrl'];
+        return $from;
     }
 }
