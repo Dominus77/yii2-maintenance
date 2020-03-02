@@ -95,8 +95,10 @@ class SubscribeForm extends Model
         $messages = [];
         $mailer = Yii::$app->mailer;
         foreach ($emails as $email) {
-            $messages[] = $mailer->compose($this->subscribeOptions['template'], [
-                'backLink' => $this->subscribeOptions['backLink']])
+            $messages[] = $mailer->compose(
+                $this->subscribeOptions['template'], [
+                'backLink' => $this->subscribeOptions['backLink']
+            ])
                 ->setFrom([$this->subscribeOptions['from'] => Yii::$app->name])
                 ->setTo($email)
                 ->setSubject($this->subscribeOptions['subject']);
