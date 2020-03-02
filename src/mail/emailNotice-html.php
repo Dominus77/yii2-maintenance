@@ -6,10 +6,10 @@ use dominus77\maintenance\BaseMaintenance;
 
 /**
  * @var $this yii\web\View
- * @var $link string
+ * @var $backlink string
  */
 
-$link = Url::to(Yii::$app->urlManager->hostInfo);
+$link = Url::to($backlink);
 ?>
 <div class="email-maintenance-notice">
     <h2><?= BaseMaintenance::t('app', 'Technical work completed.') ?></h2>

@@ -3,15 +3,16 @@
 namespace dominus77\maintenance;
 
 use Yii;
+use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
-use yii\web\Application;
+use yii\base\Application;
 use dominus77\maintenance\interfaces\StateInterface;
 
 /**
  * Class Maintenance
  * @package dominus77\maintenance
  */
-class Maintenance extends BaseMaintenance
+class Maintenance extends BaseMaintenance implements BootstrapInterface
 {
     /**
      * Value of "OK" status code.
@@ -60,7 +61,6 @@ class Maintenance extends BaseMaintenance
      */
     public function bootstrap($app)
     {
-        parent::bootstrap($app);
         $response = $app->response;
         if ($app->request->isAjax) {
             $response->statusCode = self::STATUS_CODE_OK;

@@ -4,31 +4,30 @@ namespace dominus77\maintenance;
 
 use Yii;
 use yii\base\BaseObject;
-use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
 use yii\i18n\PhpMessageSource;
-use yii\web\Application;
 
 /**
  * Class BaseMaintenance
  * @package dominus77\maintenance
  */
-class BaseMaintenance extends BaseObject implements BootstrapInterface
+class BaseMaintenance extends BaseObject
 {
     /**
-     * @param Application $app
+     * BaseMaintenance constructor.
+     * @param array $config
      */
-    public function bootstrap($app)
+    public function __construct($config = [])
     {
         $this->addI18n();
-        $this->addRules($app);
+        $this->addRules();
+        parent::__construct($config);
     }
 
     /**
      * Add rules this route
-     * @param Application $app
      */
-    protected function addRules(Application $app)
+    protected function addRules()
     {
         $rules = [
             'maintenance' => 'maintenance/index',
@@ -37,7 +36,7 @@ class BaseMaintenance extends BaseObject implements BootstrapInterface
         $rules = (YII_DEBUG) ? ArrayHelper::merge($rules, [
             '<_m:debug>/<_c:\w+>/<_a:\w+>' => '<_m>/<_c>/<_a>',
         ]) : $rules;
-        $urlManager = $app->urlManager;
+        $urlManager = Yii::$app->urlManager;
         $urlManager->addRules($rules);
     }
 

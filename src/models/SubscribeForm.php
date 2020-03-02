@@ -45,12 +45,12 @@ class SubscribeForm extends Model
     {
         parent::init();
         $this->state = Yii::$container->get(StateInterface::class);
-
         $subscribeOptions = [
             'template' => [
                 'html' => '@dominus77/maintenance/mail/emailNotice-html',
                 'text' => '@dominus77/maintenance/mail/emailNotice-text'
             ],
+            'backLink' => $this->getBackLink(), // Link in a letter to the site
             'from' => Yii::$app->params['supportEmail'],
             'subject' => BaseMaintenance::t('app', 'Notification of completion of technical work')
         ];
@@ -94,7 +94,8 @@ class SubscribeForm extends Model
         $messages = [];
         $mailer = Yii::$app->mailer;
         foreach ($emails as $email) {
-            $messages[] = $mailer->compose($this->subscribeOptions['template'], [])
+            $messages[] = $mailer->compose($this->subscribeOptions['template'], [
+                'backLink' => $this->subscribeOptions['backLink']])
                 ->setFrom([$this->subscribeOptions['from'] => Yii::$app->name])
                 ->setTo($email)
                 ->setSubject($this->subscribeOptions['subject']);
@@ -176,5 +177,17 @@ class SubscribeForm extends Model
     protected function getFileSubscribePath()
     {
         return $this->state->subscribePath;
+    }
+
+    /**
+     * Link in a letter to the site
+     * @return string
+     */
+    public function getBackLink()
+    {
+        $urlManager = Yii::$app->urlManager;
+        return (isset($urlManager->hostInfo) && !empty($urlManager->hostInfo)) ?
+            $urlManager->hostInfo :
+            Yii::$app->params['frontendUrl'];
     }
 }
