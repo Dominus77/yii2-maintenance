@@ -4,18 +4,14 @@ namespace dominus77\maintenance;
 
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\helpers\ArrayHelper;
 use yii\web\Application;
-use yii\base\BaseObject;
-use yii\base\BootstrapInterface;
-use yii\i18n\PhpMessageSource;
 use dominus77\maintenance\interfaces\StateInterface;
 
 /**
  * Class Maintenance
  * @package dominus77\maintenance
  */
-class Maintenance extends BaseObject implements BootstrapInterface
+class Maintenance extends BaseMaintenance
 {
     /**
      * Value of "OK" status code.
@@ -54,14 +50,6 @@ class Maintenance extends BaseObject implements BootstrapInterface
      */
     public function __construct(StateInterface $state, array $config = [])
     {
-        $i18n = Yii::$app->i18n;
-        $i18n->translations['dominus77/maintenance/*'] = [
-            'class' => PhpMessageSource::class,
-            'basePath' => '@dominus77/maintenance/messages',
-            'fileMap' => [
-                'dominus77/maintenance' => 'maintenance.php',
-            ]
-        ];
         $this->state = $state;
         parent::__construct($config);
     }
@@ -72,18 +60,6 @@ class Maintenance extends BaseObject implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $rules = [
-            'maintenance' => 'maintenance/index',
-            'maintenance/<_a:\w+>' => 'maintenance/<_a>'
-        ];
-        if (YII_DEBUG) {
-            $rules = ArrayHelper::merge($rules, [
-                '<_m:debug>/<_c:\w+>/<_a:\w+>' => '<_m>/<_c>/<_a>',
-            ]);
-        }
-        $urlManager = $app->urlManager;
-        $urlManager->addRules($rules);
-
         $response = $app->response;
         if ($app->request->isAjax) {
             $response->statusCode = self::STATUS_CODE_OK;
@@ -122,17 +98,5 @@ class Maintenance extends BaseObject implements BootstrapInterface
             }
         }
         return false;
-    }
-
-    /**
-     * @param $category
-     * @param $message
-     * @param array $params
-     * @param null $language
-     * @return string
-     */
-    public static function t($category, $message, $params = [], $language = null)
-    {
-        return Yii::t('dominus77/maintenance/' . $category, $message, $params, $language);
     }
 }

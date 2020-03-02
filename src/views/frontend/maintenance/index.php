@@ -13,18 +13,17 @@ use dominus77\maintenance\Maintenance;
 
 $this->title = $name;
 ?>
-
 <h1><?= Html::encode($this->title) ?></h1>
 <p><?= $message ?></p>
 <br>
 <?= CountDown::widget([
     'status' => $model->isTimer(),
     'timestamp' => $model->timestamp,
-    'message' => Maintenance::t('maintenance', 'The site will work soon! Please refresh the page.'),
+    'message' => Maintenance::t('app', 'The site will work soon! Please refresh the page.'),
 ]) ?>
 <div class="form-container">
     <?php if (($status = $model->isSubscribe()) && $status === true) { ?>
-        <p><?= Yii::t('app', 'We can notify you when everything is ready.') ?></p>
+        <p><?= Maintenance::t('app', 'We can notify you when everything is ready.') ?></p>
         <?= SubscribeForm::widget([
             'status' => $status,
             'model' => $model
