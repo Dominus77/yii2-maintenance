@@ -185,9 +185,11 @@ class SubscribeForm extends Model
      */
     public function getBackLink()
     {
-        $urlManager = Yii::$app->urlManager;
-        return (isset($urlManager->hostInfo) && !empty($urlManager->hostInfo)) ?
-            $urlManager->hostInfo :
-            Yii::$app->params['frontendUrl'];
+        if ($urlManager = Yii::$app->urlManager) {
+            return (isset($urlManager->hostInfo) && !empty($urlManager->hostInfo)) ?
+                $urlManager->hostInfo :
+                Yii::$app->params['frontendUrl'];
+        }
+        return Yii::$app->params['frontendUrl'];
     }
 }
