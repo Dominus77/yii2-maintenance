@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+use dominus77\maintenance\BaseMaintenance;
 
 /**
  * @var $this yii\web\View
@@ -9,7 +10,7 @@ use yii\helpers\Url;
 
 $link = Url::to(Yii::$app->urlManager->hostInfo);
 ?>
-<?= Yii::t('app', 'Technical work completed.') ?>
-<?= Yii::t('app', 'Please follow the link below to visit the site.') ?>
+<?= BaseMaintenance::t('app', 'Technical work completed.') ?>
+<?= BaseMaintenance::t('app', 'Please follow the link below to visit the site.') ?>
 
 <?= $link ?>

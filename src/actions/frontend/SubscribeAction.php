@@ -7,6 +7,7 @@ use yii\base\Action;
 use yii\web\Response;
 use yii\web\Session;
 use dominus77\maintenance\models\SubscribeForm;
+use dominus77\maintenance\BaseMaintenance;
 
 /**
  * Class SubscribeAction
@@ -20,8 +21,8 @@ class SubscribeAction extends Action
     public function run()
     {
         $model = new SubscribeForm();
-        $msgSuccess = Yii::t('app', 'We will inform you when everything is ready!');
-        $msgInfo = Yii::t('app', 'You have already subscribed to the alert!');
+        $msgSuccess = BaseMaintenance::t('app', 'We will inform you when everything is ready!');
+        $msgInfo = BaseMaintenance::t('app', 'You have already subscribed to the alert!');
         if (($post = Yii::$app->request->post()) && $model->load($post) && $model->validate()) {
             /** @var Session $session */
             $session = Yii::$app->session;

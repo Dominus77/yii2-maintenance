@@ -38,7 +38,7 @@ class BaseMaintenance extends BaseObject implements BootstrapInterface
      * Add rules this route
      * @param Application $app
      */
-    private function addRules(Application $app)
+    protected function addRules(Application $app)
     {
         $rules = [
             'maintenance' => 'maintenance/index',

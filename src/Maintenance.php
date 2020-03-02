@@ -60,6 +60,7 @@ class Maintenance extends BaseMaintenance
      */
     public function bootstrap($app)
     {
+        parent::bootstrap($app);
         $response = $app->response;
         if ($app->request->isAjax) {
             $response->statusCode = self::STATUS_CODE_OK;

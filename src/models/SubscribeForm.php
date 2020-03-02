@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use Exception;
 use dominus77\maintenance\interfaces\StateInterface;
+use dominus77\maintenance\BaseMaintenance;
 
 /**
  * Class SubscribeForm
@@ -63,7 +64,7 @@ class SubscribeForm extends Model
     public function attributeLabels()
     {
         return [
-            'email' => Yii::t('app', 'Your email'),
+            'email' => BaseMaintenance::t('app', 'Your email'),
         ];
     }
 
@@ -85,7 +86,7 @@ class SubscribeForm extends Model
             ], [])
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
                 ->setTo($email)
-                ->setSubject(Yii::t('app', 'Notification of completion of technical work'));
+                ->setSubject(BaseMaintenance::t('app', 'Notification of completion of technical work'));
 
         }
         return $mailer->sendMultiple($messages);

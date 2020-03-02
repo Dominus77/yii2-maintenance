@@ -1,6 +1,5 @@
 <?php
 
-
 namespace dominus77\maintenance\widgets\subscribe;
 
 use yii\base\Widget;

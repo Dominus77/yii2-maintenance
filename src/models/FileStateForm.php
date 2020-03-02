@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use Exception;
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\states\FileState;
+use dominus77\maintenance\BaseMaintenance;
 
 /**
  * Class FileStateForm
@@ -77,8 +78,8 @@ class FileStateForm extends Model
         $this->state = Yii::$container->get(StateInterface::class);
         $this->mode = self::MODE_MAINTENANCE_OFF;
         $this->date = $this->datetime;
-        $this->title = $this->title ?: Yii::t('app', $this->state->defaultTitle);
-        $this->text = $this->text ?: Yii::t('app', $this->state->defaultContent);
+        $this->title = $this->title ?: BaseMaintenance::t('app', $this->state->defaultTitle);
+        $this->text = $this->text ?: BaseMaintenance::t('app', $this->state->defaultContent);
         $this->setFollowers();
         $this->setData();
     }
@@ -118,12 +119,12 @@ class FileStateForm extends Model
     public function attributeLabels()
     {
         return [
-            'mode' => Yii::t('app', 'Mode'),
-            'date' => Yii::t('app', 'Date and Time'),
-            'title' => Yii::t('app', 'Title'),
-            'text' => Yii::t('app', 'Text'),
-            'subscribe' => Yii::t('app', 'Subscribe'),
-            'countDown' => Yii::t('app', 'Count Down'),
+            'mode' => BaseMaintenance::t('app', 'Mode'),
+            'date' => BaseMaintenance::t('app', 'Date and Time'),
+            'title' => BaseMaintenance::t('app', 'Title'),
+            'text' => BaseMaintenance::t('app', 'Text'),
+            'subscribe' => BaseMaintenance::t('app', 'Subscribe'),
+            'countDown' => BaseMaintenance::t('app', 'Count Down'),
         ];
     }
 
@@ -143,8 +144,8 @@ class FileStateForm extends Model
     public static function getModesArray()
     {
         return [
-            self::MODE_MAINTENANCE_OFF => Yii::t('app', 'Mode normal'),
-            self::MODE_MAINTENANCE_ON => Yii::t('app', 'Mode maintenance'),
+            self::MODE_MAINTENANCE_OFF => BaseMaintenance::t('app', 'Mode normal'),
+            self::MODE_MAINTENANCE_ON => BaseMaintenance::t('app', 'Mode maintenance'),
         ];
     }
 
@@ -157,7 +158,7 @@ class FileStateForm extends Model
         if ($this->mode === self::MODE_MAINTENANCE_ON) {
             if ($this->isEnabled()) {
                 $this->update();
-                Yii::$app->session->setFlash(self::MAINTENANCE_UPDATE_KEY, Yii::t('app', 'Maintenance mode successfully updated!'));
+                Yii::$app->session->setFlash(self::MAINTENANCE_UPDATE_KEY, BaseMaintenance::t('app', 'Maintenance mode successfully updated!'));
                 $result = true;
             } else {
                 $this->enable();
@@ -166,7 +167,7 @@ class FileStateForm extends Model
         }
         if ($this->mode === self::MODE_MAINTENANCE_OFF) {
             $count = $this->disable();
-            Yii::$app->session->setFlash(self::MAINTENANCE_NOTIFY_SENDER_KEY, Yii::t('app',
+            Yii::$app->session->setFlash(self::MAINTENANCE_NOTIFY_SENDER_KEY, BaseMaintenance::t('app',
                 '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}',
                 ['n' => $count])
             );
