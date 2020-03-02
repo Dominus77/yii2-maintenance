@@ -2,7 +2,28 @@
 
 Switching the site on the Yii2 into maintenance mode with a timer and user subscription form displayed.
 
-## Use
+> NOTE: This is a temporary general documentation and is expected to be updated.
+
+## Installation
+
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+
+Either run
+
+```
+php composer.phar require dominus77/yii2-maintenance "dev-master"
+```
+
+or add
+
+```
+"dominus77/yii2-maintenance": "dev-master"
+```
+
+to the require section of your `composer.json` file.
+
+
+## Usage
 Add to your config file:
 ```php
 // frontend/config/main.php
@@ -26,8 +47,7 @@ $config = [
                         'class' => 'dominus77\maintenance\filters\URIFilter',
                         'uri' => [
                             'debug/default/view',
-                            'debug/default/toolbar',
-                            'maintenance/subscribe',
+                            'debug/default/toolbar',                            
                             'users/default/login',
                             'users/default/logout',
                             'users/default/request-password-reset'
@@ -36,10 +56,11 @@ $config = [
                 ],
     
                 // HTTP Status Code
-                'statusCode' => 503,
-    
-                //Retry-After header
-                'retryAfter' => 120 // or Wed, 21 Oct 2015 07:28:00 GMT for example
+                //'statusCode' => 503,
+                // optional
+                // Retry-After header
+                // If not set, set automatically from the set time, + 10 minutes
+                //'retryAfter' => 120 // or Wed, 21 Oct 2020 07:28:00 GMT for example
             ],
             'dominus77\maintenance\interfaces\StateInterface' => [
                 'class' => 'dominus77\maintenance\states\FileState',
@@ -55,8 +76,17 @@ $config = [
                 'directory' => '@runtime',
             ]
         ]
-    ]
-    //..
+    ],
+    // Page Maintenance
+    'controllerMap' => [
+        //...
+        'maintenance' => [
+            'class' => 'dominus77\maintenance\controllers\frontend\MaintenanceController',
+            'layout' => '@dominus77/maintenance/views/frontend/layouts/maintenance',
+            'viewPath' => '@dominus77/maintenance/views/frontend/maintenance',
+        ],
+    ],
+    //...
 ];
 ```
 
@@ -80,8 +110,7 @@ $config = [
                         'class' => 'dominus77\maintenance\filters\URIFilter',
                         'uri' => [
                             'debug/default/view',
-                            'debug/default/toolbar',
-                            'maintenance/subscribe',
+                            'debug/default/toolbar',                            
                             'users/default/login',
                             'users/default/logout',
                             'users/default/request-password-reset'
@@ -90,7 +119,7 @@ $config = [
                     // Allowed roles filter
                     [
                         'class' => 'dominus77\maintenance\filters\RoleFilter',
-                        'roles' => ['admin']
+                        'roles' => ['admin'] // Permissions
                     ],
                     // Allowed IP addresses filter
                     [
@@ -104,14 +133,13 @@ $config = [
                         'class' => 'dominus77\maintenance\filters\UserFilter',
                         'checkedAttribute' => 'username',
                         'users' => [
-                            'admin',
+                            'admin', // username
                         ],
                     ]
                 ],
             ]
         ]
-    ]
-    //...
+    ]    
 ];
 ```
 You can create custom filter:
@@ -131,12 +159,81 @@ class MyCustomFilter extends Filter
     }
 }
 ```
-
-## Set maintenance mode by console or dashboard
-
-Add to your console or common config file:
+## Set maintenance mode by backend
+Add to your common config file:
 ```php
+// common/config/main.php
+$params = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
+);
 $config = [
+    'container' => [
+        'singletons' => [
+            'dominus77\maintenance\interfaces\StateInterface' => [
+                'class' => 'dominus77\maintenance\states\FileState',
+                // optional: format datetime
+                // 'dateFormat' => 'd-m-Y H:i:s',
+                // optional: use different filename for controlling maintenance state:
+                // 'fileName' => 'myfile.ext',
+                // optional: use a different file name to store subscribers of end-of-service notify
+                // 'fileSubscribe' => 'my_file_subscribe.ext',
+                // optional: use different directory for controlling maintenance state:
+                'directory' => '@frontend/runtime',
+
+                // Configure sender for subscribers
+                'subscribeOptions' => [
+                    'template' => [
+                        'html' => '@dominus77/maintenance/mail/emailNotice-html',
+                        'text' => '@dominus77/maintenance/mail/emailNotice-text'
+                    ],
+                    'backLink' => $params['frontendUrl'], // configure urlManager in console/config/main.php
+                    'from' => $params['senderEmail'], // noreply@mail.com
+                    //'subject' => 'Notification of completion of technical work'
+                ]
+            ]
+        ]
+    ],
+];
+```
+
+Add to your backend config file:
+```php
+// backend/config/main.php
+$config = [
+    'bootstrap' => [
+        //...    
+        'dominus77\maintenance\BackendMaintenance',
+    ],
+    //...
+    'controllerMap' => [
+        'maintenance' => [
+            'class' => 'dominus77\maintenance\controllers\backend\MaintenanceController',
+            'viewPath' => '@dominus77/maintenance/views/backend/maintenance',
+            'roles' => ['admin'] // Permissions, managing maintenance mode
+        ],
+    ],
+];
+```
+Url dashboard: `http://mysite.com/admin/maintenance`
+
+## Set maintenance mode by console
+
+Add to your console config file:
+```php
+// console/config/main.php
+$params = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
+);
+
+$config = [
+    'bootstrap' => [
+        //...    
+        'dominus77\maintenance\BackendMaintenance',
+    ],
     //...
     'container' => [
         'singletons' => [
@@ -160,6 +257,14 @@ $config = [
           ],
     ],
     //..
+    'components' => [
+        //...        
+        'urlManager' => [
+            'hostInfo' => $params['frontendUrl'], // http://mysite.com
+            //...
+        ]
+    ],      
+    //...
 ];
 ```
 
@@ -171,3 +276,6 @@ php yii maintenance/update --date="24-05-2023 19:05:00" --title="Maintenance" --
 php yii maintenance/followers
 php yii maintenance/disable
 ```
+
+## License
+The MIT License (MIT). Please see [License File](https://github.com/Dominus77/yii2-maintenance/blob/master/LICENSE.md) for more information.
