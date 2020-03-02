@@ -62,6 +62,12 @@ class FileState extends BaseObject implements StateInterface
     public $subscribe;
 
     /**
+     * Options SubscribeForm
+     * @var array
+     */
+    public $subscribeOptions = [];
+
+    /**
      * @var string the directory in that the file stated in $fileName above is residing
      */
     public $directory = '@runtime';

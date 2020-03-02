@@ -34,21 +34,9 @@ class SubscribeForm extends Model
     protected $state;
 
     /**
-     * Set mail templates for notify subscribers
      * @var array
      */
-    public $template;
-    /**
-     * Set from email for notify subscribers
-     * default: Yii::$app->params['supportEmail']
-     * @var string
-     */
-    public $from;
-    /**
-     * Set subject for notify subscribers
-     * @var string
-     */
-    public $subject;
+    protected $subscribeOptions;
 
     /**
      * @inheritDoc
@@ -57,12 +45,16 @@ class SubscribeForm extends Model
     {
         parent::init();
         $this->state = Yii::$container->get(StateInterface::class);
-        $this->template = $this->template ?: [
-            'html' => '@dominus77/maintenance/mail/emailNotice-html',
-            'text' => '@dominus77/maintenance/mail/emailNotice-text'
+
+        $subscribeOptions = [
+            'template' => [
+                'html' => '@dominus77/maintenance/mail/emailNotice-html',
+                'text' => '@dominus77/maintenance/mail/emailNotice-text'
+            ],
+            'from' => Yii::$app->params['supportEmail'],
+            'subject' => BaseMaintenance::t('app', 'Notification of completion of technical work')
         ];
-        $this->from = $this->from ?: Yii::$app->params['supportEmail'];
-        $this->subject = $this->subject ?: BaseMaintenance::t('app', 'Notification of completion of technical work');
+        $this->subscribeOptions = ArrayHelper::merge($subscribeOptions, $this->state->subscribeOptions);
     }
 
     /**
@@ -102,10 +94,10 @@ class SubscribeForm extends Model
         $messages = [];
         $mailer = Yii::$app->mailer;
         foreach ($emails as $email) {
-            $messages[] = $mailer->compose($this->template, [])
-                ->setFrom([$this->from => Yii::$app->name])
+            $messages[] = $mailer->compose($this->subscribeOptions['template'], [])
+                ->setFrom([$this->subscribeOptions['from'] => Yii::$app->name])
                 ->setTo($email)
-                ->setSubject($this->subject);
+                ->setSubject($this->subscribeOptions['subject']);
 
         }
         return $mailer->sendMultiple($messages);
