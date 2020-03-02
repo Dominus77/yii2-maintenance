@@ -12,7 +12,7 @@ use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\models\SubscribeForm;
-use dominus77\maintenance\BaseMaintenance;
+use dominus77\maintenance\BackendMaintenance;
 
 /**
  * Class FileState
@@ -116,8 +116,8 @@ class FileState extends BaseObject implements StateInterface
         }
         $timestamp = $date->getTimestamp();
 
-        $title = $title ?: BaseMaintenance::t('app', $this->defaultTitle);
-        $content = $content ?: BaseMaintenance::t('app', $this->defaultContent);
+        $title = $title ?: BackendMaintenance::t('app', $this->defaultTitle);
+        $content = $content ?: BackendMaintenance::t('app', $this->defaultContent);
         $subscribe = $subscribe ?: $this->subscribe;
 
         $data = $timestamp . PHP_EOL . $title . PHP_EOL . $content . PHP_EOL . $subscribe . PHP_EOL;

@@ -8,7 +8,7 @@ use Exception;
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\states\FileState;
 use dominus77\maintenance\models\SubscribeForm;
-use dominus77\maintenance\BaseMaintenance;
+use dominus77\maintenance\BackendMaintenance;
 
 /**
  * Class IndexAction
@@ -47,11 +47,11 @@ class IndexAction extends Action
         $this->state = Yii::$container->get(StateInterface::class);
 
         if ($this->defaultMessage === null) {
-            $this->defaultMessage = BaseMaintenance::t('app', $this->state->getParams(FileState::MAINTENANCE_PARAM_CONTENT));
+            $this->defaultMessage = BackendMaintenance::t('app', $this->state->getParams(FileState::MAINTENANCE_PARAM_CONTENT));
         }
 
         if ($this->defaultName === null) {
-            $this->defaultName = BaseMaintenance::t('app', $this->state->getParams(FileState::MAINTENANCE_PARAM_TITLE));
+            $this->defaultName = BackendMaintenance::t('app', $this->state->getParams(FileState::MAINTENANCE_PARAM_TITLE));
         }
     }
 

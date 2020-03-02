@@ -8,7 +8,7 @@ use dominus77\maintenance\models\FileStateForm;
 use dominus77\maintenance\widgets\timer\CountDown;
 use yii\data\ArrayDataProvider;
 use yii\widgets\ListView;
-use dominus77\maintenance\BaseMaintenance;
+use dominus77\maintenance\BackendMaintenance;
 
 /**
  * @var $this View
@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
             <div class="box <?= $isEnable ? 'box-danger' : 'box-success' ?>">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= Html::encode($model->modeName) ?> <?= $isEnable ? BaseMaintenance::t('app', 'up {:date}', [':date' => $model->datetime]) : '' ?></h3>
+                    <h3 class="box-title"><?= Html::encode($model->modeName) ?> <?= $isEnable ? BackendMaintenance::t('app', 'up {:date}', [':date' => $model->datetime]) : '' ?></h3>
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= $form->field($model, 'subscribe')->checkbox() ?>
                     </div>
 
-                    <?= Html::submitButton(BaseMaintenance::t('app', 'Save'), [
+                    <?= Html::submitButton(BackendMaintenance::t('app', 'Save'), [
                         'class' => 'btn btn-primary',
                         'name' => 'maintenance-subscribe-button'
                     ]) ?>
@@ -122,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= BaseMaintenance::t('app', 'Followers') ?></h3>
+                    <h3 class="box-title"><?= BackendMaintenance::t('app', 'Followers') ?></h3>
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">

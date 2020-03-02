@@ -12,7 +12,7 @@ use dominus77\maintenance\interfaces\StateInterface;
  * Class Maintenance
  * @package dominus77\maintenance
  */
-class Maintenance extends BaseMaintenance implements BootstrapInterface
+class Maintenance extends BackendMaintenance implements BootstrapInterface
 {
     /**
      * Value of "OK" status code.

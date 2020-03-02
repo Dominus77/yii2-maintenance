@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use dominus77\maintenance\interfaces\StateInterface;
-use dominus77\maintenance\BaseMaintenance;
+use dominus77\maintenance\BackendMaintenance;
 
 /**
  * Class SubscribeForm
@@ -53,7 +53,7 @@ class SubscribeForm extends Model
             ],
             'backLink' => $urlManager->hostInfo, // Link in a letter to the site
             'from' => $this->getFrom('noreply@mail.com'),
-            'subject' => BaseMaintenance::t('app', 'Notification of completion of technical work')
+            'subject' => BackendMaintenance::t('app', 'Notification of completion of technical work')
         ];
         $this->subscribeOptions = ArrayHelper::merge($subscribeOptions, $this->state->subscribeOptions);
     }
@@ -79,7 +79,7 @@ class SubscribeForm extends Model
     public function attributeLabels()
     {
         return [
-            'email' => BaseMaintenance::t('app', 'Your email'),
+            'email' => BackendMaintenance::t('app', 'Your email'),
         ];
     }
 

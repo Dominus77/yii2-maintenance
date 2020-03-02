@@ -8,13 +8,13 @@ use yii\helpers\ArrayHelper;
 use yii\i18n\PhpMessageSource;
 
 /**
- * Class BaseMaintenance
+ * Class BackendMaintenance
  * @package dominus77\maintenance
  */
-class BaseMaintenance extends BaseObject
+class BackendMaintenance extends BaseObject
 {
     /**
-     * BaseMaintenance constructor.
+     * BackendMaintenance constructor.
      * @param array $config
      */
     public function __construct($config = [])

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use dominus77\maintenance\models\SubscribeForm;
-use dominus77\maintenance\BaseMaintenance;
+use dominus77\maintenance\BackendMaintenance;
 
 /** @var $this View */
 /** @var $model  SubscribeForm */
@@ -26,7 +26,7 @@ use dominus77\maintenance\BaseMaintenance;
     'placeholder' => true,
 ])->label(false) ?>
 
-<?= Html::submitButton(BaseMaintenance::t('app', 'Notify me'), [
+<?= Html::submitButton(BackendMaintenance::t('app', 'Notify me'), [
     'class' => 'btn btn-primary',
     'name' => 'maintenance-subscribe-button'
 ]) ?>

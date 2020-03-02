@@ -1,6 +1,6 @@
 <?php
 
-use dominus77\maintenance\BaseMaintenance;
+use dominus77\maintenance\BackendMaintenance;
 
 /**
  * @var $this yii\web\View
@@ -8,7 +8,7 @@ use dominus77\maintenance\BaseMaintenance;
  */
 
 ?>
-<?= BaseMaintenance::t('app', 'Technical work completed.') ?>
-<?= BaseMaintenance::t('app', 'Please follow the link below to visit the site.') ?>
+<?= BackendMaintenance::t('app', 'Technical work completed.') ?>
+<?= BackendMaintenance::t('app', 'Please follow the link below to visit the site.') ?>
 
 <?= $backLink ?>
