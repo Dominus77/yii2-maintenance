@@ -7,6 +7,7 @@ use yii\base\Action;
 use yii\data\ArrayDataProvider;
 use yii\web\Response;
 use dominus77\maintenance\models\FileStateForm;
+use dominus77\maintenance\BaseMaintenance;
 
 /**
  * Class IndexAction
@@ -36,7 +37,7 @@ class IndexAction extends Action
         parent::init();
 
         if ($this->defaultName === null) {
-            $this->defaultName = Yii::t('app', 'Mode site');
+            $this->defaultName = BaseMaintenance::t('app', 'Mode site');
         }
     }
 
