@@ -36,6 +36,7 @@ class Maintenance extends BaseMaintenance implements BootstrapInterface
     public $statusCode = 503;
     /**
      * Retry-After header
+     * If not set, set automatically from the set time, + 10 minutes
      * @var bool|string
      */
     public $retryAfter = false;
