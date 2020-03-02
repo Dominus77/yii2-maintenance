@@ -142,6 +142,15 @@ class SubscribeForm extends Model
     }
 
     /**
+     * Timestamp in file for countDown
+     * @return string
+     */
+    public function getTimestamp()
+    {
+        return $this->state->timestamp();
+    }
+
+    /**
      * Timer show/hide
      * @return bool
      */

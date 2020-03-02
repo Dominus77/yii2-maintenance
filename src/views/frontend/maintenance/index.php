@@ -18,7 +18,7 @@ $this->title = $name;
 <br>
 <?= CountDown::widget([
     'status' => $model->isTimer(),
-    'timestamp' => $model->timestamp,
+    'timestamp' => $model->getTimestamp(),
     'message' => BaseMaintenance::t('app', 'The site will work soon! Please refresh the page.'),
 ]) ?>
 <div class="form-container">
