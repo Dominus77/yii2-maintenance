@@ -2,7 +2,6 @@
 
 namespace dominus77\maintenance\models;
 
-use Exception;
 use Yii;
 use yii\helpers\ArrayHelper;
 use dominus77\maintenance\interfaces\StateFormInterface;
@@ -107,7 +106,11 @@ class SubscribeForm extends BaseForm implements StateFormInterface
                 ->setSubject($this->subscribeOptions['subject']);
 
         }
-        return $mailer->sendMultiple($messages);
+        $result = $mailer->sendMultiple($messages);
+        if ($result >= 0) {
+            $this->deleteFile();
+        }
+        return $result;
     }
 
     /**
@@ -132,6 +135,20 @@ class SubscribeForm extends BaseForm implements StateFormInterface
                 "Attention: Subscriber cannot be added because {$file} could not be save."
             );
         }
+    }
+
+    /**
+     * Delete subscribers file
+     * @return bool
+     */
+    public function deleteFile()
+    {
+        $result = false;
+        $path = $this->getFilePath($this->state->fileSubscribe);
+        if (file_exists($path)) {
+            $result = unlink($path);
+        }
+        return $result;
     }
 
     /**
@@ -179,17 +196,6 @@ class SubscribeForm extends BaseForm implements StateFormInterface
     {
         return ArrayHelper::isIn($this->email, $this->getEmails());
     }
-
-    /**
-     * Timestamp in file for countDown
-     * @return int
-     * @throws Exception
-     */
-    /*public function getTimestamp()
-    {
-        $model = new FileStateForm();
-        return $model->getTimestamp();
-    }*/
 
     /**
      * @return array

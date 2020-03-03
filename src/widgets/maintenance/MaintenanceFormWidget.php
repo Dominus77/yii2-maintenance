@@ -9,12 +9,12 @@ use dominus77\maintenance\models\FileStateForm;
 use yii\helpers\Json;
 
 /**
- * Class MaintenanceForm
+ * Class MaintenanceFormWidget
  * @package dominus77\maintenance\widgets\maintenance
  *
  * @property array $options
  */
-class MaintenanceForm extends Widget
+class MaintenanceFormWidget extends Widget
 {
     /**
      * @var bool

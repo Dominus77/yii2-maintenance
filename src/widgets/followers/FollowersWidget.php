@@ -8,16 +8,16 @@ use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ListView;
-use dominus77\maintenance\models\FileStateForm;
+use dominus77\maintenance\models\SubscribeForm;
 use dominus77\maintenance\widgets\followers\assets\FollowersAsset;
 
 /**
- * Class Followers
+ * Class FollowersWidget
  * @package dominus77\maintenance\widgets\followers
  *
  * @property ArrayDataProvider $listDataProvider
  */
-class Followers extends Widget
+class FollowersWidget extends Widget
 {
     /**
      * @var bool
@@ -25,7 +25,7 @@ class Followers extends Widget
     public $status;
 
     /**
-     * @var FileStateForm
+     * @var SubscribeForm
      */
     public $model;
 
@@ -47,7 +47,7 @@ class Followers extends Widget
     {
         parent::init();
         $this->model = $this->findModel();
-        if ($this->model instanceof FileStateForm) {
+        if ($this->model instanceof SubscribeForm) {
             $this->status = $this->status ?: true;
         }
         $options = [
@@ -92,7 +92,7 @@ class Followers extends Widget
     protected function getListDataProvider()
     {
         return new ArrayDataProvider([
-            'allModels' => $this->model->followers,
+            'allModels' => $this->model->getFollowers(),
             'pagination' => [
                 'pageSize' => $this->pageSize
             ],
@@ -100,12 +100,12 @@ class Followers extends Widget
     }
 
     /**
-     * @return FileStateForm
+     * @return SubscribeForm
      */
     protected function findModel()
     {
         if ($this->model === null) {
-            return new FileStateForm();
+            return new SubscribeForm();
         }
         return $this->model;
     }

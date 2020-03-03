@@ -3,8 +3,9 @@
 use yii\web\View;
 use yii\helpers\Html;
 use dominus77\maintenance\models\FileStateForm;
-use dominus77\maintenance\widgets\maintenance\MaintenanceForm;
+use dominus77\maintenance\widgets\maintenance\MaintenanceFormWidget;
 use dominus77\maintenance\widgets\timer\CountDownWidget;
+use dominus77\maintenance\widgets\followers\FollowersWidget;
 use dominus77\maintenance\BackendMaintenance;
 
 /**
@@ -28,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">
-                    <?= MaintenanceForm::widget([
-                            'model' => $model
+                    <?= MaintenanceFormWidget::widget([
+                        'model' => $model
                     ]) ?>
                 </div>
                 <div class="box-footer">
@@ -58,11 +59,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= BackendMaintenance::t('app', 'Followers') ?></h3>
+                    <h3 class="box-title"><?= BackendMaintenance::t('app', 'FollowersWidget') ?></h3>
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">
-                    <?php /*= Followers::widget() */?>
+                    <?= FollowersWidget::widget() ?>
                 </div>
                 <div class="box-footer">
                     <div class="pull-left">

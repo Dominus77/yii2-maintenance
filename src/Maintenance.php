@@ -48,8 +48,11 @@ class Maintenance extends BackendMaintenance implements BootstrapInterface
     public function __construct(StateInterface $state, array $config = [])
     {
         $this->state = $state;
-        // (Wed, 21 Oct 2015 07:28:00 GMT) + 10 minutes
-        $this->retryAfter = $this->retryAfter ?: gmdate('D, d M Y H:i:s \G\M\T', $this->state->timestamp() + 60 * 10);
+        if ($this->state->isEnabled()) {
+            // (Wed, 21 Oct 2015 07:28:00 GMT) + 10 minutes
+            $timestamp = $this->state->timestamp() + 60 * 10;
+            $this->retryAfter = $this->retryAfter ?: gmdate('D, d M Y H:i:s \G\M\T', $timestamp);
+        }
         parent::__construct($config);
     }
 
