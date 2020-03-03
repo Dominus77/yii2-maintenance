@@ -2,11 +2,12 @@
 
 namespace dominus77\maintenance\models;
 
+use Exception;
 use Yii;
-use yii\base\Model;
 use yii\helpers\ArrayHelper;
-use dominus77\maintenance\interfaces\StateInterface;
+use dominus77\maintenance\interfaces\StateFormInterface;
 use dominus77\maintenance\BackendMaintenance;
+use RuntimeException;
 
 /**
  * Class SubscribeForm
@@ -20,18 +21,20 @@ use dominus77\maintenance\BackendMaintenance;
  * @property string $fileSubscribePath
  * @property string $email
  */
-class SubscribeForm extends Model
+class SubscribeForm extends BaseForm implements StateFormInterface
 {
     const SUBSCRIBE_SUCCESS = 'subscribeSuccess';
     const SUBSCRIBE_INFO = 'subscribeInfo';
+
     /**
      * @var string
      */
     public $email;
+
     /**
-     * @var StateInterface
+     * @var array
      */
-    protected $state;
+    protected $followers;
 
     /**
      * @var array
@@ -44,7 +47,6 @@ class SubscribeForm extends Model
     public function init()
     {
         parent::init();
-        $this->state = Yii::$container->get(StateInterface::class);
         $urlManager = Yii::$app->urlManager;
         $subscribeOptions = [
             'template' => [
@@ -56,6 +58,7 @@ class SubscribeForm extends Model
             'subject' => BackendMaintenance::t('app', 'Notification of completion of technical work')
         ];
         $this->subscribeOptions = ArrayHelper::merge($subscribeOptions, $this->state->subscribeOptions);
+        $this->setFollowers();
     }
 
     /**
@@ -108,6 +111,39 @@ class SubscribeForm extends Model
     }
 
     /**
+     * Save email in file
+     *
+     * @return bool
+     */
+    public function save()
+    {
+        $str = $this->prepareData();
+        $file = $this->getFilePath($this->state->fileSubscribe);
+        try {
+            if ($str && $file) {
+                $fp = fopen($file, 'ab');
+                fwrite($fp, $str . PHP_EOL);
+                fclose($fp);
+                return chmod($file, 0765);
+            }
+            return false;
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(
+                "Attention: Subscriber cannot be added because {$file} could not be save."
+            );
+        }
+    }
+
+    /**
+     * This prepare data on before save
+     * @return string
+     */
+    protected function prepareData()
+    {
+        return date($this->dateFormat) . ' = ' . $this->email;
+    }
+
+    /**
      * Save follower
      * @return bool
      */
@@ -125,7 +161,14 @@ class SubscribeForm extends Model
      */
     public function getEmails()
     {
-        return $this->state->emails();
+        $subscribeData = $this->prepareLoadModel($this->getFilePath($this->state->fileSubscribe));
+        $emails = [];
+        if (is_array($subscribeData)) {
+            foreach ($subscribeData as $email) {
+                $emails[] = $email;
+            }
+        }
+        return $emails;
     }
 
     /**
@@ -134,52 +177,38 @@ class SubscribeForm extends Model
      */
     public function isEmail()
     {
-        return ArrayHelper::isIn($this->email, $this->emails);
+        return ArrayHelper::isIn($this->email, $this->getEmails());
     }
 
     /**
      * Timestamp in file for countDown
-     * @return string
+     * @return int
+     * @throws Exception
      */
-    public function getTimestamp()
+    /*public function getTimestamp()
     {
-        return $this->state->timestamp();
+        $model = new FileStateForm();
+        return $model->getTimestamp();
+    }*/
+
+    /**
+     * @return array
+     */
+    public function getFollowers()
+    {
+        $items = [];
+        foreach ($this->followers as $follower) {
+            $items[]['email'] = $follower;
+        }
+        return $items;
     }
 
     /**
-     * Timer show/hide
-     * @return bool
+     * @param array $followers
      */
-    public function isTimer()
+    public function setFollowers($followers = [])
     {
-        return $this->state->isTimer();
-    }
-
-    /**
-     * Subscribe form on/off
-     * @return bool will return true if on subscribe
-     */
-    public function isSubscribe()
-    {
-        return $this->state->isSubscribe();
-    }
-
-    /**
-     * Save email in file
-     * @return bool
-     */
-    protected function save()
-    {
-        return $this->state->save($this->email, $this->getFileSubscribePath());
-    }
-
-    /**
-     * Subscribe file path
-     * @return string
-     */
-    protected function getFileSubscribePath()
-    {
-        return $this->state->subscribePath;
+        $this->followers = $followers ?: $this->getEmails();
     }
 
     /**
@@ -195,5 +224,14 @@ class SubscribeForm extends Model
             $from = Yii::$app->params['supportEmail'];
         }
         return $from;
+    }
+
+    /**
+     * @param $fileName
+     * @return bool|string
+     */
+    protected function getFilePath($fileName)
+    {
+        return Yii::getAlias($this->state->directory . '/' . $fileName);
     }
 }

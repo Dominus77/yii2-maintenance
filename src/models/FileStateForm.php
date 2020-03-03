@@ -3,13 +3,15 @@
 namespace dominus77\maintenance\models;
 
 use Yii;
-use yii\base\Model;
 use yii\base\InvalidConfigException;
+use yii\di\NotInstantiableException;
 use yii\helpers\ArrayHelper;
-use Exception;
-use dominus77\maintenance\interfaces\StateInterface;
+use dominus77\maintenance\interfaces\StateFormInterface;
 use dominus77\maintenance\states\FileState;
 use dominus77\maintenance\BackendMaintenance;
+use dominus77\maintenance\Maintenance;
+use Exception;
+use DateTime;
 
 /**
  * Class FileStateForm
@@ -19,18 +21,19 @@ use dominus77\maintenance\BackendMaintenance;
  * @property mixed $datetime
  * @property mixed $modeName
  * @property string $dateFormat
+ * @property string $currentDateTime
+ * @property string $data
+ * @property string $dateTime
  * @property int $timestamp
  */
-class FileStateForm extends Model
+class FileStateForm extends BaseForm implements StateFormInterface
 {
-    const MODE_MAINTENANCE_ON = 'On';
-    const MODE_MAINTENANCE_OFF = 'Off';
     const MAINTENANCE_NOTIFY_SENDER_KEY = 'notifySender';
     const MAINTENANCE_UPDATE_KEY = 'maintenanceUpdate';
 
     /**
      * Select mode
-     * @var array
+     * @var integer
      */
     public $mode;
     /**
@@ -54,34 +57,24 @@ class FileStateForm extends Model
      */
     public $subscribe = true;
     /**
-     * CountDown
+     * CountDownWidget
      * @var bool
      */
     public $countDown = true;
 
     /**
-     * @var StateInterface
+     * @var FileState
      */
     protected $state;
 
     /**
-     * @var array
-     */
-    private $followers;
-
-    /**
-     * @inheritDoc
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
      */
     public function init()
     {
         parent::init();
-        $this->state = Yii::$container->get(StateInterface::class);
-        $this->mode = self::MODE_MAINTENANCE_OFF;
-        $this->date = $this->datetime;
-        $this->title = $this->title ?: BackendMaintenance::t('app', $this->state->defaultTitle);
-        $this->text = $this->text ?: BackendMaintenance::t('app', $this->state->defaultContent);
-        $this->setFollowers();
-        $this->setData();
+        $this->loadModel();
     }
 
     /**
@@ -93,6 +86,7 @@ class FileStateForm extends Model
         return [
             ['date', 'trim'],
             ['mode', 'required'],
+            ['mode', 'integer'],
             ['date', 'string', 'max' => 19],
             ['date', 'validateDateAttribute'],
             [['title', 'text'], 'string'],
@@ -101,15 +95,29 @@ class FileStateForm extends Model
     }
 
     /**
+     * Validate date attribute
+     *
      * @param $attribute
      * @throws InvalidConfigException
      */
     public function validateDateAttribute($attribute)
     {
-        if ($attribute && !$this->state->validDate($this->$attribute)) {
-            $example = Yii::$app->formatter->asDatetime(time(), 'php:' . $this->state->dateFormat);
+        if ($attribute && !$this->validDate($this->$attribute)) {
+            $example = $this->getDateTime();
             $this->addError($attribute, Yii::t('app', 'Invalid date format. Use example: {:example}', [':example' => $example]));
         }
+    }
+
+    /**
+     * Validate datetime
+     *
+     * @param $date
+     * @return bool
+     */
+    public function validDate($date)
+    {
+        $d = DateTime::createFromFormat($this->dateFormat, $date);
+        return $d && $d->format($this->state->dateFormat) === $date;
     }
 
     /**
@@ -129,12 +137,38 @@ class FileStateForm extends Model
     }
 
     /**
+     * Set data model
+     */
+    public function loadModel()
+    {
+        if ($stateArray = $this->prepareLoadModel($this->state->path)) {
+            $this->setAttributes($stateArray);
+        } else {
+            $this->mode = Maintenance::STATUS_CODE_OK;
+            $this->date = $this->getDateTime();
+            $this->title = BackendMaintenance::t('app', $this->state->defaultTitle);
+            $this->text = BackendMaintenance::t('app', $this->state->defaultContent);
+        }
+    }
+
+    /**
+     * Current Datetime
+     *
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public function getDateTime()
+    {
+        return Yii::$app->formatter->asDatetime($this->getTimestamp(), 'php:' . $this->dateFormat);
+    }
+
+    /**
      * Mode name
      * @return mixed
      */
     public function getModeName()
     {
-        return ArrayHelper::getValue(self::getModesArray(), $this->mode);
+        return ArrayHelper::getValue(self::getModesArray(), (int)$this->mode);
     }
 
     /**
@@ -144,8 +178,8 @@ class FileStateForm extends Model
     public static function getModesArray()
     {
         return [
-            self::MODE_MAINTENANCE_OFF => BackendMaintenance::t('app', 'Mode normal'),
-            self::MODE_MAINTENANCE_ON => BackendMaintenance::t('app', 'Mode maintenance'),
+            Maintenance::STATUS_CODE_OK => BackendMaintenance::t('app', 'Mode normal'),
+            Maintenance::STATUS_CODE_MAINTENANCE => BackendMaintenance::t('app', 'Mode maintenance'),
         ];
     }
 
@@ -155,18 +189,18 @@ class FileStateForm extends Model
     public function save()
     {
         $result = false;
-        if ($this->mode === self::MODE_MAINTENANCE_ON) {
+        if ($this->mode === (string)Maintenance::STATUS_CODE_MAINTENANCE) {
             if ($this->isEnabled()) {
-                $this->update();
                 Yii::$app->session->setFlash(self::MAINTENANCE_UPDATE_KEY, BackendMaintenance::t('app', 'Maintenance mode successfully updated!'));
-                $result = true;
-            } else {
-                $this->enable();
-                $result = true;
             }
+            file_put_contents($this->state->path,
+                $this->prepareData());
+            $result = chmod($this->state->path, 0765);
         }
-        if ($this->mode === self::MODE_MAINTENANCE_OFF) {
-            $count = $this->disable();
+        if ($this->mode === (string)Maintenance::STATUS_CODE_OK) {
+            $model = new SubscribeForm();
+            $count = $model->send();
+            $this->state->disable();
             Yii::$app->session->setFlash(self::MAINTENANCE_NOTIFY_SENDER_KEY, BackendMaintenance::t('app',
                 '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}',
                 ['n' => $count])
@@ -177,29 +211,26 @@ class FileStateForm extends Model
     }
 
     /**
-     * Enable
-     * @return mixed
+     * @return string
      */
-    public function enable()
+    public function prepareData()
     {
-        $subscribe = $this->subscribe ? FileState::MAINTENANCE_SUBSCRIBE_ON : FileState::MAINTENANCE_SUBSCRIBE_OFF;
-        return $this->state->enable($this->date, $this->title, $this->text, $subscribe);
+        $result = '';
+        foreach ($this->attributes as $attribute => $value) {
+            $result .= $attribute . ' = ' . $value . PHP_EOL;
+        }
+        return $result;
     }
 
     /**
-     * Update
-     * @return array
+     * Enable
+     *
+     * @return mixed|void
+     * @throws Exception
      */
-    public function update()
+    public function enable()
     {
-        $result = [];
-        foreach ($this->attributes as $key => $value) {
-            if ($key === FileState::MAINTENANCE_PARAM_SUBSCRIBE) {
-                $value = $value ? FileState::MAINTENANCE_SUBSCRIBE_ON : FileState::MAINTENANCE_SUBSCRIBE_OFF;
-            }
-            $result[$key] = $this->state->update($key, $value);
-        }
-        return $result;
+        return $this->state->enable();
     }
 
     /**
@@ -212,42 +243,53 @@ class FileStateForm extends Model
     }
 
     /**
-     * @return mixed
-     * @throws Exception
-     */
-    public function getDatetime()
-    {
-        return $this->state->datetime($this->getTimestamp(), $this->state->dateFormat);
-    }
-
-    /**
      * @return int
      * @throws Exception
      */
     public function getTimestamp()
     {
-        return $this->state->timestamp();
+        $date = new DateTime(date($this->dateFormat));
+        if ($this->validDate($this->date)) {
+            $date = new DateTime($this->date);
+        }
+        return $date->getTimestamp();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTimer()
+    {
+        return (bool)$this->countDown;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSubscribe()
+    {
+        return (bool)$this->subscribe;
     }
 
     /**
      * @return array
      */
-    public function getFollowers()
+    /*public function getFollowers()
     {
         $items = [];
         foreach ($this->followers as $follower) {
             $items[]['email'] = $follower;
         }
         return $items;
-    }
+    }*/
 
     /**
      * @param array $followers
      */
-    public function setFollowers($followers = [])
+    /*public function setFollowers($followers = [])
     {
         $this->followers = $followers ?: $this->state->emails();
-    }
+    }*/
 
     /**
      * @return bool
@@ -255,29 +297,5 @@ class FileStateForm extends Model
     public function isEnabled()
     {
         return $this->state->isEnabled();
-    }
-
-    /**
-     * @return string
-     */
-    public function getDateFormat()
-    {
-        return $this->state->dateFormat;
-    }
-
-    /**
-     * Set data is enabled
-     */
-    private function setData()
-    {
-        if ($this->isEnabled()) {
-            $this->mode = self::MODE_MAINTENANCE_ON;
-            $this->date = $this->datetime;
-            $this->title = $this->state->getParams(FileState::MAINTENANCE_PARAM_TITLE);
-            $this->text = $this->state->getParams(FileState::MAINTENANCE_PARAM_CONTENT);
-            $subscribe = $this->state->getParams(FileState::MAINTENANCE_PARAM_SUBSCRIBE);
-            $this->subscribe = ($subscribe === FileState::MAINTENANCE_SUBSCRIBE_ON);
-            $this->countDown = true;
-        }
     }
 }

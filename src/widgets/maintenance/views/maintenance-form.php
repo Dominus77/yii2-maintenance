@@ -34,6 +34,7 @@ use dominus77\maintenance\BackendMaintenance;
     ]) ?>
 
     <?= $form->field($model, 'subscribe')->checkbox() ?>
+    <?= $form->field($model, 'countDown')->checkbox() ?>
 </div>
 
 <?= Html::submitButton(BackendMaintenance::t('app', 'Save'), [

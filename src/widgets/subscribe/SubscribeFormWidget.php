@@ -7,10 +7,10 @@ use dominus77\maintenance\models\SubscribeForm as SubscribeFormModel;
 use dominus77\maintenance\widgets\subscribe\assets\SubscribeFormAsset;
 
 /**
- * Class SubscribeForm
+ * Class SubscribeFormWidget
  * @package dominus77\maintenance\widgets\subscribe
  */
-class SubscribeForm extends Widget
+class SubscribeFormWidget extends Widget
 {
     /**
      * @var bool

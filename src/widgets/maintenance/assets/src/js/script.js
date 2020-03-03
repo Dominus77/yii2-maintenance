@@ -2,8 +2,8 @@ $(function () {
     function initMaintenanceForm(prop) {
         let maintenance = $('#filestateform-mode'),
             settings = $('#maintenance-setting-container'),
-            on = prop.modeOn,
-            off = prop.modeOff;
+            on = String(prop.modeOn),
+            off = String(prop.modeOff);
 
         function toggleSettings(mode) {
             if (mode === off) {

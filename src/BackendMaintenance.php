@@ -14,6 +14,16 @@ use yii\i18n\PhpMessageSource;
 class BackendMaintenance extends BaseObject
 {
     /**
+     * Value of "OK" status code.
+     */
+    const STATUS_CODE_OK = 200;
+
+    /**
+     * Value of "Maintenance" status code.
+     */
+    const STATUS_CODE_MAINTENANCE = 503;
+
+    /**
      * BackendMaintenance constructor.
      * @param array $config
      */
@@ -27,7 +37,7 @@ class BackendMaintenance extends BaseObject
     /**
      * Add rules this route
      */
-    protected function addRules()
+    private function addRules()
     {
         $rules = [
             'maintenance' => 'maintenance/index',

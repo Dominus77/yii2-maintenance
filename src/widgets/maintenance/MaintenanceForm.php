@@ -2,6 +2,7 @@
 
 namespace dominus77\maintenance\widgets\maintenance;
 
+use dominus77\maintenance\Maintenance;
 use yii\base\Widget;
 use dominus77\maintenance\widgets\maintenance\assets\MaintenanceFormAsset;
 use dominus77\maintenance\models\FileStateForm;
@@ -51,8 +52,8 @@ class MaintenanceForm extends Widget
     protected function getOptions()
     {
         return [
-            'modeOn' => FileStateForm::MODE_MAINTENANCE_ON,
-            'modeOff' => FileStateForm::MODE_MAINTENANCE_OFF
+            'modeOn' => Maintenance::STATUS_CODE_MAINTENANCE,
+            'modeOff' => Maintenance::STATUS_CODE_OK
         ];
     }
 

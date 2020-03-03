@@ -10,12 +10,12 @@ use yii\helpers\ArrayHelper;
 use dominus77\maintenance\widgets\timer\assets\CountDownAsset;
 
 /**
- * Class CountDown
+ * Class CountDownWidget
  * @package dominus77\maintenance\widgets\timer
  *
  * @property array $options
  */
-class CountDown extends Widget
+class CountDownWidget extends Widget
 {
     /**
      * Widget on/off

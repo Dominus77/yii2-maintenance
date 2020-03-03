@@ -15,11 +15,6 @@ use dominus77\maintenance\interfaces\StateInterface;
 class Maintenance extends BackendMaintenance implements BootstrapInterface
 {
     /**
-     * Value of "OK" status code.
-     */
-    const STATUS_CODE_OK = 200;
-
-    /**
      * Route to maintenance action.
      * @var string
      */

@@ -3,12 +3,12 @@
 namespace dominus77\maintenance\actions\frontend;
 
 use Yii;
-use yii\base\Action;
-use Exception;
 use dominus77\maintenance\interfaces\StateInterface;
-use dominus77\maintenance\states\FileState;
 use dominus77\maintenance\models\SubscribeForm;
 use dominus77\maintenance\BackendMaintenance;
+use dominus77\maintenance\models\FileStateForm;
+use yii\base\Action;
+use Exception;
 
 /**
  * Class IndexAction
@@ -47,11 +47,11 @@ class IndexAction extends Action
         $this->state = Yii::$container->get(StateInterface::class);
 
         if ($this->defaultMessage === null) {
-            $this->defaultMessage = BackendMaintenance::t('app', $this->state->getParams(FileState::MAINTENANCE_PARAM_CONTENT));
+            $this->defaultMessage = BackendMaintenance::t('app', $this->state->defaultContent);
         }
 
         if ($this->defaultName === null) {
-            $this->defaultName = BackendMaintenance::t('app', $this->state->getParams(FileState::MAINTENANCE_PARAM_TITLE));
+            $this->defaultName = BackendMaintenance::t('app', $this->state->defaultTitle);
         }
     }
 
@@ -73,11 +73,13 @@ class IndexAction extends Action
      */
     protected function getViewRenderParams()
     {
-        $model = new SubscribeForm();
+        $subscribeForm = new SubscribeForm();
+        $fileStateForm = new FileStateForm();
         return [
             'name' => $this->defaultName,
             'message' => $this->defaultMessage,
-            'model' => $model,
+            'subscribeForm' => $subscribeForm,
+            'fileStateForm' => $fileStateForm,
         ];
     }
 }
