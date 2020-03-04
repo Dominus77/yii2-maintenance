@@ -63,6 +63,8 @@ class FileStateForm extends BaseForm implements StateFormInterface
      */
     protected $state;
 
+    protected $_old;
+
     /**
      * @throws InvalidConfigException
      * @throws NotInstantiableException
@@ -186,8 +188,8 @@ class FileStateForm extends BaseForm implements StateFormInterface
     {
         $result = false;
         if ($this->mode === (string)Maintenance::STATUS_CODE_MAINTENANCE) {
-            if ($this->isEnabled()) {
-                Yii::$app->session->setFlash(self::MAINTENANCE_UPDATE_KEY, BackendMaintenance::t('app', 'Maintenance mode successfully updated!'));
+            if (file_exists($this->state->path)) {
+                unlink($this->state->path);
             }
             file_put_contents($this->state->path,
                 $this->prepareData());

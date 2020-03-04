@@ -60,7 +60,9 @@ class BaseForm extends Model
         if ($contentArray = $this->getContentArray($path)) {
             foreach ($contentArray as $item) {
                 $arr = explode(' = ', $item);
-                $items[$arr[0]] = $arr[1];
+                if (isset($arr[0], $arr[1])) {
+                    $items[$arr[0]] = $arr[1];
+                }
             }
         }
         return $items;

@@ -52,7 +52,10 @@ class IndexAction extends Action
             $this->controller->view = $this->view;
         }
         $model = new FileStateForm();
-        if (($post = Yii::$app->request->post()) && $model->load($post) && $model->validate() && $model->save()) {
+        if (($post = Yii::$app->request->post()) && $model->load($post) && $model->validate()) {
+            if ($model->save() && $model->isEnabled()) {
+                Yii::$app->session->setFlash(FileStateForm::MAINTENANCE_UPDATE_KEY, BackendMaintenance::t('app', 'Maintenance mode successfully updated!'));
+            }
             return $this->controller->refresh();
         }
         return $this->controller->render($this->view ?: $this->id, $this->getViewRenderParams($model));
