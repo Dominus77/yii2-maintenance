@@ -6,7 +6,7 @@ actor: UnitTester
 modules:
     enabled:
         - Yii2:
-            part: [orm, email, fixtures]
+            part: [email, fixtures]
         - Asserts
         - \Helper\Unit
     step_decorators: ~        
