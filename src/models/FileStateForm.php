@@ -17,13 +17,9 @@ use DateTime;
  * Class FileStateForm
  * @package dominus77\maintenance\models
  *
- * @property mixed $followers
- * @property mixed $datetime
- * @property mixed $modeName
- * @property string $dateFormat
- * @property string $currentDateTime
- * @property string $data
  * @property string $dateTime
+ * @property mixed $modeName
+ * @property int $statusCode
  * @property int $timestamp
  */
 class FileStateForm extends BaseForm implements StateFormInterface
@@ -272,30 +268,20 @@ class FileStateForm extends BaseForm implements StateFormInterface
     }
 
     /**
-     * @return array
-     */
-    /*public function getFollowers()
-    {
-        $items = [];
-        foreach ($this->followers as $follower) {
-            $items[]['email'] = $follower;
-        }
-        return $items;
-    }*/
-
-    /**
-     * @param array $followers
-     */
-    /*public function setFollowers($followers = [])
-    {
-        $this->followers = $followers ?: $this->state->emails();
-    }*/
-
-    /**
+     * Return true is enable maintenance mode
      * @return bool
      */
     public function isEnabled()
     {
         return $this->state->isEnabled();
+    }
+
+    /**
+     * StatusCode
+     * @return int
+     */
+    public function getStatusCode()
+    {
+        return (int)$this->mode;
     }
 }

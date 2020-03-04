@@ -3,11 +3,9 @@
 namespace dominus77\maintenance\states;
 
 use Yii;
-use Generator;
 use Exception;
 use RuntimeException;
 use yii\base\BaseObject;
-use yii\base\InvalidConfigException;
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\models\FileStateForm;
 
@@ -77,6 +75,7 @@ class FileState extends BaseObject implements StateInterface
     public function init()
     {
         $this->path = $this->getFilePath($this->fileName);
+        $this->subscribePath = $this->getFilePath($this->fileSubscribe);
     }
 
     /**
@@ -118,19 +117,12 @@ class FileState extends BaseObject implements StateInterface
     }
 
     /**
-     * Date ant Time
-     *
-     * @param string $format
-     * @param string|integer $timestamp
-     * @return string
-     * @throws InvalidConfigException
+     * @return bool will return true if the file exists
      */
-    /*public function datetime($timestamp = '', $format = '')
+    public function isEnabled()
     {
-        $format = $format ?: $this->dateFormat;
-        $timestamp = $timestamp ?: $this->timestamp();
-        return Yii::$app->formatter->asDatetime($timestamp, 'php:' . $format);
-    }*/
+        return file_exists($this->path);
+    }
 
     /**
      * Timestamp
@@ -145,115 +137,13 @@ class FileState extends BaseObject implements StateInterface
     }
 
     /**
-     * Save email in file
-     *
-     * @param string $str
-     * @param string $file
-     * @return bool
+     * Status code
+     * @return int
      */
-    /*public function save($str, $file)
+    public function statusCode()
     {
-        try {
-            if ($str && $file) {
-                $fp = fopen($file, 'ab');
-                fwrite($fp, $str . PHP_EOL);
-                fclose($fp);
-                return chmod($file, 0765);
-            }
-            return false;
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Attention: Subscriber cannot be added because {$file} could not be save."
-            );
-        }
-    }*/
-
-    /**
-     * @return array
-     */
-    /*public function stateArray()
-    {
-        $items = [];
-        if ($contentArray = $this->getContentArray($this->path)) {
-            foreach ($contentArray as $item) {
-                $arr = explode(' = ', $item);
-                $items[$arr[0]] = $arr[1];
-            }
-        }
-        return $items;
-    }*/
-
-    /**
-     * Return emails to followers
-     *
-     * @return array
-     */
-    /*public function emails()
-    {
-        return $this->getContentArray($this->subscribePath);
-    }*/
-
-    /**
-     * Return content to array this file
-     *
-     * @param $file string
-     * @return array
-     */
-    /*protected function getContentArray($file)
-    {
-        $contents = $this->readTheFile($file);
-        $items = [];
-        foreach ($contents as $key => $item) {
-            $items[] = $item;
-        }
-        return array_filter($items);
-    }*/
-
-    /**
-     * Read file
-     *
-     * @param $file string
-     * @return Generator
-     */
-    /*protected function readTheFile($file)
-    {
-        try {
-            if (file_exists($file)) {
-                $handle = fopen($file, 'rb');
-                while (!feof($handle)) {
-                    yield trim(fgets($handle));
-                }
-                fclose($handle);
-            }
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Failed to read $file file"
-            );
-        }
-    }*/
-
-    /**
-     * @return bool will return true if on timer
-     */
-    /*public function isTimer()
-    {
-        return true;
-    }*/
-
-    /**
-     * @return bool will return true if on subscribe
-     */
-    /*public function isSubscribe()
-    {
-        return true;
-    }*/
-
-    /**
-     * @return bool will return true if the file exists
-     */
-    public function isEnabled()
-    {
-        return file_exists($this->path);
+        $model = new FileStateForm();
+        return $model->getStatusCode();
     }
 
     /**

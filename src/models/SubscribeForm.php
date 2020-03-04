@@ -12,13 +12,7 @@ use RuntimeException;
  * Class SubscribeForm
  * @package dominus77\maintenance\models
  *
- * @property string $fileStatePath
  * @property array $emails
- * @property string $datetime
- * @property int $timestamp
- * @property string $dateFormat
- * @property string $fileSubscribePath
- * @property string $email
  */
 class SubscribeForm extends BaseForm implements StateFormInterface
 {
@@ -93,24 +87,30 @@ class SubscribeForm extends BaseForm implements StateFormInterface
      */
     public function send($emails = [])
     {
-        $emails = $emails ?: $this->getEmails();
-        $messages = [];
-        $mailer = Yii::$app->mailer;
-        foreach ($emails as $email) {
-            $messages[] = $mailer->compose(
-                $this->subscribeOptions['template'], [
-                'backLink' => $this->subscribeOptions['backLink']
-            ])
-                ->setFrom([$this->subscribeOptions['from'] => Yii::$app->name])
-                ->setTo($email)
-                ->setSubject($this->subscribeOptions['subject']);
+        try {
+            $emails = $emails ?: $this->getEmails();
+            $messages = [];
+            $mailer = Yii::$app->mailer;
+            foreach ($emails as $email) {
+                $messages[] = $mailer->compose(
+                    $this->subscribeOptions['template'], [
+                    'backLink' => $this->subscribeOptions['backLink']
+                ])
+                    ->setFrom([$this->subscribeOptions['from'] => Yii::$app->name])
+                    ->setTo($email)
+                    ->setSubject($this->subscribeOptions['subject']);
 
+            }
+            $result = $mailer->sendMultiple($messages);
+            if ($result >= 0) {
+                $this->deleteFile();
+            }
+            return $result;
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(
+                'Attention: Error sending notifications to subscribers!'
+            );
         }
-        $result = $mailer->sendMultiple($messages);
-        if ($result >= 0) {
-            $this->deleteFile();
-        }
-        return $result;
     }
 
     /**
@@ -143,12 +143,18 @@ class SubscribeForm extends BaseForm implements StateFormInterface
      */
     public function deleteFile()
     {
-        $result = false;
-        $path = $this->getFilePath($this->state->fileSubscribe);
-        if (file_exists($path)) {
-            $result = unlink($path);
+        $file = $this->getFilePath($this->state->fileSubscribe);
+        try {
+            $result = false;
+            if (file_exists($file)) {
+                $result = unlink($file);
+            }
+            return $result;
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(
+                "Attention: Error deleting {$file} file."
+            );
         }
-        return $result;
     }
 
     /**

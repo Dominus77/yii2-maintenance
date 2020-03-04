@@ -26,4 +26,14 @@ interface StateInterface
      * @return bool
      */
     public function isEnabled();
+
+    /**
+     * @return integer
+     */
+    public function timestamp();
+
+    /**
+     * @return integer
+     */
+    public function statusCode();
 }
