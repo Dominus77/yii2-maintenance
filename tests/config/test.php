@@ -33,13 +33,12 @@ return [
                     ],
                     'backLink' => $params['frontendUrl'], // configure urlManager in console/config/main.php
                     'from' => $params['senderEmail'], // noreply@mail.com
-                    //'subject' => 'Notification of completion of technical work'
+                    'subject' => 'Notification of completion of technical work'
                 ]
             ]
         ]
     ],
     'controllerMap' => [
-        //...
         'maintenance' => [
             'class' => MaintenanceController::class,
             'layout' => '@dominus77/maintenance/views/frontend/layouts/maintenance',
