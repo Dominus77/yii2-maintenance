@@ -10,4 +10,6 @@ modules:
     enabled:
         # add a framework module here
         - \Helper\Functional
+        - Filesystem
+        - Yii2
     step_decorators: ~        
