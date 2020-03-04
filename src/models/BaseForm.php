@@ -13,6 +13,8 @@ use Generator;
 /**
  * Class BaseForm
  * @package dominus77\maintenance\models
+ *
+ * @property string $dateFormat
  */
 class BaseForm extends Model
 {

@@ -63,8 +63,6 @@ class FileStateForm extends BaseForm implements StateFormInterface
      */
     protected $state;
 
-    protected $_old;
-
     /**
      * @throws InvalidConfigException
      * @throws NotInstantiableException
