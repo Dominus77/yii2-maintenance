@@ -113,7 +113,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
     public function validDate($date)
     {
         $d = DateTime::createFromFormat($this->dateFormat, $date);
-        return $d && $d->format($this->state->dateFormat) === $date;
+        return $d && $d->format($this->dateFormat) === $date;
     }
 
     /**
