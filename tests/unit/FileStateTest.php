@@ -38,6 +38,15 @@ class FileStateTest extends Unit
     }
 
     /**
+     * Check codes
+     */
+    public function testCheckCodes()
+    {
+        $this->tester->assertEquals(Maintenance::STATUS_CODE_MAINTENANCE, 503);
+        $this->tester->assertEquals(Maintenance::STATUS_CODE_OK, 200);
+    }
+
+    /**
      * Enable mode
      */
     public function testEnable()
