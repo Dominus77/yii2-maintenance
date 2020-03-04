@@ -284,6 +284,10 @@ class FileStateForm extends BaseForm implements StateFormInterface
      */
     public function getStatusCode()
     {
-        return (int)$this->mode;
+        if ($this->state->isEnabled()) {
+            $mode = (int)$this->mode;
+            return ($mode !== Maintenance::STATUS_CODE_OK) ? $mode : Maintenance::STATUS_CODE_MAINTENANCE;
+        }
+        return Maintenance::STATUS_CODE_OK;
     }
 }

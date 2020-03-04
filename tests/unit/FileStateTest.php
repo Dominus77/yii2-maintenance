@@ -2,11 +2,12 @@
 
 use Codeception\Test\Unit;
 use dominus77\maintenance\interfaces\StateInterface;
+use dominus77\maintenance\Maintenance;
 
 /**
- * Class ExampleTest
+ * Class FileStateTest
  */
-class ExampleTest extends Unit
+class FileStateTest extends Unit
 {
     /**
      * @var UnitTester
@@ -51,6 +52,7 @@ class ExampleTest extends Unit
     public function testIsEnable()
     {
         $this->tester->assertTrue($this->state->isEnabled());
+        $this->tester->assertEquals($this->state->statusCode(), Maintenance::STATUS_CODE_MAINTENANCE);
     }
 
     /**
@@ -60,5 +62,29 @@ class ExampleTest extends Unit
     {
         $this->state->disable();
         $this->tester->assertFileNotExists($this->state->path);
+        $this->tester->assertEquals($this->state->statusCode(), Maintenance::STATUS_CODE_OK);
+    }
+
+    /**
+     * Status code
+     */
+    public function testStatusCode()
+    {
+        $this->tester->assertEquals($this->state->statusCode(), Maintenance::STATUS_CODE_OK);
+        $this->state->enable();
+        $this->tester->assertEquals($this->state->statusCode(), Maintenance::STATUS_CODE_MAINTENANCE);
+        $this->state->disable();
+        $this->tester->assertEquals($this->state->statusCode(), Maintenance::STATUS_CODE_OK);
+    }
+
+    /**
+     * Timestamp
+     * @throws Exception
+     */
+    public function testTimestamp()
+    {
+        $timestamp = $this->state->timestamp();
+        $date = new DateTime(date($this->state->dateFormat));
+        $this->tester->assertEquals($timestamp, $date->getTimestamp());
     }
 }

@@ -3,6 +3,7 @@
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\states\FileState;
 use dominus77\maintenance\controllers\frontend\MaintenanceController;
+use dominus77\maintenance\BackendMaintenance;
 
 $params = [
     'frontendUrl' => 'http://test.loc',
@@ -13,6 +14,9 @@ return [
     'id' => 'maintenance-tests',
     'language' => 'en',
     'basePath' => dirname(__DIR__),
+    'bootstrap' => [
+        BackendMaintenance::class
+    ],
     'container' => [
         'singletons' => [
             StateInterface::class => [
