@@ -5,9 +5,7 @@ Maintenance mode for Yii2
 [![Software License](https://poser.pugx.org/dominus77/yii2-maintenance/license)](https://github.com/Dominus77/yii2-maintenance/blob/master/LICENSE.md)
 [![Build Status](https://travis-ci.org/Dominus77/yii2-maintenance.svg?branch=master)](https://travis-ci.org/Dominus77/yii2-maintenance)
 
-Switching the site on the Yii2 into maintenance mode with a timer and user subscription form displayed.
-
-> NOTE: This is a temporary general documentation and is expected to be updated.
+Switching the site on Yii2 to maintenance mode with a timer, a subscription form and sending notifications to users.
 
 Installation
 ------------
@@ -29,8 +27,8 @@ or add
 to the require section of your `composer.json` file.
 
 
-Usage
------
+Connection and setup
+--------------------
 Add to your config file:
 ```php
 // frontend/config/main.php
