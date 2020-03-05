@@ -29,133 +29,71 @@ class FileStateFormTest extends Unit
 
     protected function _after()
     {
-        $this->state->disable();
     }
 
-    public function testValidateSuccess()
+    public function testFileStateFormSuccess()
     {
-        $model = new FileStateForm();
-        $model->attributes = [
-            'mode' => Maintenance::STATUS_CODE_MAINTENANCE,
-            'date' => '01-01-2020 20:05:00',
-            'title' => 'Test Maintenance',
-            'text' => 'The test site is undergoing technical work. We apologize for any inconvenience caused.',
-            'subscribe' => true,
-            'countDown' => true,
-        ];
+        $model = $this->getLoadedModel();
         // validate
         $this->tester->assertTrue($model->validate());
+        // save
+        $this->tester->assertTrue($model->save());
+        // check file
+        $this->tester->assertFileExists($this->state->path);
+        // check is enable
+        $this->tester->assertTrue($model->isEnabled());
+        // check status code
+        $this->tester->assertEquals($model->getStatusCode(), Maintenance::STATUS_CODE_MAINTENANCE);
+        // disable mode
+        $this->state->disable();
     }
 
     public function testValidateWrongData()
     {
-        $model = new FileStateForm();
-        $model->attributes = [
-            'mode' => Maintenance::STATUS_CODE_MAINTENANCE,
-            'date' => 'this input error date format',
-            'title' => 'Test Maintenance',
-            'text' => 'The test site is undergoing technical work. We apologize for any inconvenience caused.',
-            'subscribe' => true,
-            'countDown' => true,
-        ];
+        $model = $this->getLoadedModel();
+        $model->date = 'wrong datetime';
         // validate
         $this->tester->assertFalse($model->validate());
         // error date
         expect_that($model->getErrors('date'));
     }
 
-    public function testMaintenanceEnable()
-    {
-        $model = new FileStateForm();
-        $model->attributes = [
-            'mode' => (string)Maintenance::STATUS_CODE_MAINTENANCE,
-            'date' => '01-01-2020 20:05:00',
-            'title' => 'Test Maintenance',
-            'text' => 'The test site is undergoing technical work. We apologize for any inconvenience caused.',
-            'subscribe' => true,
-            'countDown' => true,
-        ];
-        // validate
-        $this->tester->assertTrue($model->validate());
-        // save
-        $this->tester->assertTrue($model->save());
-        // check file
-        $this->tester->assertFileExists($this->state->path);
-        // check is enable
-        $this->tester->assertTrue($model->isEnabled());
-
-        // Check this data
-        $model = new FileStateForm();
-        $this->tester->assertEquals($model->mode, (string)Maintenance::STATUS_CODE_MAINTENANCE);
-        $this->tester->assertEquals($model->date, '01-01-2020 20:05:00');
-        $this->tester->assertEquals($model->title, 'Test Maintenance');
-        $this->tester->assertEquals($model->text, 'The test site is undergoing technical work. We apologize for any inconvenience caused.');
-        $this->tester->assertEquals($model->subscribe, '1');
-        $this->tester->assertEquals($model->countDown, '1');
-        // check status code
-        $this->tester->assertEquals($model->getStatusCode(), Maintenance::STATUS_CODE_MAINTENANCE);
-        // check is timer
-        $this->tester->assertTrue($model->isTimer());
-        // check is subscribe
-        $this->tester->assertTrue($model->isSubscribe());
-        // disable maintenance mode
-        $this->state->disable();
-        // check status code
-        $this->tester->assertEquals($model->getStatusCode(), Maintenance::STATUS_CODE_OK);
-
-    }
-
     public function testMaintenanceUpdate()
     {
-        // Enable
-        $model = new FileStateForm();
-        $model->attributes = [
-            'mode' => (string)Maintenance::STATUS_CODE_MAINTENANCE,
-            'date' => '01-01-2020 20:05:00',
-            'title' => 'Test Maintenance',
-            'text' => 'The test site is undergoing technical work. We apologize for any inconvenience caused.',
-            'subscribe' => true,
-            'countDown' => true,
-        ];
-        // validate
+        $model = $this->getLoadedModel();
         $this->tester->assertTrue($model->validate());
-        // save
         $this->tester->assertTrue($model->save());
         // check file
         $this->tester->assertFileExists($this->state->path);
-        // check is enable
-        $this->tester->assertTrue($model->isEnabled());
 
         // Update
         $model = new FileStateForm();
-        $model->attributes = [
-            'date' => '01-12-2020 18:10:00',
-            'title' => 'Test Maintenance update',
-            'text' => 'Text update',
-        ];
+        $model->title = 'Title update';
+        $model->text = 'Text update';
         // validate
         $this->tester->assertTrue($model->validate());
         // save
         $this->tester->assertTrue($model->save());
+
         // check file
         $this->tester->assertFileExists($this->state->path);
-        // check is enable
-        $this->tester->assertTrue($model->isEnabled());
-
-        // Check this new data
-        $model = new FileStateForm();
-        $this->tester->assertEquals($model->mode, (string)Maintenance::STATUS_CODE_MAINTENANCE);
-        $this->tester->assertEquals($model->date, '01-12-2020 18:10:00');
-        $this->tester->assertEquals($model->title, 'Test Maintenance update');
-        $this->tester->assertEquals($model->text, 'Text update');
-        $this->tester->assertEquals($model->subscribe, '1');
-        $this->tester->assertEquals($model->countDown, '1');
-        // check status code
-        $this->tester->assertEquals($model->getStatusCode(), Maintenance::STATUS_CODE_MAINTENANCE);
+        // check new data
+        $this->checkModelUpdate();
         // disable maintenance mode
         $this->state->disable();
         // check status code
         $this->tester->assertEquals($model->getStatusCode(), Maintenance::STATUS_CODE_OK);
+    }
+
+    protected function checkModelUpdate()
+    {
+        $model = new FileStateForm();
+        $this->tester->assertEquals($model->mode, (string)Maintenance::STATUS_CODE_MAINTENANCE);
+        $this->tester->assertEquals($model->date, '01-01-2020 20:05:00');
+        $this->tester->assertEquals($model->title, 'Title update');
+        $this->tester->assertEquals($model->text, 'Text update');
+        $this->tester->assertEquals($model->subscribe, '1');
+        $this->tester->assertEquals($model->countDown, '1');
     }
 
     public function testModeName()
@@ -167,5 +105,17 @@ class FileStateFormTest extends Unit
 
         $model->mode = Maintenance::STATUS_CODE_MAINTENANCE;
         $this->tester->assertEquals($model->getModeName(), BackendMaintenance::t('app', 'Mode maintenance'));
+    }
+
+    protected function getLoadedModel()
+    {
+        return new FileStateForm([
+            'mode' => (string)Maintenance::STATUS_CODE_MAINTENANCE,
+            'date' => '01-01-2020 20:05:00',
+            'title' => 'Test Maintenance',
+            'text' => 'The test site is undergoing technical work. We apologize for any inconvenience caused.',
+            'subscribe' => '1',
+            'countDown' => '1',
+        ]);
     }
 }

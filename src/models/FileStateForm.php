@@ -51,12 +51,12 @@ class FileStateForm extends BaseForm implements StateFormInterface
      * Subscribe
      * @var bool
      */
-    public $subscribe = true;
+    public $subscribe;
     /**
      * CountDownWidget
      * @var bool
      */
-    public $countDown = true;
+    public $countDown;
 
     /**
      * @var FileState
@@ -140,10 +140,12 @@ class FileStateForm extends BaseForm implements StateFormInterface
         if ($stateArray = $this->prepareLoadModel($this->state->path)) {
             $this->setAttributes($stateArray);
         } else {
-            $this->mode = Maintenance::STATUS_CODE_OK;
-            $this->date = $this->getDateTime();
-            $this->title = BackendMaintenance::t('app', $this->state->defaultTitle);
-            $this->text = BackendMaintenance::t('app', $this->state->defaultContent);
+            $this->mode = $this->mode ?: Maintenance::STATUS_CODE_OK;
+            $this->date = $this->date ?: $this->getDateTime();
+            $this->title = $this->title ?: BackendMaintenance::t('app', $this->state->defaultTitle);
+            $this->text = $this->text ?: BackendMaintenance::t('app', $this->state->defaultContent);
+            $this->subscribe = $this->subscribe ?: true;
+            $this->countDown = $this->countDown ?: true;
         }
     }
 
