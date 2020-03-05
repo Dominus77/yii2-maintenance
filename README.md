@@ -26,6 +26,11 @@ or add
 
 to the require section of your `composer.json` file.
 
+Documentation
+-------------
+* [English](docs/en/README.md)
+* [Русский](docs/ru/README.md)
+
 Connection and setup
 --------------------
 
