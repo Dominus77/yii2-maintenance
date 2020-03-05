@@ -4,7 +4,7 @@ namespace dominus77\maintenance\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use dominus77\maintenance\interfaces\StateFormInterface;
+use dominus77\maintenance\interfaces\SubscribeFormInterface;
 use dominus77\maintenance\BackendMaintenance;
 use RuntimeException;
 
@@ -14,7 +14,7 @@ use RuntimeException;
  *
  * @property array $emails
  */
-class SubscribeForm extends BaseForm implements StateFormInterface
+class SubscribeForm extends BaseForm implements SubscribeFormInterface
 {
     const SUBSCRIBE_SUCCESS = 'subscribeSuccess';
     const SUBSCRIBE_INFO = 'subscribeInfo';
@@ -82,13 +82,12 @@ class SubscribeForm extends BaseForm implements StateFormInterface
     /**
      * Sending notifications to followers
      *
-     * @param array $emails
      * @return int
      */
-    public function send($emails = [])
+    public function send()
     {
         try {
-            $emails = $emails ?: $this->getEmails();
+            $emails = $this->getEmails();
             $messages = [];
             $mailer = Yii::$app->mailer;
             foreach ($emails as $email) {
