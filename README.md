@@ -1,10 +1,12 @@
-# Maintenance mode for Yii2
+Maintenance mode for Yii2
+=========================
 
 Switching the site on the Yii2 into maintenance mode with a timer and user subscription form displayed.
 
 > NOTE: This is a temporary general documentation and is expected to be updated.
 
-## Installation
+Installation
+------------
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -23,7 +25,8 @@ or add
 to the require section of your `composer.json` file.
 
 
-## Usage
+Usage
+-----
 Add to your config file:
 ```php
 // frontend/config/main.php
@@ -90,7 +93,8 @@ $config = [
 ];
 ```
 
-## Filters
+Filters
+-------
 You can use filters for allow excepts:
 
 ```php
@@ -159,7 +163,8 @@ class MyCustomFilter extends Filter
     }
 }
 ```
-## Set maintenance mode by backend
+Set maintenance mode by backend
+-------------------------------
 Add to your common config file:
 ```php
 // common/config/main.php
@@ -217,7 +222,8 @@ $config = [
 ```
 Url dashboard: `http://mysite.com/admin/maintenance`
 
-## Set maintenance mode by console
+Set maintenance mode by console
+-------------------------------
 
 Add to your console config file:
 ```php
@@ -271,11 +277,21 @@ $config = [
 Now you can set mode by command:
 ```
 php yii maintenance
-php yii maintenance/enable --date="25-02-2025 16:05:00" --title="Maintenance" --content="The site is undergoing technical work. We apologize for any inconvenience caused." --subscribe=true
-php yii maintenance/update --date="24-05-2023 19:05:00" --title="Maintenance" --content="The site is undergoing technical work. We apologize for any inconvenience caused." --subscribe=true
+php yii maintenance/enable --date="25-02-2025 16:05:00" --title="Maintenance" --content="The site is undergoing technical work. We apologize for any inconvenience caused." --subscribe=true --timer=true
+php yii maintenance/update --date="24-05-2023 19:05:00" --title="Maintenance" --content="The site is undergoing technical work. We apologize for any inconvenience caused." --subscribe=true --timer=true
 php yii maintenance/followers
 php yii maintenance/disable
 ```
+You can use aliases
 
-## License
+```
+--date -d
+--title -t
+--content -c
+--subscribe -s
+--timer -tm
+```
+
+License
+-------
 The MIT License (MIT). Please see [License File](https://github.com/Dominus77/yii2-maintenance/blob/master/LICENSE.md) for more information.
