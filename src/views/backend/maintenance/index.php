@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= BackendMaintenance::t('app', 'FollowersWidget') ?></h3>
+                    <h3 class="box-title"><?= BackendMaintenance::t('app', 'Followers') ?></h3>
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">

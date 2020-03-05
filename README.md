@@ -26,9 +26,9 @@ or add
 
 to the require section of your `composer.json` file.
 
-
 Connection and setup
 --------------------
+
 Add to your config file:
 ```php
 // frontend/config/main.php
