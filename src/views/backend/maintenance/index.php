@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
             <div class="box <?= $isEnable ? 'box-danger' : 'box-success' ?>">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= Html::encode($model->modeName) ?> <?= $isEnable ? BackendMaintenance::t('app', 'up {:date}', [':date' => $model->datetime]) : '' ?></h3>
+                    <h3 class="box-title"><?= Html::encode($model->modeName) ?> <?= $isEnable ? BackendMaintenance::t('app', 'up {:date}', [':date' => $model->dateTime]) : '' ?></h3>
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">
