@@ -286,7 +286,7 @@ php yii maintenance/update --date="24-05-2023 19:05:00" --title="Maintenance" --
 php yii maintenance/followers
 php yii maintenance/disable
 ```
-You can use aliases
+You can use aliases:
 
 ```
 --date -d
