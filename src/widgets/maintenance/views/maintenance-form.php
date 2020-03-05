@@ -1,7 +1,6 @@
 <?php
 
 use yii\web\View;
-use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use dominus77\maintenance\models\FileStateForm;
@@ -13,8 +12,7 @@ use dominus77\maintenance\BackendMaintenance;
  */
 ?>
 <?php $form = ActiveForm::begin([
-    'id' => 'maintenance-update-form',
-    'action' => Url::to(['/maintenance/index']),
+    'id' => 'maintenance-update-form'
 ]); ?>
 <?= $form->field($model, 'mode')->dropDownList($model::getModesArray()) ?>
 
