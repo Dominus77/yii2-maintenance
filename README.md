@@ -1,7 +1,7 @@
 Maintenance mode for Yii2
 =========================
 
-[![Latest Version](https://poser.pugx.org/dominus77/yii2-maintenance/v/stable)](https://packagist.org/packages/dominus77/yii2-maintenance)
+[![Latest Version](https://poser.pugx.org/dominus77/yii2-maintenance/v/dev)](https://packagist.org/packages/dominus77/yii2-maintenance)
 [![Software License](https://poser.pugx.org/dominus77/yii2-maintenance/license)](https://github.com/Dominus77/yii2-maintenance/blob/master/LICENSE.md)
 [![Build Status](https://travis-ci.org/Dominus77/yii2-maintenance.svg?branch=master)](https://travis-ci.org/Dominus77/yii2-maintenance)
 
