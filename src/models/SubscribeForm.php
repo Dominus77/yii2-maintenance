@@ -124,7 +124,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
         $str = $this->prepareData();
         $file = $this->getFilePath($this->state->fileSubscribe);
         try {
-            if ($str && $file && $fp = fopen($file, 'ab')) {
+            if(is_string($file) && $str && $fp = fopen($file, 'ab')) {
                 fwrite($fp, $str . PHP_EOL);
                 fclose($fp);
                 return chmod($file, 0765);
