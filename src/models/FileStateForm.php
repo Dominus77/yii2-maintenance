@@ -100,7 +100,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
     {
         if ($attribute && !$this->validDate($this->$attribute)) {
             $example = $this->getDateTime();
-            $this->addError($attribute, Yii::t('app', 'Invalid date format. Use example: {:example}', [':example' => $example]));
+            $this->addError($attribute, BackendMaintenance::t('app', 'Invalid date format. Use example: {:example}', [':example' => $example]));
         }
     }
 

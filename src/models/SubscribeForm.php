@@ -41,11 +41,13 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     {
         parent::init();
         $urlManager = Yii::$app->urlManager;
-        $subscribeOptions = [
-            'template' => [
+        $template = (isset($this->state->subscribeOptions['template']) && !empty($this->state->subscribeOptions['template'])) ?
+            $this->state->subscribeOptions['template'] : [
                 'html' => '@dominus77/maintenance/mail/emailNotice-html',
                 'text' => '@dominus77/maintenance/mail/emailNotice-text'
-            ],
+            ];
+        $subscribeOptions = [
+            'template' => $template,
             'backLink' => $urlManager->hostInfo, // Link in a letter to the site
             'from' => $this->getFrom('noreply@mail.com'),
             'subject' => BackendMaintenance::t('app', 'Notification of completion of technical work')
