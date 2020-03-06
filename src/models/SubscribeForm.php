@@ -41,13 +41,8 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     {
         parent::init();
         $urlManager = Yii::$app->urlManager;
-        $template = (isset($this->state->subscribeOptions['template']) && !empty($this->state->subscribeOptions['template'])) ?
-            $this->state->subscribeOptions['template'] : [
-                'html' => '@dominus77/maintenance/mail/emailNotice-html',
-                'text' => '@dominus77/maintenance/mail/emailNotice-text'
-            ];
         $subscribeOptions = [
-            'template' => $template,
+            'template' => $this->state->getSubscribeOptionsTemplate(),
             'backLink' => $urlManager->hostInfo, // Link in a letter to the site
             'from' => $this->getFrom('noreply@mail.com'),
             'subject' => BackendMaintenance::t('app', 'Notification of completion of technical work')
@@ -122,9 +117,9 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     public function save()
     {
         $str = $this->prepareData();
-        $file = $this->getFilePath($this->state->fileSubscribe);
+        $file = $this->state->getSubscribePath();
         try {
-            if(is_string($file) && $str && $fp = fopen($file, 'ab')) {
+            if (is_string($file) && $str && $fp = fopen($file, 'ab')) {
                 fwrite($fp, $str . PHP_EOL);
                 fclose($fp);
                 return chmod($file, 0765);
@@ -143,7 +138,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
      */
     public function deleteFile()
     {
-        $file = $this->getFilePath($this->state->fileSubscribe);
+        $file = $this->state->getSubscribePath();
         try {
             $result = false;
             if (file_exists($file)) {
@@ -184,7 +179,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
      */
     public function getEmails()
     {
-        $subscribeData = $this->prepareLoadModel($this->getFilePath($this->state->fileSubscribe));
+        $subscribeData = $this->prepareLoadModel($this->state->getSubscribePath());
         $emails = [];
         foreach ($subscribeData as $email) {
             $emails[] = $email;
@@ -234,14 +229,5 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
             $from = Yii::$app->params['supportEmail'];
         }
         return $from;
-    }
-
-    /**
-     * @param $fileName string
-     * @return bool|string
-     */
-    protected function getFilePath($fileName)
-    {
-        return Yii::getAlias($this->state->directory . '/' . $fileName);
     }
 }

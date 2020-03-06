@@ -225,8 +225,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
     /**
      * Enable
      *
-     * @return mixed|void
-     * @throws Exception
+     * @return bool|mixed
      */
     public function enable()
     {
@@ -235,7 +234,8 @@ class FileStateForm extends BaseForm implements StateFormInterface
 
     /**
      * Disable
-     * @return int|mixed
+     *
+     * @return bool|mixed
      */
     public function disable()
     {

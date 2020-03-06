@@ -13,10 +13,7 @@ use dominus77\maintenance\models\FileStateForm;
  * Class FileState
  * @package dominus77\maintenance\states
  *
- * @property bool|string $filePath
- * @property array $contentArray
- * @property array $maintenanceFileLinesParamsArray
- * @property bool $validDate
+ * @property array|mixed $subscribeOptionsTemplate
  */
 class FileState extends BaseObject implements StateInterface
 {
@@ -81,7 +78,7 @@ class FileState extends BaseObject implements StateInterface
     /**
      * Turn on mode.
      *
-     * @return mixed|void
+     * @return bool|mixed
      */
     public function enable()
     {
@@ -89,6 +86,7 @@ class FileState extends BaseObject implements StateInterface
             file_put_contents($this->path,
                 'The maintenance Mode of your Application is enabled if this file exists.');
             chmod($this->path, 0765);
+            return true;
         } catch (RuntimeException $e) {
             throw new RuntimeException(
                 "Attention: the maintenance mode could not be enabled because {$this->path} could not be created."
@@ -99,21 +97,20 @@ class FileState extends BaseObject implements StateInterface
     /**
      * Turn off mode.
      *
-     * @return int|mixed
+     * @return bool|mixed
      */
     public function disable()
     {
-        $result = false;
         try {
             if (file_exists($this->path)) {
-                $result = unlink($this->path);
+                unlink($this->path);
             }
+            return true;
         } catch (RuntimeException $e) {
             throw new RuntimeException(
                 "Attention: the maintenance mode could not be disabled because {$this->path} could not be removed."
             );
         }
-        return $result;
     }
 
     /**
@@ -144,6 +141,34 @@ class FileState extends BaseObject implements StateInterface
     {
         $model = new FileStateForm();
         return $model->getStatusCode();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubscribePath()
+    {
+        return $this->subscribePath;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getSubscribeOptionsTemplate()
+    {
+        return (isset($this->subscribeOptions['template']) && !empty($this->subscribeOptions['template'])) ?
+            $this->subscribeOptions['template'] : [
+                'html' => '@dominus77/maintenance/mail/emailNotice-html',
+                'text' => '@dominus77/maintenance/mail/emailNotice-text'
+            ];
     }
 
     /**

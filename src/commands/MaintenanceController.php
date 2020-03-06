@@ -285,7 +285,7 @@ class MaintenanceController extends Controller
      */
     protected function exampleDateFormat()
     {
-        return date($this->state->dateFormat);
+        return date($this->state->getDateFormat());
     }
 }
 
