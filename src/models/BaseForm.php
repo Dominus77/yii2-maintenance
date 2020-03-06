@@ -95,10 +95,11 @@ class BaseForm extends Model
     protected function readTheFile($file)
     {
         try {
-            if (file_exists($file)) {
-                $handle = fopen($file, 'rb');
-                while (!feof($handle)) {
-                    yield trim(fgets($handle));
+            if (file_exists($file) && $handle = fopen($file, 'rb')) {
+                if ($handle !== false) {
+                    while (!feof($handle)) {
+                        yield trim(fgets($handle));
+                    }
                 }
                 fclose($handle);
             }

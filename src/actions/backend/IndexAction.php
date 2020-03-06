@@ -7,6 +7,7 @@ use yii\base\Action;
 use yii\web\Response;
 use dominus77\maintenance\models\FileStateForm;
 use dominus77\maintenance\BackendMaintenance;
+use yii\web\Session;
 
 /**
  * Class IndexAction
@@ -50,13 +51,15 @@ class IndexAction extends Action
     {
         $this->setViewPath();
 
-        if ($this->view !== null) {
+        if ($this->view) {
             $this->controller->view = $this->view;
         }
         $model = new FileStateForm();
         if (($post = Yii::$app->request->post()) && $model->load($post) && $model->validate()) {
             if ($model->save() && $model->isEnabled()) {
-                Yii::$app->session->setFlash(FileStateForm::MAINTENANCE_UPDATE_KEY, BackendMaintenance::t('app', 'Maintenance mode successfully updated!'));
+                /** @var Session $session */
+                $session = Yii::$app->session;
+                $session->setFlash(FileStateForm::MAINTENANCE_UPDATE_KEY, BackendMaintenance::t('app', 'Maintenance mode successfully updated!'));
             }
             return $this->controller->refresh();
         }

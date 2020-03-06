@@ -68,7 +68,7 @@ class Maintenance extends BackendMaintenance implements BootstrapInterface
             $response->statusCode = self::STATUS_CODE_OK;
         } else {
             $response->statusCode = $this->statusCode;
-            if ($this->retryAfter) {
+            if ($this->retryAfter && is_string($this->retryAfter)) {
                 $response->headers->set('Retry-After', $this->retryAfter);
             }
         }
@@ -86,18 +86,20 @@ class Maintenance extends BackendMaintenance implements BootstrapInterface
      */
     protected function filtersExcepted()
     {
-        if (!is_array($this->filters) || empty($this->filters)) {
+        if (empty($this->filters)) {
             return false;
         }
-        foreach ($this->filters as $config) {
-            $filter = Yii::createObject($config);
-            if (!($filter instanceof Filter)) {
-                throw new InvalidConfigException(
-                    'Class "' . get_class($filter) . '" must instance of "' . Filter::class . '".'
-                );
-            }
-            if ($filter->isAllowed()) {
-                return true;
+        if (is_array($this->filters)) {
+            foreach ($this->filters as $config) {
+                $filter = Yii::createObject($config);
+                if (!($filter instanceof Filter)) {
+                    throw new InvalidConfigException(
+                        'Class "' . get_class($filter) . '" must instance of "' . Filter::class . '".'
+                    );
+                }
+                if ($filter->isAllowed()) {
+                    return true;
+                }
             }
         }
         return false;

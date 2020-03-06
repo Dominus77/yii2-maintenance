@@ -69,10 +69,10 @@ class BackendMaintenance extends BaseObject
      * @param $category
      * @param $message
      * @param array $params
-     * @param null $language
+     * @param string $language
      * @return string
      */
-    public static function t($category, $message, $params = [], $language = null)
+    public static function t($category, $message, $params = [], $language = '')
     {
         return Yii::t('dominus77/maintenance/' . $category, $message, $params, $language);
     }
