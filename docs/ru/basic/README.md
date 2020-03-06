@@ -55,22 +55,19 @@ $config = [
                         'html' => '@dominus77/maintenance/mail/emailNotice-html'
                     ]
                 ],
-                'directory' => '@runtime',
+                'directory' => '@runtime'
             ]
         ]
     ],    
     'controllerMap' => [
         //...
         'maintenance' => [
-            'class' => MaintenanceController::class,
-            'layout' => '@dominus77/maintenance/views/frontend/layouts/maintenance',
-            'viewPath' => '@dominus77/maintenance/views/frontend/maintenance'            
+            'class' => MaintenanceController::class                     
         ],
         'maintenance-admin' => [
-            'class' => BackendMaintenanceController::class,
-            'viewPath' => '@dominus77/maintenance/views/backend/maintenance',                       
+            'class' => BackendMaintenanceController::class,                                 
             'roles' => ['@'] // Авторизованный пользователь
-        ],
+        ]
     ],
     //...
 ];
@@ -112,14 +109,14 @@ $config = [
                         'html' => '@dominus77/maintenance/mail/emailNotice-html'
                     ]
                 ],
-                'directory' => '@runtime',
+                'directory' => '@runtime'
             ]
         ]
     ],    
     'controllerMap' => [
         //...
         'maintenance' => [
-            'class' => MaintenanceController::class,
+            'class' => MaintenanceController::class
         ]
     ],    
     'components' => [
@@ -127,7 +124,7 @@ $config = [
         'urlManager' => [
             'hostInfo' => $params['frontendUrl'], // http://yii2-basic.loc
             //...
-        ],
+        ]
     ],
     //...
 ];
