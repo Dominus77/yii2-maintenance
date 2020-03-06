@@ -18,6 +18,9 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_install:
+  - sudo pip install codecov
+
 install:
   - travis_retry composer self-update && composer --version
   - travis_retry composer update --no-interaction --prefer-source --dev
@@ -25,3 +28,6 @@ install:
 script:
   - vendor/bin/codecept build
   - vendor/bin/codecept run
+
+after_success:
+  - codecov
