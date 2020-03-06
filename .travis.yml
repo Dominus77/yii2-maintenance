@@ -27,7 +27,12 @@ install:
 
 script:
   - vendor/bin/codecept build
-  - vendor/bin/codecept run
+  - vendor/bin/codecept run --coverage-text --coverage-clover=coverage.clover
+  - vendor/bin/codecept run --coverage-clover=coverage.xml
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
 after_success:
   - codecov
