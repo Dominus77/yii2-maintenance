@@ -238,7 +238,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
 
     /**
      * @param $fileName string
-     * @return string
+     * @return bool|string
      */
     protected function getFilePath($fileName)
     {

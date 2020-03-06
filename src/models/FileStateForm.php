@@ -12,6 +12,7 @@ use dominus77\maintenance\BackendMaintenance;
 use dominus77\maintenance\Maintenance;
 use Exception;
 use DateTime;
+use yii\web\Session;
 
 /**
  * Class FileStateForm
@@ -143,8 +144,8 @@ class FileStateForm extends BaseForm implements StateFormInterface
             $this->date = $this->date ?: $this->getDateTime();
             $this->title = $this->title ?: BackendMaintenance::t('app', $this->state->defaultTitle);
             $this->text = $this->text ?: BackendMaintenance::t('app', $this->state->defaultContent);
-            $this->subscribe = $this->subscribe ?: true;
-            $this->countDown = $this->countDown ?: true;
+            $this->subscribe = $this->subscribe ?: 'true';
+            $this->countDown = $this->countDown ?: 'true';
         }
     }
 
@@ -198,7 +199,9 @@ class FileStateForm extends BaseForm implements StateFormInterface
             $model = new SubscribeForm();
             $count = $model->send();
             $this->state->disable();
-            Yii::$app->session->setFlash(self::MAINTENANCE_NOTIFY_SENDER_KEY, BackendMaintenance::t('app',
+            /** @var Session $session */
+            $session = Yii::$app->session;
+            $session->setFlash(self::MAINTENANCE_NOTIFY_SENDER_KEY, BackendMaintenance::t('app',
                 '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}',
                 ['n' => $count])
             );
