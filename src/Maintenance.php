@@ -89,17 +89,15 @@ class Maintenance extends BackendMaintenance implements BootstrapInterface
         if (empty($this->filters)) {
             return false;
         }
-        if (is_array($this->filters)) {
-            foreach ($this->filters as $config) {
-                $filter = Yii::createObject($config);
-                if (!($filter instanceof Filter)) {
-                    throw new InvalidConfigException(
-                        'Class "' . get_class($filter) . '" must instance of "' . Filter::class . '".'
-                    );
-                }
-                if ($filter->isAllowed()) {
-                    return true;
-                }
+        foreach ($this->filters as $config) {
+            $filter = Yii::createObject($config);
+            if (!($filter instanceof Filter)) {
+                throw new InvalidConfigException(
+                    'Class "' . get_class($filter) . '" must instance of "' . Filter::class . '".'
+                );
+            }
+            if ($filter->isAllowed()) {
+                return true;
             }
         }
         return false;
