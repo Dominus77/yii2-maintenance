@@ -33,6 +33,26 @@ interface StateInterface
     public function timestamp();
 
     /**
+     * @return string
+     */
+    public function getDateFormat();
+
+    /**
+     * @return string
+     */
+    public function getSubscribePath();
+
+    /**
+     * @return array
+     */
+    public function getSubscribeOptions();
+
+    /**
+     * @return array
+     */
+    public function getSubscribeOptionsTemplate();
+
+    /**
      * @return integer
      */
     public function statusCode();

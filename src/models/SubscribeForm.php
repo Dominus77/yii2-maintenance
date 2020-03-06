@@ -47,7 +47,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
             'from' => $this->getFrom('noreply@mail.com'),
             'subject' => BackendMaintenance::t('app', 'Notification of completion of technical work')
         ];
-        $this->subscribeOptions = ArrayHelper::merge($subscribeOptions, $this->state->subscribeOptions);
+        $this->subscribeOptions = ArrayHelper::merge($subscribeOptions, $this->state->getSubscribeOptions());
         $this->setFollowers();
     }
 

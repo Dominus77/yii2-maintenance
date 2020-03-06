@@ -160,6 +160,14 @@ class FileState extends BaseObject implements StateInterface
     }
 
     /**
+     * @return array
+     */
+    public function getSubscribeOptions()
+    {
+        return $this->subscribeOptions;
+    }
+
+    /**
      * @return array|mixed
      */
     public function getSubscribeOptionsTemplate()
