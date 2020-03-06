@@ -62,10 +62,13 @@ $config = [
     'controllerMap' => [
         //...
         'maintenance' => [
-            'class' => MaintenanceController::class,            
+            'class' => MaintenanceController::class,
+            'layout' => '@dominus77/maintenance/views/frontend/layouts/maintenance',
+            'viewPath' => '@dominus77/maintenance/views/frontend/maintenance'            
         ],
         'maintenance-admin' => [
-            'class' => BackendMaintenanceController::class,                       
+            'class' => BackendMaintenanceController::class,
+            'viewPath' => '@dominus77/maintenance/views/backend/maintenance',                       
             'roles' => ['@'] // Авторизованный пользователь
         ],
     ],
