@@ -23,6 +23,9 @@ class IndexAction extends Action
     public $layout;
 
     /** @var string */
+    public $viewPath;
+
+    /** @var string */
     public $view;
 
     /** @var array */
@@ -45,9 +48,8 @@ class IndexAction extends Action
      */
     public function run()
     {
-        if ($this->layout !== null) {
-            $this->controller->layout = $this->layout;
-        }
+        $this->setViewPath();
+
         if ($this->view !== null) {
             $this->controller->view = $this->view;
         }
@@ -71,5 +73,17 @@ class IndexAction extends Action
             'name' => $this->defaultName,
             'model' => $model,
         ];
+    }
+
+    /**
+     * Set View Path
+     */
+    protected function setViewPath()
+    {
+        if ($this->viewPath !== null) {
+            $this->controller->setViewPath($this->viewPath);
+        } else {
+            $this->controller->setViewPath('@dominus77/maintenance/views/backend/maintenance');
+        }
     }
 }

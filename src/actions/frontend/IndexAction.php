@@ -25,7 +25,7 @@ class IndexAction extends Action
     public $defaultMessage;
 
     /** @var string */
-    public $layout;
+    public $viewPath;
 
     /** @var string */
     public $view;
@@ -61,8 +61,11 @@ class IndexAction extends Action
      */
     public function run()
     {
-        if ($this->layout !== null) {
-            $this->controller->layout = $this->layout;
+        $this->setViewPath();
+        $this->setLayout();
+
+        if ($this->view !== null) {
+            $this->controller->view = $this->view;
         }
         return $this->controller->render($this->view ?: $this->id, $this->getViewRenderParams());
     }
@@ -81,5 +84,27 @@ class IndexAction extends Action
             'subscribeForm' => $subscribeForm,
             'fileStateForm' => $fileStateForm,
         ];
+    }
+
+    /**
+     * Set View Path
+     */
+    protected function setViewPath()
+    {
+        if ($this->viewPath !== null) {
+            $this->controller->setViewPath($this->viewPath);
+        } else {
+            $this->controller->setViewPath('@dominus77/maintenance/views/frontend/maintenance');
+        }
+    }
+
+    /**
+     * Set Layout
+     */
+    protected function setLayout()
+    {
+        if ($this->controller->layout === null) {
+            $this->controller->layout = '@dominus77/maintenance/views/frontend/layouts/maintenance';
+        }
     }
 }

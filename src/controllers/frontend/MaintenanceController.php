@@ -13,6 +13,9 @@ use dominus77\maintenance\actions\frontend\SubscribeAction;
  */
 class MaintenanceController extends Controller
 {
+    /** @var string */
+    public $viewPath;
+
     /**
      * @return array
      */
@@ -35,7 +38,8 @@ class MaintenanceController extends Controller
     {
         return [
             'index' => [
-                'class' => IndexAction::class
+                'class' => IndexAction::class,
+                'viewPath' => $this->viewPath
             ],
             'subscribe' => [
                 'class' => SubscribeAction::class
