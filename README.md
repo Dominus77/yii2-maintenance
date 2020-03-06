@@ -300,7 +300,6 @@ You can use aliases:
 --subscribe -s
 --timer -tm
 ```
-
 License
 -------
 The MIT License (MIT). Please see [License File](https://github.com/Dominus77/yii2-maintenance/blob/master/LICENSE.md) for more information.
