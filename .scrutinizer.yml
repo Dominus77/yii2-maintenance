@@ -2,6 +2,15 @@ filter:
     excluded_paths:
         - "docs/*"
         - "tests/*"
+        - "src/assets/src/*"
+        - "src/mail/*"
+        - "src/views/*"
+        - "src/widgets/followers/assets/src/*"
+        - "src/widgets/maintenance/assets/src/*"
+        - "src/widgets/maintenance/views/*"
+        - "src/widgets/subscribe/assets/src/*"
+        - "src/widgets/subscribe/views/*"
+        - "src/widgets/timer/assets/src/*"
 checks:
     php:
         code_rating: true
@@ -31,6 +40,15 @@ tools:
         excluded_dirs:
             - "docs"
             - "tests"
+            - "src/assets/src"
+            - "src/mail"
+            - "src/views"
+            - "src/widgets/followers/assets/src"
+            - "src/widgets/maintenance/assets/src"
+            - "src/widgets/maintenance/views"
+            - "src/widgets/subscribe/assets/src"
+            - "src/widgets/subscribe/views"
+            - "src/widgets/timer/assets/src"
     # disable copy paste detector and similarity analyzer as they have no real value
     # and a huge bunch of false-positives
     php_cpd: false
