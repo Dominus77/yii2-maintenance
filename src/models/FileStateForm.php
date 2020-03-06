@@ -29,7 +29,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
 
     /**
      * Select mode
-     * @var integer
+     * @var string
      */
     public $mode;
     /**
@@ -49,12 +49,12 @@ class FileStateForm extends BaseForm implements StateFormInterface
     public $text;
     /**
      * Subscribe
-     * @var bool
+     * @var string
      */
     public $subscribe;
     /**
      * CountDownWidget
-     * @var bool
+     * @var string
      */
     public $countDown;
 
@@ -82,7 +82,6 @@ class FileStateForm extends BaseForm implements StateFormInterface
         return [
             ['date', 'trim'],
             ['mode', 'required'],
-            ['mode', 'integer'],
             ['date', 'string', 'max' => 19],
             ['date', 'validateDateAttribute'],
             [['title', 'text'], 'string'],

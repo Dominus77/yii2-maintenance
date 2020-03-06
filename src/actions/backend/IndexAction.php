@@ -51,9 +51,6 @@ class IndexAction extends Action
     {
         $this->setViewPath();
 
-        if ($this->view) {
-            $this->controller->view = $this->view;
-        }
         $model = new FileStateForm();
         if (($post = Yii::$app->request->post()) && $model->load($post) && $model->validate()) {
             if ($model->save() && $model->isEnabled()) {

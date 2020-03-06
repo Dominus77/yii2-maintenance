@@ -63,10 +63,6 @@ class IndexAction extends Action
     {
         $this->setViewPath();
         $this->setLayout();
-
-        if ($this->view) {
-            $this->controller->view = $this->view;
-        }
         return $this->controller->render($this->view ?: $this->id, $this->getViewRenderParams());
     }
 

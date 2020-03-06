@@ -124,8 +124,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
         $str = $this->prepareData();
         $file = $this->getFilePath($this->state->fileSubscribe);
         try {
-            if ($str && $file) {
-                $fp = fopen($file, 'ab');
+            if ($str && $file && $fp = fopen($file, 'ab')) {
                 fwrite($fp, $str . PHP_EOL);
                 fclose($fp);
                 return chmod($file, 0765);
@@ -187,10 +186,8 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     {
         $subscribeData = $this->prepareLoadModel($this->getFilePath($this->state->fileSubscribe));
         $emails = [];
-        if (is_array($subscribeData)) {
-            foreach ($subscribeData as $email) {
-                $emails[] = $email;
-            }
+        foreach ($subscribeData as $email) {
+            $emails[] = $email;
         }
         return $emails;
     }
@@ -226,7 +223,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
 
     /**
      * From
-     * @param $from
+     * @param $from string
      * @return mixed|string
      */
     protected function getFrom($from)
@@ -240,8 +237,8 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     }
 
     /**
-     * @param $fileName
-     * @return bool|string
+     * @param $fileName string
+     * @return string
      */
     protected function getFilePath($fileName)
     {
