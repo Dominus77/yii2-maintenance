@@ -19,6 +19,8 @@ use dominus77\maintenance\controllers\backend\MaintenanceController as BackendMa
 
 $config = [
     //...
+    'language' => 'ru',
+    //...
     'bootstrap' => [
         //...      
         Maintenance::class
@@ -60,13 +62,10 @@ $config = [
     'controllerMap' => [
         //...
         'maintenance' => [
-            'class' => MaintenanceController::class,
-            'layout' => '@dominus77/maintenance/views/frontend/layouts/maintenance',
-            'viewPath' => '@dominus77/maintenance/views/frontend/maintenance',
+            'class' => MaintenanceController::class,            
         ],
         'maintenance-admin' => [
-            'class' => BackendMaintenanceController::class,
-            'viewPath' => '@dominus77/maintenance/views/backend/maintenance',            
+            'class' => BackendMaintenanceController::class,                       
             'roles' => ['@'] // Авторизованный пользователь
         ],
     ],
