@@ -19,7 +19,9 @@ use DateTime;
  * @property string $dateTime
  * @property string $path
  * @property mixed $modeName
- * @property int $statusCode
+ * @property string $defaultTitle
+ * @property string $defaultText
+ * @property string|int $statusCode
  * @property int $timestamp
  */
 class FileStateForm extends BaseForm implements StateFormInterface
