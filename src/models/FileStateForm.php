@@ -230,9 +230,9 @@ class FileStateForm extends BaseForm implements StateFormInterface
     {
         $result = false;
         if ($this->mode === Maintenance::STATUS_CODE_MAINTENANCE) {
-            if (file_exists($this->path)) {
+            /*if (file_exists($this->path)) {
                 unlink($this->path);
-            }
+            }*/
             file_put_contents($this->path,
                 $this->prepareData());
             chmod($this->path, 0765);

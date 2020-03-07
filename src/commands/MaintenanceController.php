@@ -152,7 +152,7 @@ class MaintenanceController extends Controller
     {
         $stateForm = new FileStateForm();
         if (!$this->state->isEnabled()) {
-            $stateForm->mode = (string)Maintenance::STATUS_CODE_MAINTENANCE;
+            $stateForm->mode = Maintenance::STATUS_CODE_MAINTENANCE;
             $stateForm = $this->setFileStateForm($stateForm);
             if ($stateForm->validate()) {
                 $stateForm->save();
@@ -181,7 +181,7 @@ class MaintenanceController extends Controller
     {
         $stateForm = new FileStateForm();
         if ($this->state->isEnabled()) {
-            $stateForm->mode = (string)Maintenance::STATUS_CODE_MAINTENANCE;
+            $stateForm->mode = Maintenance::STATUS_CODE_MAINTENANCE;
             $stateForm = $this->setFileStateForm($stateForm);
             if ($stateForm->validate()) {
                 $stateForm->save();
