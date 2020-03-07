@@ -155,13 +155,8 @@ class MaintenanceController extends Controller
         if (!$this->state->isEnabled()) {
             $stateForm->mode = Maintenance::STATUS_CODE_MAINTENANCE;
             $stateForm = $this->setFileStateForm($stateForm);
+            $this->setDefaultValue($stateForm);
             if ($stateForm->validate()) {
-                if ($stateForm->title === null && $this->title === null) {
-                    $stateForm->title = BackendMaintenance::t('app', $stateForm->getDefaultTitle());
-                }
-                if ($stateForm->text === null && $this->content === null) {
-                    $stateForm->text = BackendMaintenance::t('app', $stateForm->getDefaultText());
-                }
                 $stateForm->save();
             }
         }
@@ -284,6 +279,19 @@ class MaintenanceController extends Controller
             $stateForm->countDown = $this->timer === 'true';
         }
         return $stateForm;
+    }
+
+    /**
+     * @param FileStateForm $stateForm
+     */
+    protected function setDefaultValue(FileStateForm $stateForm)
+    {
+        if ($stateForm->title === null && $this->title === null) {
+            $stateForm->title = BackendMaintenance::t('app', $stateForm->getDefaultTitle());
+        }
+        if ($stateForm->text === null && $this->content === null) {
+            $stateForm->text = BackendMaintenance::t('app', $stateForm->getDefaultText());
+        }
     }
 
     /**
