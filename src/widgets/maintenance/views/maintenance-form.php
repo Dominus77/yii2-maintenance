@@ -18,15 +18,15 @@ use dominus77\maintenance\BackendMaintenance;
 
 <div style="display:none" id="maintenance-setting-container">
     <?= $form->field($model, 'date')->textInput([
-        'placeholder' => date($model->dateFormat),
+        'placeholder' => $model->getDateTime(),
     ]) ?>
 
     <?= $form->field($model, 'title')->textInput([
-        'placeholder' => true,
+        'placeholder' => $model->getTitle(),
     ]) ?>
 
     <?= $form->field($model, 'text')->textarea([
-        'placeholder' => true,
+        'placeholder' => $model->getText(),
         'rows' => 6,
         'class' => 'form-control'
     ]) ?>

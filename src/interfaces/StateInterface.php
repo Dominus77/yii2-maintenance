@@ -40,6 +40,11 @@ interface StateInterface
     /**
      * @return string
      */
+    public function getFileStatePath();
+
+    /**
+     * @return string
+     */
     public function getSubscribePath();
 
     /**

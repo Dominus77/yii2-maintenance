@@ -50,7 +50,8 @@ class Maintenance extends BackendMaintenance implements BootstrapInterface
         $this->state = $state;
         if ($this->state->isEnabled()) {
             // (Wed, 21 Oct 2015 07:28:00 GMT) + 10 minutes
-            $timestamp = $this->state->timestamp() + 60 * 10;
+            //$timestamp = $this->state->timestamp() + 60 * 10;
+            $timestamp = $this->state->timestamp();
             $this->retryAfter = $this->retryAfter ?: gmdate('D, d M Y H:i:s \G\M\T', $timestamp);
             $this->statusCode = $this->statusCode ?: $this->state->statusCode();
         }

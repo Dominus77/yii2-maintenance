@@ -8,28 +8,35 @@ use dominus77\maintenance\widgets\subscribe\SubscribeFormWidget;
 use dominus77\maintenance\BackendMaintenance;
 
 /* @var $this yii\web\View */
+/* @var $title string */
 /* @var $name string */
 /* @var $message string */
 /* @var $subscribeForm SubscribeForm */
 /* @var $fileStateForm FileStateForm */
 
-$this->title = $name;
+$this->title = $title;
 ?>
-<h1><?= Html::encode($this->title) ?></h1>
-<p><?= $message ?></p>
-<br>
+<?php if ($name) { ?>
+    <h1><?= Html::encode($name) ?></h1>
+<?php } ?>
+<?php if ($message) { ?>
+    <p><?= $message ?></p>
+    <br>
+<?php } ?>
+
 <?= CountDownWidget::widget([
     'status' => $fileStateForm->isTimer(),
     'timestamp' => $fileStateForm->getTimestamp(),
     'message' => BackendMaintenance::t('app', 'The site will work soon! Please refresh the page.'),
 ]) ?>
-<div class="form-container">
-    <?php if (($status = $fileStateForm->isSubscribe()) && $status === true) { ?>
+
+<?php if (($status = $fileStateForm->isSubscribe()) && $status === true) { ?>
+    <div class="form-container">
         <p><?= BackendMaintenance::t('app', 'We can notify you when everything is ready.') ?></p>
         <?= SubscribeFormWidget::widget([
             'status' => $status,
             'model' => $subscribeForm
         ]) ?>
-    <?php } ?>
-</div>
+    </div>
+<?php } ?>
 <div class="social-container"></div>

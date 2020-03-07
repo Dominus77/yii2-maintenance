@@ -75,8 +75,9 @@ class IndexAction extends Action
         $subscribeForm = new SubscribeForm();
         $fileStateForm = new FileStateForm();
         return [
-            'name' => $fileStateForm->title ?: $this->defaultName,
-            'message' => $fileStateForm->text ?: $this->defaultMessage,
+            'title' => $fileStateForm->title ?: $this->defaultName,
+            'name' => $fileStateForm->title,
+            'message' => $fileStateForm->text,
             'subscribeForm' => $subscribeForm,
             'fileStateForm' => $fileStateForm,
         ];

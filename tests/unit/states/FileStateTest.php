@@ -96,4 +96,27 @@ class FileStateTest extends Unit
         $date = new DateTime(date($this->state->dateFormat));
         $this->tester->assertEquals($timestamp, $date->getTimestamp());
     }
+
+    public function testGetDataFormat()
+    {
+        $this->tester->assertEquals($this->state->getDateFormat(), $this->state->dateFormat);
+    }
+
+    public function testGetSubscribePath()
+    {
+        $this->tester->assertEquals($this->state->getSubscribePath(), $this->state->subscribePath);
+    }
+
+    public function testGetSubscribeOptions()
+    {
+        $subscribeOptionsTemplate = $this->state->getSubscribeOptions();
+        $this->tester->assertArrayHasKey('template', $subscribeOptionsTemplate);
+    }
+
+    public function testGetSubscribeOptionsTemplate()
+    {
+        $subscribeOptionsTemplate = $this->state->getSubscribeOptionsTemplate();
+        $this->tester->assertArrayHasKey('html', $subscribeOptionsTemplate);
+        $this->tester->assertArrayHasKey('text', $subscribeOptionsTemplate);
+    }
 }

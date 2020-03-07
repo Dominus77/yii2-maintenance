@@ -4,7 +4,6 @@ namespace dominus77\maintenance\states;
 
 use Yii;
 use Exception;
-use RuntimeException;
 use yii\base\BaseObject;
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\models\FileStateForm;
@@ -14,6 +13,7 @@ use dominus77\maintenance\models\FileStateForm;
  * @package dominus77\maintenance\states
  *
  * @property array|mixed $subscribeOptionsTemplate
+ * @property string $fileStatePath
  */
 class FileState extends BaseObject implements StateInterface
 {
@@ -82,16 +82,10 @@ class FileState extends BaseObject implements StateInterface
      */
     public function enable()
     {
-        try {
-            file_put_contents($this->path,
-                'The maintenance Mode of your Application is enabled if this file exists.');
-            chmod($this->path, 0765);
-            return true;
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Attention: the maintenance mode could not be enabled because {$this->path} could not be created."
-            );
-        }
+        file_put_contents($this->path,
+            'The maintenance Mode of your Application is enabled if this file exists.');
+        chmod($this->path, 0765);
+        return true;
     }
 
     /**
@@ -101,16 +95,10 @@ class FileState extends BaseObject implements StateInterface
      */
     public function disable()
     {
-        try {
-            if (file_exists($this->path)) {
-                unlink($this->path);
-            }
-            return true;
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Attention: the maintenance mode could not be disabled because {$this->path} could not be removed."
-            );
+        if (file_exists($this->path)) {
+            unlink($this->path);
         }
+        return true;
     }
 
     /**
@@ -149,6 +137,14 @@ class FileState extends BaseObject implements StateInterface
     public function getDateFormat()
     {
         return $this->dateFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileStatePath()
+    {
+        return $this->path;
     }
 
     /**

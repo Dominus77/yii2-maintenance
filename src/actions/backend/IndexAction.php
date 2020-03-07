@@ -50,17 +50,33 @@ class IndexAction extends Action
     public function run()
     {
         $this->setViewPath();
-
         $model = new FileStateForm();
         if (($post = Yii::$app->request->post()) && $model->load($post) && $model->validate()) {
-            if ($model->save() && $model->isEnabled()) {
-                /** @var Session $session */
-                $session = Yii::$app->session;
-                $session->setFlash(FileStateForm::MAINTENANCE_UPDATE_KEY, BackendMaintenance::t('app', 'Maintenance mode successfully updated!'));
-            }
+            $message = $model->isEnabled() ? BackendMaintenance::t('app', 'Maintenance mode successfully updated!') : '';
+            $result = $model->save();
+            $this->setMessage($message, $result);
             return $this->controller->refresh();
         }
         return $this->controller->render($this->view ?: $this->id, $this->getViewRenderParams($model));
+    }
+
+    /**
+     * @param $message string
+     * @param $result bool|int
+     */
+    protected function setMessage($message, $result)
+    {
+        /** @var Session $session */
+        $session = Yii::$app->session;
+        if (is_bool($result) && $result === true) {
+            $session->setFlash(FileStateForm::MAINTENANCE_UPDATE_KEY, $message);
+        }
+        if (is_numeric($result)) {
+            $session->setFlash(FileStateForm::MAINTENANCE_NOTIFY_SENDER_KEY, BackendMaintenance::t('app',
+                '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}',
+                ['n' => $result])
+            );
+        }
     }
 
     /**
