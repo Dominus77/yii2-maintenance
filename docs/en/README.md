@@ -10,5 +10,5 @@ Connection and setup
 * [For Advanced template](advanced/README.md)
 
 Use
--------------
+---
 * [Console commands](common/console-commands.md)
