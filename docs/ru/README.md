@@ -11,4 +11,4 @@
 
 Использование
 -------------
-[Консольные команды](common/console-commands.md)
+* [Консольные команды](common/console-commands.md)
