@@ -17,10 +17,10 @@ use dominus77\maintenance\BackendMaintenance;
 $this->title = $title;
 ?>
 <?php if ($name) { ?>
-    <h1><?= Html::encode($name) ?></h1>
+    <h1><?= BackendMaintenance::t('app', Html::encode($name)) ?></h1>
 <?php } ?>
 <?php if ($message) { ?>
-    <p><?= $message ?></p>
+    <p><?= BackendMaintenance::t('app', $message) ?></p>
     <br>
 <?php } ?>
 

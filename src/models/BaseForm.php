@@ -51,7 +51,25 @@ class BaseForm extends Model
     }
 
     /**
-     * Prepare load model
+     * Prepare data to save
+     *
+     * @return string
+     */
+    public function prepareSaveData()
+    {
+        $result = '';
+        foreach ($this->attributes as $attribute => $value) {
+            $value = $value ?: 'null';
+            $value = trim($value);
+            if ($value) {
+                $result .= $attribute . ' = ' . $value . PHP_EOL;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Prepare data to load in model
      *
      * @param $path
      * @return array
@@ -63,7 +81,7 @@ class BaseForm extends Model
             foreach ($contentArray as $item) {
                 $arr = explode(' = ', $item);
                 if (isset($arr[0], $arr[1])) {
-                    $items[$arr[0]] = $arr[1];
+                    $items[$arr[0]] = $arr[1] === 'null' ? null : $arr[1];
                 }
             }
         }

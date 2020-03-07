@@ -51,12 +51,12 @@ class FileStateForm extends BaseForm implements StateFormInterface
      * Subscribe
      * @var bool
      */
-    public $subscribe = false;
+    public $subscribe = true;
     /**
      * CountDownWidget
      * @var bool
      */
-    public $countDown = false;
+    public $countDown = true;
 
     /**
      * Path to file
@@ -175,17 +175,17 @@ class FileStateForm extends BaseForm implements StateFormInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getDefaultTitle()
     {
-        return BackendMaintenance::t('app', $this->state->getDefaultTitle());
+        return $this->state->getDefaultTitle();
     }
 
     /**
      * @return string
      */
-    public function getText()
+    public function getDefaultText()
     {
-        return BackendMaintenance::t('app', $this->state->getDefaultContent());
+        return $this->state->getDefaultContent();
     }
 
     /**
@@ -232,7 +232,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
         if ($this->mode === Maintenance::STATUS_CODE_MAINTENANCE) {
             $this->disable();
             file_put_contents($this->path,
-                $this->prepareData());
+                $this->prepareSaveData());
             chmod($this->path, 0765);
             $result = true;
         }
@@ -240,21 +240,6 @@ class FileStateForm extends BaseForm implements StateFormInterface
             $model = new SubscribeForm();
             $result = $model->send();
             $this->disable();
-        }
-        return $result;
-    }
-
-    /**
-     * @return string
-     */
-    public function prepareData()
-    {
-        $result = '';
-        foreach ($this->attributes as $attribute => $value) {
-            $value = trim($value);
-            if ($value) {
-                $result .= $attribute . ' = ' . $value . PHP_EOL;
-            }
         }
         return $result;
     }

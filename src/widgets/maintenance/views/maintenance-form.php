@@ -22,11 +22,11 @@ use dominus77\maintenance\BackendMaintenance;
     ]) ?>
 
     <?= $form->field($model, 'title')->textInput([
-        'placeholder' => $model->getTitle(),
+        'placeholder' => BackendMaintenance::t('app', $model->getDefaultTitle()),
     ]) ?>
 
     <?= $form->field($model, 'text')->textarea([
-        'placeholder' => $model->getText(),
+        'placeholder' => BackendMaintenance::t('app', $model->getDefaultText()),
         'rows' => 6,
         'class' => 'form-control'
     ]) ?>

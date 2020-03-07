@@ -2,6 +2,7 @@
 
 namespace dominus77\maintenance\commands;
 
+use dominus77\maintenance\BackendMaintenance;
 use yii\helpers\Console;
 use yii\console\Controller;
 use yii\base\Module;
@@ -155,6 +156,12 @@ class MaintenanceController extends Controller
             $stateForm->mode = Maintenance::STATUS_CODE_MAINTENANCE;
             $stateForm = $this->setFileStateForm($stateForm);
             if ($stateForm->validate()) {
+                if ($stateForm->title === null && $this->title === null) {
+                    $stateForm->title = BackendMaintenance::t('app', $stateForm->getDefaultTitle());
+                }
+                if ($stateForm->text === null && $this->content === null) {
+                    $stateForm->text = BackendMaintenance::t('app', $stateForm->getDefaultText());
+                }
                 $stateForm->save();
             }
         }
