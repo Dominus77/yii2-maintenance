@@ -11,4 +11,4 @@ Connection and setup
 
 Use
 -------------
-* [Консольные команды](common/console-commands.md)
+* [Console commands](common/console-commands.md)
