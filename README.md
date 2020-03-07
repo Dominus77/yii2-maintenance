@@ -9,6 +9,16 @@ Maintenance mode for Yii2
 
 Switching the site on Yii2 to maintenance mode with a timer, a subscription form and sending notifications to users.
 
+What it looks like
+-------------------
+Maintenance Mode
+![maintenance.png](docs/images/maintenance.png)
+
+Maintenance mode managering
+![maintenance.png](docs/images/maintenance-backend.png)
+
+Management of the regime is also carried out using console commands.
+
 Installation
 ------------
 
