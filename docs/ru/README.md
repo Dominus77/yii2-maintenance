@@ -8,3 +8,7 @@
 -----------------------
 * [Для базового шаблона Basic](basic/README.md)
 * [Для расширенного шаблона Advanced](advanced/README.md)
+
+Использование
+-------------
+[Консольные команды](common/console-commands.md)

@@ -8,3 +8,7 @@ Connection and setup
 --------------------
 * [For Basic template](basic/README.md)
 * [For Advanced template](advanced/README.md)
+
+Use
+-------------
+[Консольные команды](common/console-commands.md)
