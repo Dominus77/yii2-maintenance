@@ -123,7 +123,7 @@ class FileState extends BaseObject implements StateInterface
 
     /**
      * Status code
-     * @return int
+     * @return int|string
      */
     public function statusCode()
     {
@@ -137,6 +137,22 @@ class FileState extends BaseObject implements StateInterface
     public function getDateFormat()
     {
         return $this->dateFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultTitle()
+    {
+        return $this->defaultTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultContent()
+    {
+        return $this->defaultContent;
     }
 
     /**

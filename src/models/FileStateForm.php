@@ -29,7 +29,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
 
     /**
      * Select mode
-     * @var string
+     * @var int|string
      */
     public $mode;
     /**
@@ -169,7 +169,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
     public function loadModel()
     {
         $stateArray = $this->prepareLoadModel($this->path);
-        $this->load([$stateArray], false);
+        $this->setAttributes($stateArray);
     }
 
     /**
@@ -177,7 +177,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
      */
     public function getTitle()
     {
-        return BackendMaintenance::t('app', $this->state->defaultTitle);
+        return BackendMaintenance::t('app', $this->state->getDefaultTitle());
     }
 
     /**
@@ -185,7 +185,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
      */
     public function getText()
     {
-        return BackendMaintenance::t('app', $this->state->defaultContent);
+        return BackendMaintenance::t('app', $this->state->getDefaultContent());
     }
 
     /**
@@ -320,7 +320,7 @@ class FileStateForm extends BaseForm implements StateFormInterface
     /**
      * StatusCode
      *
-     * @return string
+     * @return int|string
      */
     public function getStatusCode()
     {

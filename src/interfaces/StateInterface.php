@@ -58,6 +58,16 @@ interface StateInterface
     public function getSubscribeOptionsTemplate();
 
     /**
+     * @return string
+     */
+    public function getDefaultTitle();
+
+    /**
+     * @return string
+     */
+    public function getDefaultContent();
+
+    /**
      * @return integer
      */
     public function statusCode();
