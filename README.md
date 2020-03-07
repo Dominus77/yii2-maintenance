@@ -17,7 +17,7 @@ Maintenance Mode
 Maintenance mode managering
 ![maintenance.png](docs/images/maintenance-backend.png)
 
-Management of the regime is also carried out using console commands.
+Management of the regime is also carried out using [console commands](docs/en/common/console-commands.md).
 
 Installation
 ------------
