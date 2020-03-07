@@ -59,7 +59,7 @@ use dominus77\maintenance\Maintenance;
 
 return [
     //...
-    'language' => 'ru',
+    'language' => 'en',
     //...
     'bootstrap' => [
         //...
@@ -117,7 +117,7 @@ use dominus77\maintenance\controllers\backend\MaintenanceController;
 
 return [
     //...
-    'language' => 'ru',
+    'language' => 'en',
     //...
     'bootstrap' => [        
         BackendMaintenance::class
@@ -145,7 +145,7 @@ use dominus77\maintenance\BackendMaintenance;
 
 return [
     //...
-    'language' => 'ru',
+    'language' => 'en',
     //...    
     'bootstrap' => [
         //...
