@@ -34,12 +34,12 @@ class MaintenanceController extends Controller
      */
     public $content;
     /**
-     * @var bool
+     * @var string
      */
     public $subscribe;
 
     /**
-     * @var bool
+     * @var string
      */
     public $timer;
 
