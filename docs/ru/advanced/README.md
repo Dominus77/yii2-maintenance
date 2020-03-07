@@ -68,8 +68,7 @@ return [
     'container' => [
         'singletons' => [
             Maintenance::class => [
-                'class' => Maintenance::class,
-                // Route to action
+                'class' => Maintenance::class,                
                 'route' => 'maintenance/index',                
                 'filters' => [
                     // роуты для которых игнорировать режим
