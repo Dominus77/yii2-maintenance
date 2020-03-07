@@ -35,7 +35,9 @@ $config = [
                     // routes for which to ignore mode
                     [
                         'class' => URIFilter::class,
-                        'uri' => [                            
+                        'uri' => [
+                            'debug/default/view',
+                            'debug/default/toolbar',                            
                             'site/login',
                             'site/logout'
                         ]
@@ -104,10 +106,11 @@ $config = [
         'singletons' => [
             StateInterface::class => [
                 'class' => FileState::class,
+                // Configure templates for subscribers
                 'subscribeOptions' => [                    
                     'template' => [
                         'html' => '@dominus77/maintenance/mail/emailNotice-html'
-                    ]
+                    ]                     
                 ],
                 'directory' => '@runtime'
             ]

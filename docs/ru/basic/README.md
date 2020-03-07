@@ -35,7 +35,9 @@ $config = [
                     // роуты для которых игнорировать режим
                     [
                         'class' => URIFilter::class,
-                        'uri' => [                            
+                        'uri' => [
+                            'debug/default/view',
+                            'debug/default/toolbar',                            
                             'site/login',
                             'site/logout'
                         ]
@@ -104,6 +106,7 @@ $config = [
         'singletons' => [
             StateInterface::class => [
                 'class' => FileState::class,
+                // Настроики шаблонов для подписчиков
                 'subscribeOptions' => [                    
                     'template' => [
                         'html' => '@dominus77/maintenance/mail/emailNotice-html'
