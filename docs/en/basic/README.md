@@ -153,6 +153,8 @@ The following options are available for `enable` and `update`:
 Example:
 ```
 php yii maintenance/enable -d="07-03-2020 18:00:00" -s=true -tm=true
+php yii maintenance/update -t="Maintenance"
+php yii maintenance/update -c="The site is undergoing technical work. We apologize for any inconvenience caused."
 ```
 Link to the admin interface web interface `http://yii2-basic.loc/maintenance-admin/index`
 

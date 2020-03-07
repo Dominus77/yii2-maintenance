@@ -153,6 +153,8 @@ $config = [
 Пример:
 ```
 php yii maintenance/enable -d="07-03-2020 18:00:00" -s=true -tm=true
+php yii maintenance/update -t="Техническое обслуживание"
+php yii maintenance/update -c="На сайте проводятся технические работы. Приносим извинения за доставленные неудобства."
 ```
 Ссылка на вэб интерфейс админки `http://yii2-basic.loc/maintenance-admin/index`
 
