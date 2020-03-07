@@ -68,7 +68,7 @@ interface StateInterface
     public function getDefaultContent();
 
     /**
-     * @return integer
+     * @return int|string
      */
     public function statusCode();
 }

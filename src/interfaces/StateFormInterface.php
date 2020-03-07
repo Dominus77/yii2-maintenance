@@ -13,7 +13,7 @@ interface StateFormInterface
     /**
      * Save
      *
-     * @return bool
+     * @return bool|int
      */
     public function save();
 
