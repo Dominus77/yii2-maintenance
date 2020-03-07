@@ -34,14 +34,14 @@ class MaintenanceController extends Controller
      */
     public $content;
     /**
-     * @var string
+     * @var bool
      */
-    public $subscribe = true;
+    public $subscribe;
 
     /**
-     * @var string
+     * @var bool
      */
-    public $timer = true;
+    public $timer;
 
     /**
      * @var StateInterface
@@ -271,10 +271,10 @@ class MaintenanceController extends Controller
             $stateForm->text = $this->content;
         }
         if ($this->subscribe) {
-            $stateForm->subscribe = $this->subscribe;
+            $stateForm->subscribe = $this->subscribe === 'true';
         }
         if ($this->timer) {
-            $stateForm->countDown = $this->timer;
+            $stateForm->countDown = $this->timer === 'true';
         }
         return $stateForm;
     }

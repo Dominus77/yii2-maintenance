@@ -82,6 +82,7 @@ class FileState extends BaseObject implements StateInterface
      */
     public function enable()
     {
+        $this->disable();
         file_put_contents($this->path,
             'The maintenance Mode of your Application is enabled if this file exists.');
         chmod($this->path, 0765);

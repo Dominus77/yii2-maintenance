@@ -122,7 +122,8 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
             if (is_string($file) && $str && $fp = fopen($file, 'ab')) {
                 fwrite($fp, $str . PHP_EOL);
                 fclose($fp);
-                return chmod($file, 0765);
+                chmod($file, 0765);
+                return true;
             }
             return false;
         } catch (RuntimeException $e) {
