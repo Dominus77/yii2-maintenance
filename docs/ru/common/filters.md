@@ -17,7 +17,7 @@ $config = [
         'singletons' => [
             Maintenance::class => [
                 'class' => Maintenance::class,
-                'route' => 'maintenance/index',
+                //...
                 // Фильтры
                 'filters' => [
                     // Роуты, для которых игнорировать режим
