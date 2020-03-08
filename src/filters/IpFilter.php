@@ -3,7 +3,8 @@
 namespace dominus77\maintenance\filters;
 
 use Yii;
-use yii\web\Request as WebRequest;
+use yii\web\Application;
+use yii\web\Request;
 use dominus77\maintenance\Filter;
 
 /**
@@ -17,7 +18,7 @@ class IpFilter extends Filter
      */
     public $ips;
     /**
-     * @var WebRequest|null
+     * @var Request|null
      */
     protected $request;
 
@@ -26,7 +27,7 @@ class IpFilter extends Filter
      */
     public function init()
     {
-        if (Yii::$app instanceof yii\web\Application) {
+        if (Yii::$app instanceof Application) {
             $this->request = Yii::$app->request;
         }
         if (is_string($this->ips)) {

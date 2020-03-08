@@ -4,8 +4,9 @@ namespace dominus77\maintenance\filters;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\web\Application;
 use yii\web\NotFoundHttpException;
-use yii\web\Request as WebRequest;
+use yii\web\Request;
 use dominus77\maintenance\Filter;
 
 /**
@@ -19,7 +20,7 @@ class URIFilter extends Filter
      */
     public $uri;
     /**
-     * @var WebRequest|null
+     * @var Request|null
      */
     protected $request;
 
@@ -28,9 +29,8 @@ class URIFilter extends Filter
      */
     public function init()
     {
-        $request = Yii::$app->request;
-        if ($request instanceof WebRequest) {
-            $this->request = $request;
+        if (Yii::$app instanceof Application) {
+            $this->request = Yii::$app->request;
         }
         if (is_string($this->uri)) {
             $this->uri = [$this->uri];
