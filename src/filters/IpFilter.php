@@ -54,7 +54,6 @@ class IpFilter extends Filter
      * @param string $filter
      * @param string $ip
      * @return bool
-     * @since 1.0.0
      */
     protected function checkIp($filter, $ip)
     {
