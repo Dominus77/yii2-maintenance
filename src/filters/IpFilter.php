@@ -26,9 +26,8 @@ class IpFilter extends Filter
      */
     public function init()
     {
-        $request = Yii::$app->request;
-        if ($request instanceof WebRequest) {
-            $this->request = $request;
+        if (Yii::$app instanceof yii\web\Application) {
+            $this->request = Yii::$app->request;
         }
         if (is_string($this->ips)) {
             $this->ips = [$this->ips];
