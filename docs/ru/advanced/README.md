@@ -69,9 +69,10 @@ return [
         'singletons' => [
             Maintenance::class => [
                 'class' => Maintenance::class,                
-                'route' => 'maintenance/index',                
+                'route' => 'maintenance/index',
+                // Фильтры                
                 'filters' => [
-                    // роуты для которых игнорировать режим
+                    // Роуты, для которых игнорировать режим
                     [
                         'class' => URIFilter::class,
                         'uri' => [
@@ -83,7 +84,7 @@ return [
                             'site/resend-verification-email'
                         ]
                     ],
-                    // Пользователи для которых игнорировать режим
+                    // Пользователи, для которых игнорировать режим
                     [
                         'class' => UserFilter::class,
                         'checkedAttribute' => 'username',
@@ -91,6 +92,7 @@ return [
                             'admin',
                         ],
                     ]
+                    // Подробнее: https://github.com/Dominus77/yii2-maintenance/blob/master/docs/ru/common/filters.md
                 ],
             ],
             StateInterface::class => [
@@ -179,7 +181,10 @@ return [
 ];
 ```
 
-[Новые консольные команды](../common/console-commands.md)
+Использование
+-------------
+* [Фильтры](../common/filters.md)
+* [Консольные команды](../common/console-commands.md)
 
 Ссылка на вэб интерфейс админки `http://yii2-advanced.loc/backend/web/maintenance/index`
 

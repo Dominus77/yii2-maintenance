@@ -11,4 +11,5 @@ Connection and setup
 
 Use
 ---
+* [Filters](common/filters.md)
 * [Console commands](common/console-commands.md)

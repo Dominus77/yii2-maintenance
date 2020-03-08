@@ -11,4 +11,5 @@
 
 Использование
 -------------
+* [Фильтры](common/filters.md)
 * [Консольные команды](common/console-commands.md)

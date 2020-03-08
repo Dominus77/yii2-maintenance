@@ -69,9 +69,10 @@ return [
         'singletons' => [
             Maintenance::class => [
                 'class' => Maintenance::class,                
-                'route' => 'maintenance/index',                
+                'route' => 'maintenance/index',
+                // Filters                
                 'filters' => [
-                    // routes for which to ignore mode
+                    // Routes for which to ignored mode
                     [
                         'class' => URIFilter::class,
                         'uri' => [
@@ -83,12 +84,13 @@ return [
                             'site/resend-verification-email'
                         ]
                     ],
-                    // Users for whom to ignore mode
+                    // Users for whom to ignored mode
                     [
                         'class' => UserFilter::class,
                         'checkedAttribute' => 'username',
                         'users' => ['admin']
                     ]
+                    // More: https://github.com/Dominus77/yii2-maintenance/blob/master/docs/ru/common/filters.md
                 ],
             ],
             StateInterface::class => [
@@ -177,7 +179,10 @@ return [
 ];
 ```
 
-[New console commands](../common/console-commands.md)
+Use
+---
+* [Filters](../common/filters.md)
+* [Console commands](../common/console-commands.md)
 
 Link to the admin interface web interface `http://yii2-advanced.loc/backend/web/maintenance/index`
 

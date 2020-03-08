@@ -31,8 +31,9 @@ $config = [
             Maintenance::class => [
                 'class' => Maintenance::class,
                 'route' => 'maintenance/index',
+                // Фильтры
                 'filters' => [
-                    // роуты для которых игнорировать режим
+                    // Роуты, для которых игнорировать режим
                     [
                         'class' => URIFilter::class,
                         'uri' => [
@@ -42,12 +43,13 @@ $config = [
                             'site/logout'
                         ]
                     ],
-                    // Пользователи для которых игнорировать режим
+                    // Пользователи, для которых игнорировать режим
                     [
                         'class' => UserFilter::class,
                         'checkedAttribute' => 'username',
                         'users' => ['admin']
                     ]
+                    // Подробнее: https://github.com/Dominus77/yii2-maintenance/blob/master/docs/ru/common/filters.md
                 ],
             ],
             StateInterface::class => [
@@ -133,7 +135,10 @@ $config = [
 ];
 ```
 
-[Новые консольные команды](../common/console-commands.md)
+Использование
+-------------
+* [Фильтры](../common/filters.md)
+* [Консольные команды](../common/console-commands.md)
 
 Ссылка на вэб интерфейс админки `http://yii2-basic.loc/maintenance-admin/index`
 
