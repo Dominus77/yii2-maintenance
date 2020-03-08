@@ -3,11 +3,9 @@
 namespace dominus77\maintenance\filters;
 
 use Yii;
-use yii\console\Exception;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Request as WebRequest;
-use yii\console\Request as ConsoleRequest;
 use dominus77\maintenance\Filter;
 
 /**
@@ -21,7 +19,7 @@ class URIFilter extends Filter
      */
     public $uri;
     /**
-     * @var WebRequest|ConsoleRequest
+     * @var yii\base\Request
      */
     protected $request;
 
@@ -39,7 +37,6 @@ class URIFilter extends Filter
     /**
      * @return bool
      * @throws NotFoundHttpException
-     * @throws Exception
      */
     public function isAllowed()
     {
