@@ -258,6 +258,12 @@ class MaintenanceController extends Controller
         }
     }
 
+    public function actionTest()
+    {
+        $message = Maintenance::t('app', 'Maintenance');
+        $this->stdout($message);
+    }
+
     /**
      * @param FileStateForm $stateForm
      * @return FileStateForm
