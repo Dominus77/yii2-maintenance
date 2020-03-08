@@ -90,7 +90,7 @@ return [
                         'checkedAttribute' => 'username',
                         'users' => ['admin']
                     ]
-                    // More: https://github.com/Dominus77/yii2-maintenance/blob/master/docs/ru/common/filters.md
+                    // More: https://github.com/Dominus77/yii2-maintenance/blob/master/docs/en/common/filters.md
                 ],
             ],
             StateInterface::class => [
