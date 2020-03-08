@@ -38,7 +38,7 @@ class IpFilter extends Filter
      */
     public function isAllowed()
     {
-        if (is_array($this->ips) && !empty($this->ips)) {
+        if (($this->request instanceof WebRequest) && is_array($this->ips) && !empty($this->ips)) {
             $ip = $this->request->userIP;
             foreach ($this->ips as $filter) {
                 if ($this->checkIp($filter, $ip)) {

@@ -26,7 +26,7 @@ class Maintenance extends BackendMaintenance implements BootstrapInterface
     /**
      * Default status code to send on maintenance
      * 503 = Service Unavailable
-     * @var integer
+     * @var int|string
      */
     public $statusCode;
     /**

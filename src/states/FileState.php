@@ -7,6 +7,7 @@ use Exception;
 use yii\base\BaseObject;
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\models\FileStateForm;
+use yii\base\InvalidArgumentException;
 
 /**
  * Class FileState
@@ -83,7 +84,7 @@ class FileState extends BaseObject implements StateInterface
     public function enable()
     {
         $this->disable();
-        file_put_contents($this->path,
+        file_put_contents($this->getFileStatePath(),
             'The maintenance Mode of your Application is enabled if this file exists.');
         chmod($this->path, 0765);
         return true;
@@ -96,8 +97,8 @@ class FileState extends BaseObject implements StateInterface
      */
     public function disable()
     {
-        if (file_exists($this->path)) {
-            unlink($this->path);
+        if (file_exists($this->getFileStatePath())) {
+            unlink($this->getFileStatePath());
         }
         return true;
     }
@@ -107,7 +108,7 @@ class FileState extends BaseObject implements StateInterface
      */
     public function isEnabled()
     {
-        return file_exists($this->path);
+        return file_exists($this->getFileStatePath());
     }
 
     /**
@@ -161,7 +162,10 @@ class FileState extends BaseObject implements StateInterface
      */
     public function getFileStatePath()
     {
-        return $this->path;
+        if (is_string($this->path)) {
+            return $this->path;
+        }
+        throw new InvalidArgumentException("Invalid path alias: $this->directory . '/' . $this->fileName");
     }
 
     /**
@@ -169,7 +173,10 @@ class FileState extends BaseObject implements StateInterface
      */
     public function getSubscribePath()
     {
-        return $this->subscribePath;
+        if (is_string($this->subscribePath)) {
+            return $this->subscribePath;
+        }
+        throw new InvalidArgumentException("Invalid path alias: $this->directory . '/' . $this->fileName");
     }
 
     /**

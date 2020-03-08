@@ -52,7 +52,7 @@ class FileStateTest extends Unit
     public function testEnable()
     {
         $this->state->enable();
-        $this->tester->assertFileExists($this->state->path);
+        $this->tester->assertFileExists($this->state->getFileStatePath());
     }
 
     /**
@@ -70,7 +70,7 @@ class FileStateTest extends Unit
     public function testDisable()
     {
         $this->state->disable();
-        $this->tester->assertFileNotExists($this->state->path);
+        $this->tester->assertFileNotExists($this->state->getFileStatePath());
         $this->tester->assertEquals($this->state->statusCode(), Maintenance::STATUS_CODE_OK);
     }
 
