@@ -196,10 +196,10 @@ class FileState extends BaseObject implements StateInterface
      * Return file path.
      *
      * @param $fileName string
-     * @return bool|string
+     * @return string
      */
     protected function getFilePath($fileName)
     {
-        return Yii::getAlias($this->directory . '/' . $fileName);
+        return (string)Yii::getAlias($this->directory . '/' . $fileName);
     }
 }
