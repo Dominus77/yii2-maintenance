@@ -6,7 +6,6 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use dominus77\maintenance\Filter;
-use yii\web\Request;
 
 /**
  * Class URIFilter
@@ -19,7 +18,7 @@ class URIFilter extends Filter
      */
     public $uri;
     /**
-     * @var Request
+     * @var yii\web\Request
      */
     protected $request;
 
@@ -29,7 +28,7 @@ class URIFilter extends Filter
     public function init()
     {
         if (Yii::$app->request instanceof yii\web\Request) {
-            /** @var Request $request */
+            /** @var yii\web\Request $request */
             $request = Yii::$app->request;
             $this->request = $request;
         }
