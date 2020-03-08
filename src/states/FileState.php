@@ -7,7 +7,6 @@ use Exception;
 use yii\base\BaseObject;
 use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\models\FileStateForm;
-use yii\base\InvalidArgumentException;
 
 /**
  * Class FileState
@@ -162,10 +161,7 @@ class FileState extends BaseObject implements StateInterface
      */
     public function getFileStatePath()
     {
-        if (is_string($this->path)) {
-            return $this->path;
-        }
-        throw new InvalidArgumentException("Invalid path alias: $this->directory . '/' . $this->fileName");
+        return $this->path;
     }
 
     /**
@@ -173,10 +169,7 @@ class FileState extends BaseObject implements StateInterface
      */
     public function getSubscribePath()
     {
-        if (is_string($this->subscribePath)) {
-            return $this->subscribePath;
-        }
-        throw new InvalidArgumentException("Invalid path alias: $this->directory . '/' . $this->fileName");
+        return $this->subscribePath;
     }
 
     /**
