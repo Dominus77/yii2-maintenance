@@ -28,7 +28,9 @@ class URIFilter extends Filter
      */
     public function init()
     {
-        $this->request = Yii::$app->request;
+        if (Yii::$app->request instanceof WebRequest) {
+            $this->request = Yii::$app->request;
+        }
         if (is_string($this->uri)) {
             $this->uri = [$this->uri];
         }
@@ -40,7 +42,7 @@ class URIFilter extends Filter
      */
     public function isAllowed()
     {
-        if (($this->request instanceof WebRequest) && is_array($this->uri) && !empty($this->uri) && $resolve = $this->request->resolve()) {
+        if ($this->request && is_array($this->uri) && !empty($this->uri) && $resolve = $this->request->resolve()) {
             $this->uri = ArrayHelper::merge($this->uri, ['maintenance/subscribe']);
             return (bool)in_array($resolve[0], $this->uri, true);
         }

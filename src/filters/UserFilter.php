@@ -3,7 +3,7 @@
 namespace dominus77\maintenance\filters;
 
 use Yii;
-use yii\web\User;
+use yii\web\IdentityInterface;
 use dominus77\maintenance\Filter;
 
 /**
@@ -21,7 +21,7 @@ class UserFilter extends Filter
      */
     public $users;
     /**
-     * @var User|null
+     * @var IdentityInterface|null
      */
     protected $identity;
 
@@ -30,7 +30,9 @@ class UserFilter extends Filter
      */
     public function init()
     {
-        $this->identity = Yii::$app->user->identity;
+        if (Yii::$app->user->identity instanceof IdentityInterface) {
+            $this->identity = Yii::$app->user->identity;
+        }
         if (is_string($this->users)) {
             $this->users = [$this->users];
         }
@@ -42,7 +44,7 @@ class UserFilter extends Filter
      */
     public function isAllowed()
     {
-        if ($this->identity !== null && is_array($this->users) && !empty($this->users)) {
+        if ($this->identity && is_array($this->users) && !empty($this->users)) {
             return (bool)in_array($this->identity->{$this->checkedAttribute}, $this->users, true);
         }
         return false;

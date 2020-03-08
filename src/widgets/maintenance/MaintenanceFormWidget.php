@@ -2,11 +2,11 @@
 
 namespace dominus77\maintenance\widgets\maintenance;
 
-use dominus77\maintenance\Maintenance;
 use yii\base\Widget;
+use yii\helpers\Json;
 use dominus77\maintenance\widgets\maintenance\assets\MaintenanceFormAsset;
 use dominus77\maintenance\models\FileStateForm;
-use yii\helpers\Json;
+use dominus77\maintenance\Maintenance;
 
 /**
  * Class MaintenanceFormWidget

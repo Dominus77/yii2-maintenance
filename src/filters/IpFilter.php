@@ -26,7 +26,9 @@ class IpFilter extends Filter
      */
     public function init()
     {
-        $this->request = Yii::$app->request;
+        if(Yii::$app->request instanceof WebRequest) {
+            $this->request = Yii::$app->request;
+        }
         if (is_string($this->ips)) {
             $this->ips = [$this->ips];
         }
@@ -38,7 +40,7 @@ class IpFilter extends Filter
      */
     public function isAllowed()
     {
-        if (($this->request instanceof WebRequest) && is_array($this->ips) && !empty($this->ips)) {
+        if ($this->request && is_array($this->ips) && !empty($this->ips)) {
             $ip = $this->request->userIP;
             foreach ($this->ips as $filter) {
                 if ($this->checkIp($filter, $ip)) {
