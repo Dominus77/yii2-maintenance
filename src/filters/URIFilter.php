@@ -28,7 +28,9 @@ class URIFilter extends Filter
      */
     public function init()
     {
-        if (($request = Yii::$app->request) && $request instanceof Request) {
+        /** @var $request Request */
+        $request = Yii::$app->request;
+        if ($request instanceof Request) {
             $this->request = $request;
         }
         if (is_string($this->uri)) {
