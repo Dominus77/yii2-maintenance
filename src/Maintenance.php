@@ -66,7 +66,7 @@ class Maintenance extends BackendMaintenance implements BootstrapInterface
         if ($app->request->isAjax) {
             $response->statusCode = self::STATUS_CODE_OK;
         } else {
-            $response->statusCode = $this->statusCode;
+            $response->statusCode = (int)$this->statusCode;
             if ($this->retryAfter && is_string($this->retryAfter)) {
                 $response->headers->set('Retry-After', $this->retryAfter);
             }
