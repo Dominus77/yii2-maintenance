@@ -47,9 +47,6 @@ class FollowersWidget extends Widget
     {
         parent::init();
         $this->model = $this->findModel();
-        if ($this->model instanceof SubscribeForm) {
-            $this->status = $this->status ?: true;
-        }
         $options = [
             'tag' => 'div',
             'class' => 'list-wrapper',

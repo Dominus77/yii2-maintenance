@@ -15,7 +15,7 @@ use dominus77\maintenance\Filter;
 class URIFilter extends Filter
 {
     /**
-     * @var array
+     * @var array|string
      */
     public $uri;
     /**

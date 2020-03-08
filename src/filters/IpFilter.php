@@ -4,7 +4,7 @@ namespace dominus77\maintenance\filters;
 
 use Yii;
 use dominus77\maintenance\Filter;
-use yii\web\Request;
+use yii\web\Request as WebRequest;
 
 /**
  * IP addresses checker with mask supported.
@@ -17,7 +17,7 @@ class IpFilter extends Filter
      */
     public $ips;
     /**
-     * @var Request
+     * @var WebRequest
      */
     protected $request;
 

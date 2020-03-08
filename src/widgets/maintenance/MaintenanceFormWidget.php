@@ -30,9 +30,6 @@ class MaintenanceFormWidget extends Widget
     {
         parent::init();
         $this->model = $this->findModel();
-        if ($this->model instanceof FileStateForm) {
-            $this->status = $this->status ?: true;
-        }
     }
 
     /**

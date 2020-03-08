@@ -13,7 +13,7 @@ use dominus77\maintenance\Filter;
 class RoleFilter extends Filter
 {
     /**
-     * @var array
+     * @var array|string
      */
     public $roles;
     /**

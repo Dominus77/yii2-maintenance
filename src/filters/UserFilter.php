@@ -18,7 +18,7 @@ class UserFilter extends Filter
      */
     public $checkedAttribute;
     /**
-     * @var array
+     * @var array|string
      */
     public $users;
     /**
