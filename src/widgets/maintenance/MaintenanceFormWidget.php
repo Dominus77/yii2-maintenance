@@ -19,7 +19,7 @@ class MaintenanceFormWidget extends Widget
     /**
      * @var bool
      */
-    public $status;
+    public $status = true;
 
     /**
      * @var FileStateForm

@@ -22,7 +22,7 @@ class FollowersWidget extends Widget
     /**
      * @var bool
      */
-    public $status;
+    public $status = true;
 
     /**
      * @var SubscribeForm
