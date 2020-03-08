@@ -15,6 +15,7 @@ use dominus77\maintenance\interfaces\StateInterface;
  * Maintenance mode
  * @package dominus77\maintenance\commands
  *
+ * @property FileStateForm $defaultValue
  * @property FileStateForm $fileStateForm
  */
 class MaintenanceController extends Controller
