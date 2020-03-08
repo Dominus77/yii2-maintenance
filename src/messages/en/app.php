@@ -31,5 +31,17 @@ return [
     'Followers' => 'Followers',
     'Invalid date format. Use example: {:example}' => 'Invalid date format. Use example: {:example}',
     'Maintenance mode successfully updated!' => 'Maintenance mode successfully updated!',
-    '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}' => '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}'
+    '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}' => '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}',
+    // Console
+    'ENABLED' => 'ENABLED',
+    'UPDATED' => 'UPDATED',
+    'DISABLED' => 'DISABLED',
+    'Maintenance Mode has been {:status}' => 'Maintenance Mode has been {:status}',
+    'on until {:datetime}' => 'on until {:datetime}',
+    '{n, plural, =0{No followers} =1{Total one follower} other{Total # followers}}.' => '{n, plural, =0{No followers} =1{Total one follower} other{Total # followers}}.',
+    'Count Down: {:status}' => 'Count Down: {:status}',
+    'Subscription form: {:status}' => 'Subscription form: {:status}',
+    'You can update the maintenance mode.' => 'You can update the maintenance mode.',
+    "Use:\nphp yii maintenance/update --option='value'\n" => "Use:\nphp yii maintenance/update --option='value'\n",
+
 ];

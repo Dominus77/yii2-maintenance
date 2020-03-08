@@ -31,5 +31,17 @@ return [
     'Followers' => 'Подписчики',
     'Invalid date format. Use example: {:example}' => 'Не допустимый формат даты. Пример использования: {:example}',
     'Maintenance mode successfully updated!' => 'Режим обслуживания успешно обновлен!',
-    '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}' => '{n, plural, =0{Нет подписчиков, сообщения не отправлены} =1{Отправлено одно сообщение} one{Отправлено # сообщение} few{Отправлено # сообщения} many{Отправлено #  сообщений} other{Отправлено # сообщения}}'
+    '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}' => '{n, plural, =0{Нет подписчиков, сообщения не отправлены} =1{Отправлено одно сообщение} one{Отправлено # сообщение} few{Отправлено # сообщения} many{Отправлено #  сообщений} other{Отправлено # сообщения}}',
+    // Console
+    'ENABLED' => 'РАБОТАЕТ',
+    'UPDATED' => 'ОБНОВЛЕН',
+    'DISABLED' => 'НЕ РАБОТАЕТ',
+    'Maintenance Mode has been {:status}' => 'Режим обслуживания {:status}',
+    'on until {:datetime}' => 'до {:datetime}',
+    '{n, plural, =0{No followers} =1{Total one follower} other{Total # followers}}.' => '{n, plural, =0{Подписчиков нет} =1{Один подписчик} one{Всего # подписчик} few{Всего # подписчика} many{Всего # подписчиков} other{Всего # подписчика}}.',
+    'Count Down: {:status}' => 'Обратный отсчет: {:status}',
+    'Subscription form: {:status}' => 'Форма подписки: {:status}',
+    'You can update the maintenance mode.' => 'Вы можете обновить режим обслуживания.',
+    "Use:\nphp yii maintenance/update --option='value'\n" => "Используйте:\nphp yii maintenance/update --option='value'\n",
+
 ];
