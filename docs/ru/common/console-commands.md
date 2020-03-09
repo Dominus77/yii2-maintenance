@@ -8,6 +8,7 @@
 | `php yii maintenance/update`      | Редактирование режима                   |
 | `php yii maintenance/subscribers` | Подписчики на оповещение                |
 | `php yii maintenance/disable`     | Отключение режима и отправка оповещений |
+| `php yii maintenance/options`     | Опции                                   |
 
 Для `enable` и `update` доступны следующие опции:
 
@@ -21,7 +22,6 @@
 
 Пример:
 ```
-php yii maintenance/enable -d="07-03-2020 18:00:00" -s=true -tm=true
-php yii maintenance/update -t="Техническое обслуживание"
-php yii maintenance/update -c="На сайте проводятся технические работы. Приносим извинения за доставленные неудобства."
+php yii maintenance/enable --опция1="значение1" --опция2="значение2" ...
+php yii maintenance/update --data="14-03-2020 18:00:10" -tm=true ...
 ```

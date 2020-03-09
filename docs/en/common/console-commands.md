@@ -8,6 +8,7 @@ Console commands
 | `php yii maintenance/update`      | Editing mode                            |
 | `php yii maintenance/subscribers` | Alert Subscribers                       |
 | `php yii maintenance/disable`     | Turn off the mode and send alerts       |
+| `php yii maintenance/options`     | Options                                 |
 
 The following options are available for `enable` and `update`:
 
@@ -21,7 +22,6 @@ The following options are available for `enable` and `update`:
 
 Example:
 ```
-php yii maintenance/enable -d="07-03-2020 18:00:00" -s=true -tm=true
-php yii maintenance/update -t="Maintenance"
-php yii maintenance/update -c="The site is undergoing technical work. We apologize for any inconvenience caused."
+php yii maintenance/enable --option1="value1" --option2="value2" ...
+php yii maintenance/update --data="14-03-2020 18:00:10" -tm=true ...
 ```
