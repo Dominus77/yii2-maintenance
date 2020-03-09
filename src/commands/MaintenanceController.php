@@ -176,7 +176,7 @@ class MaintenanceController extends Controller
      */
     public function actionDisable()
     {
-        $status = $status = $this->disabledMode;
+        $status = $this->disabledMode;
         $this->renderMaintenanceModeHasBeenStatus($status);
         $this->stdout(PHP_EOL);
         if ($this->stateForm->isEnabled()) {
