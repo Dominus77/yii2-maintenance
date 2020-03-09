@@ -2,6 +2,7 @@
 
 namespace dominus77\maintenance\commands;
 
+use Yii;
 use dominus77\maintenance\BackendMaintenance;
 use yii\helpers\Console;
 use yii\console\Controller;
@@ -55,7 +56,38 @@ class MaintenanceController extends Controller
     protected $exampleData;
 
     /**
+     * @var FileStateForm
+     */
+    protected $stateForm;
+    /**
+     * @var SubscribeForm
+     */
+    protected $subscribeForm;
+    /**
+     * @var string
+     */
+    protected $enabled;
+    /**
+     * @var string
+     */
+    protected $disabled;
+    /**
+     * @var string
+     */
+    protected $enabledMode;
+    /**
+     * @var string
+     */
+    protected $updatedMode;
+    protected $notUpdatedMode;
+    /**
+     * @var string
+     */
+    protected $disabledMode;
+
+    /**
      * MaintenanceController constructor.
+     *
      * @param string $id
      * @param Module $module
      * @param StateInterface $state
@@ -65,12 +97,21 @@ class MaintenanceController extends Controller
     {
         $this->state = $state;
         $this->exampleData = $this->exampleDateFormat();
+        $this->stateForm = new FileStateForm();
+        $this->subscribeForm = new SubscribeForm();
+        $this->enabledMode = $this->ansiFormat(Maintenance::t('app', 'ENABLED'), Console::FG_RED);
+        $this->updatedMode = $this->ansiFormat(Maintenance::t('app', 'UPDATED'), Console::FG_GREEN);
+        $this->notUpdatedMode = $this->ansiFormat(Maintenance::t('app', 'NOT UPDATED'), Console::FG_YELLOW);
+        $this->disabledMode = $this->ansiFormat(Maintenance::t('app', 'DISABLED'), Console::FG_GREEN);
+        $this->enabled = $this->ansiFormat(Maintenance::t('app', 'ENABLED'), Console::FG_GREEN);
+        $this->disabled = $this->ansiFormat(Maintenance::t('app', 'DISABLED'), Console::FG_RED);
         parent::__construct($id, $module, $config);
     }
 
 
     /**
      * Options
+     *
      * @param string $actionId
      * @return array|string[]
      */
@@ -87,6 +128,7 @@ class MaintenanceController extends Controller
 
     /**
      * Aliases
+     *
      * @return array
      */
     public function optionAliases()
@@ -101,78 +143,14 @@ class MaintenanceController extends Controller
     }
 
     /**
-     * Maintenance status or commands
+     * Maintenance status
      */
     public function actionIndex()
     {
-        $stateForm = new FileStateForm();
-        $subscribeForm = new SubscribeForm();
-
-        $enabledMode = $this->ansiFormat(Maintenance::t('app', 'ENABLED'), Console::FG_RED);
-        $disabledMode = $this->ansiFormat(Maintenance::t('app', 'DISABLED'), Console::FG_GREEN);
-
-        $enabled = $this->ansiFormat(Maintenance::t('app', 'ENABLED'), Console::FG_GREEN);
-        $disabled = $this->ansiFormat(Maintenance::t('app', 'DISABLED'), Console::FG_RED);
-
         if ($this->state->isEnabled()) {
-            $datetime = $stateForm->getDateTime();
-
-            $message = Maintenance::t('app', 'Maintenance Mode has been {:status}', [
-                ':status' => $enabledMode
-            ]);
-            $this->stdout($message . PHP_EOL);
-
-            $message = Maintenance::t('app', 'on until {:datetime}', [
-                ':datetime' => $datetime
-            ]);
-            $this->stdout($message . PHP_EOL);
-
-            $message = Maintenance::t('app', '{n, plural, =0{No followers} =1{Total one follower} other{Total # followers}}.', [
-                'n' => count($subscribeForm->getEmails())
-            ]);
-            $this->stdout($message . PHP_EOL);
-            $this->stdout(PHP_EOL);
-
-            $status = $stateForm->isTimer() ? $enabled : $disabled;
-            $message = Maintenance::t('app', 'Count Down: {:status}', [
-                ':status' => $status
-            ]);
-            $this->stdout($message . PHP_EOL);
-
-            $status = $stateForm->isSubscribe() ? $enabled : $disabled;
-            $message = Maintenance::t('app', 'Subscription form: {:status}', [
-                ':status' => $status
-            ]);
-            $this->stdout($message . PHP_EOL);
-
-            $message = Maintenance::t('app', 'You can update the maintenance mode.');
-            $this->stdout(PHP_EOL . $message . PHP_EOL);
-
-            $message = Maintenance::t('app', "Use:\nphp yii maintenance/update --option='value'\n");
-            $this->stdout($message . PHP_EOL);
-            $this->getOptionsTable();
+            $this->renderGroupEnabled();
         } else {
-            $message = Maintenance::t('app', 'Maintenance Mode has been {:status}', [
-                ':status' => $disabledMode
-            ]);
-            $this->stdout($message . PHP_EOL);
-
-            $this->stdout("\nMaintenance Mode enable.\n");
-            $this->stdout("Use:\nphp yii maintenance/enable\nto enable maintenance mode.\n");
-
-            $this->stdout("\nAlso maintenance Mode enable set to date and time.\n");
-            $this->stdout("Use:\nphp yii maintenance/enable --date=\"$this->exampleData\"\nto enable maintenance mode to $this->exampleData.\n");
-            $this->stdout("Note:\nThis date and time not disable maintenance mode\n");
-
-            $this->stdout("\nMaintenance Mode update date and time.\n");
-            $this->stdout("Use:\nphp yii maintenance/update --date=\"$this->exampleData\"\nto update maintenance mode to $this->exampleData.\n");
-            $this->stdout("Note:\nThis date and time not disable maintenance mode\n");
-
-            $this->stdout("\nSubscribers to whom messages will be sent after turning off the mode maintenance\n");
-            $this->stdout("Use:\nphp yii maintenance/followers\nto show followers.\n");
-
-            $this->stdout("\nMaintenance Mode disable.\n");
-            $this->stdout("Use:\nphp yii maintenance/disable\nto disable maintenance mode.\n");
+            $this->renderGroupDisabled();
         }
     }
 
@@ -182,7 +160,7 @@ class MaintenanceController extends Controller
     public function actionEnable()
     {
         $stateForm = new FileStateForm();
-        if (!$this->state->isEnabled()) {
+        if (!$this->stateForm->isEnabled()) {
             $stateForm->mode = Maintenance::STATUS_CODE_MAINTENANCE;
             $stateForm = $this->setFileStateForm($stateForm);
             $this->setDefaultValue($stateForm);
@@ -190,20 +168,28 @@ class MaintenanceController extends Controller
                 $stateForm->save();
             }
         }
-        $datetime = $stateForm->getDateTime();
-        $enabled = $this->ansiFormat('ENABLED', Console::FG_RED);
-        $this->stdout("Maintenance Mode has been $enabled\n");
-        $this->stdout("on until $datetime\n");
+        $this->renderGroupEnabled();
+    }
 
-        $this->stdout("\nMaintenance Mode update date and time.\n");
-        $this->stdout("Use:\nphp yii maintenance/update --date=\"$this->exampleData\"\nto update maintenance mode to $this->exampleData.\n");
-        $this->stdout("Note:\nThis date and time not disable maintenance mode\n");
-
-        $this->stdout("\nSubscribers to whom messages will be sent after turning off the mode maintenance\n");
-        $this->stdout("Use:\nphp yii maintenance/followers\nto show followers.\n");
-
-        $this->stdout("\nMaintenance Mode disable.\n");
-        $this->stdout("Use:\nphp yii maintenance/disable\nto disable maintenance mode.\n");
+    /**
+     * Disable maintenance mode and send notify
+     */
+    public function actionDisable()
+    {
+        $status = $status = $this->disabledMode;
+        $this->renderMaintenanceModeHasBeenStatus($status);
+        $this->stdout(PHP_EOL);
+        if ($this->stateForm->isEnabled()) {
+            $this->stateForm->disable();
+            $result = $this->subscribeForm->send();
+            if ($result || $result === 0) {
+                $this->renderNotifiedSubscribers($result);
+                $this->stdout(PHP_EOL);
+            }
+        }
+        $this->renderEnableMaintenanceMode();
+        $this->stdout(PHP_EOL);
+        $this->renderOptionsTable();
     }
 
     /**
@@ -211,101 +197,288 @@ class MaintenanceController extends Controller
      */
     public function actionUpdate()
     {
-        $stateForm = new FileStateForm();
         if ($this->state->isEnabled()) {
-            $stateForm->mode = Maintenance::STATUS_CODE_MAINTENANCE;
-            $stateForm = $this->setFileStateForm($stateForm);
+            $this->stateForm->mode = Maintenance::STATUS_CODE_MAINTENANCE;
+            $stateForm = $this->setFileStateForm($this->stateForm);
+
             if ($stateForm->validate()) {
                 $stateForm->save();
 
-                $updated = $this->ansiFormat(Maintenance::t('app', 'UPDATED'), Console::FG_GREEN);
-                $message = Maintenance::t('app', 'Maintenance Mode has been {:status}', [
-                    ':status' => $updated
-                ]);
-                $this->stdout($message . PHP_EOL);
+                $status = $this->updatedMode;
+                $this->renderMaintenanceModeHasBeenStatus($status);
+                $this->stdout(PHP_EOL);
 
+                $this->renderOnUntilDateTime();
+                $this->stdout(PHP_EOL);
+                $this->stdout(PHP_EOL);
+
+                $this->renderCountDownStatus();
+                $this->stdout(PHP_EOL);
+                $this->renderSubscriptionFormStatus();
+                $this->stdout(PHP_EOL);
+
+                $this->renderUpdateMaintenanceMode();
+                $this->stdout(PHP_EOL);
+
+                $this->renderOptionsTable();
             } else {
-                $this->stdout("Not specified what to update\n");
-                $this->stdout("\nUse:\n");
-                $this->stdout("\nphp yii maintenance/update --date=\"$this->exampleData\"\nto update maintenance mode to $this->exampleData.\n");
-                $this->stdout("\nphp yii maintenance/update --title=\"Maintenance\"\nto update maintenance mode title.\n");
-                $this->stdout("\nphp yii maintenance/update --content=\"Maintenance\"\nto update maintenance mode text content.\n");
-                $this->stdout("\nphp yii maintenance/update --subscribe=true\nto enable subscribe form for maintenance mode.\n");
-                $this->stdout("\nphp yii maintenance/update --timer=true\nto enable count down timer form for maintenance mode.\n");
+                $status = $this->notUpdatedMode;
+                $this->renderMaintenanceModeHasBeenStatus($status);
+                $this->stdout(PHP_EOL);
+
+                $this->renderUpdateMaintenanceMode();
+                $this->stdout(PHP_EOL);
+
+                $this->renderOptionsTable();
             }
         } else {
-            $this->stdout("Maintenance Mode not enable!\n");
-
-            $this->stdout("Use:\nphp yii maintenance/enable\nto enable maintenance mode.\n");
-
-            $this->stdout("\nAlso maintenance Mode enable set to date and time.\n");
-            $this->stdout("Use:\nphp yii maintenance/enable --date=\"$this->exampleData\"\nto enable maintenance mode to $this->exampleData.\n");
-            $this->stdout("Note:\nThis date and time not disable maintenance mode\n");
+            $this->renderGroupDisabled();
         }
-    }
-
-    /**
-     * Disable maintenance mode
-     */
-    public function actionDisable()
-    {
-        $stateForm = new FileStateForm();
-        $this->stdout("Maintenance Mode has been disabled.\n");
-        if ($stateForm->isEnabled()) {
-            $stateForm->disable();
-            $subscribeForm = new SubscribeForm();
-            $result = $subscribeForm->send();
-            if ($result || $result === 0) {
-                $this->stdout("Notified ($result) subscribers.\n");
-            }
-        }
-
-        $this->stdout("\nUse:\nphp yii maintenance/enable\nto enable maintenance mode.\n");
-
-        $this->stdout("\nAlso maintenance Mode enable set to date and time.\n");
-        $this->stdout("Use:\nphp yii maintenance/enable --date=\"$this->exampleData\"\nto enable maintenance mode to $this->exampleData.\n");
-        $this->stdout("Note:\nThis date and time not disable maintenance mode\n");
     }
 
     /**
      * Show subscribers to whom messages
      */
-    public function actionFollowers()
+    public function actionSubscribers()
     {
-        $stateForm = new FileStateForm();
-        $subscribeForm = new SubscribeForm();
-        if (!$stateForm->isEnabled()) {
-            $this->stdout("Maintenance Mode not enable!\n");
+        if (!$this->stateForm->isEnabled()) {
+            $this->renderGroupDisabled();
+        } else if ($emails = $this->subscribeForm->getEmails()) {
+            $status = $this->enabledMode;
+            $this->renderMaintenanceModeHasBeenStatus($status);
+            $this->stdout(PHP_EOL);
 
-            $this->stdout("\nUse:\nphp yii maintenance/enable\nto enable maintenance mode.\n");
+            $this->renderOnUntilDateTime();
+            $this->stdout(PHP_EOL);
 
-            $this->stdout("\nAlso maintenance Mode enable set to date and time.\n");
-            $this->stdout("Use:\nphp yii maintenance/enable --date=\"$this->exampleData\"\nto enable maintenance mode to $this->exampleData.\n");
-            $this->stdout("Note:\nThis date and time not disable maintenance mode\n");
-        } else if ($emails = $subscribeForm->getEmails()) {
-            $this->stdout('Total (' . count($emails) . ') followers:' . PHP_EOL);
+            $this->renderSubscriptionInfo();
+            $this->stdout(PHP_EOL);
+            $this->stdout(PHP_EOL);
+
             foreach ($emails as $email) {
                 $this->stdout($email . PHP_EOL);
             }
         } else {
-            $this->stdout("No followers\n");
+            $status = $this->enabledMode;
+            $this->renderMaintenanceModeHasBeenStatus($status);
+            $this->stdout(PHP_EOL);
+            $this->renderOnUntilDateTime();
+            $this->stdout(PHP_EOL);
+
+            $this->stdout(Maintenance::t('app', 'No subscribers'));
+            $this->stdout(PHP_EOL);
         }
     }
 
+    /**
+     * Options
+     */
     public function actionOptions()
     {
-        $this->getOptionsTable();
+        $this->renderOptionsTable();
+    }
+
+    /**
+     * lcfirst()
+     * @param $str string
+     * @return string
+     */
+    protected function mb_lcfirst($str = '')
+    {
+        if (is_string($str) && !empty($str)) {
+            $charset = Yii::$app->charset;
+            $first = mb_substr($str, 0, 1, $charset);
+            $last = mb_substr($str, 1);
+            $first = mb_strtolower($first, $charset);
+            $last = mb_strtolower($last, $charset);
+            return $first . $last;
+        }
+        return $str;
+    }
+
+    /**
+     * Render is Disabled
+     */
+    public function renderGroupDisabled()
+    {
+        $status = $this->disabledMode;
+        $this->renderMaintenanceModeHasBeenStatus($status);
+        $this->stdout(PHP_EOL);
+
+        $this->renderEnableMaintenanceMode();
+        $this->stdout(PHP_EOL);
+
+        $this->renderOptionsTable();
+    }
+
+    /**
+     * Render is Enabled
+     */
+    public function renderGroupEnabled()
+    {
+        $status = $this->enabledMode;
+        $this->renderMaintenanceModeHasBeenStatus($status);
+        $this->stdout(PHP_EOL);
+
+        $this->renderOnUntilDateTime();
+        $this->stdout(PHP_EOL);
+
+        $this->renderSubscriptionInfo();
+        $this->stdout(PHP_EOL);
+        $this->stdout(PHP_EOL);
+
+        $this->renderCountDownStatus();
+        $this->stdout(PHP_EOL);
+
+        $this->renderSubscriptionFormStatus();
+        $this->stdout(PHP_EOL);
+
+        $this->renderDisableAndSubscribe();
+        $this->stdout(PHP_EOL);
+
+        $this->renderUpdateMaintenanceMode();
+        $this->stdout(PHP_EOL);
+
+        $this->renderOptionsTable();
+    }
+
+    /**
+     * Notified 2 subscribers.
+     *
+     * @param $count int
+     */
+    public function renderNotifiedSubscribers($count = 0)
+    {
+        $this->stdout(Maintenance::t('app', '{n, plural, =0{No subscribers} =1{Notified one subscriber} other{Notified # subscribers}}.', [
+            'n' => $count
+        ]));
+    }
+
+    /**
+     * Maintenance Mode has been ENABLED/DISABLED
+     *
+     * @param $status string
+     */
+    public function renderMaintenanceModeHasBeenStatus($status)
+    {
+        $message = Maintenance::t('app', 'Maintenance Mode has been {:status}', [
+            ':status' => $status,
+        ]);
+        $this->stdout($message);
+    }
+
+    /**
+     * on until 09-03-2020 11:15:04
+     */
+    public function renderOnUntilDateTime()
+    {
+        $datetime = $this->stateForm->getDateTime();
+        $message = Maintenance::t('app', 'on until {:datetime}', [
+            ':datetime' => $datetime
+        ]);
+        $this->stdout($message);
+    }
+
+    /**
+     * Total 2 followers.
+     */
+    public function renderSubscriptionInfo()
+    {
+        $message = Maintenance::t('app', '{n, plural, =0{No subscribers} =1{Total one subscriber} other{Total # subscribers}}.', [
+            'n' => count($this->subscribeForm->getEmails())
+        ]);
+        $this->stdout($message);
+    }
+
+    /**
+     * Count Down: ENABLED
+     */
+    public function renderCountDownStatus()
+    {
+        $status = $this->stateForm->isTimer() ? $this->enabled : $this->disabled;
+        $message = Maintenance::t('app', 'Count Down: {:status}', [
+            ':status' => $status
+        ]);
+        $this->stdout($message);
+    }
+
+    /**
+     * Subscription form: ENABLED
+     */
+    public function renderSubscriptionFormStatus()
+    {
+        $status = $this->stateForm->isSubscribe() ? $this->enabled : $this->disabled;
+        $message = Maintenance::t('app', 'Subscription form: {:status}', [
+            ':status' => $status
+        ]);
+        $this->stdout($message);
+    }
+
+    /**
+     * To turn off and notify subscribers,
+     * use:
+     * php yii maintenance/disable
+     */
+    public function renderDisableAndSubscribe()
+    {
+        $message = Maintenance::t('app', "To turn off and notify subscribers,\nuse:");
+        $this->stdout(PHP_EOL . $message . PHP_EOL);
+        $message = 'php yii maintenance/disable';
+        $this->stdout($message);
+    }
+
+    /**
+     * To enable the maintenance mode,
+     * use:
+     * php yii maintenance/enable --option='value'
+     */
+    public function renderEnableMaintenanceMode()
+    {
+        $message = Maintenance::t('app', "To enable the maintenance mode,\nuse:");
+        $this->stdout(PHP_EOL . $message . PHP_EOL);
+
+        $option = Maintenance::t('app', 'Option');
+        $value = Maintenance::t('app', 'Value');
+        $message = Maintenance::t('app', "php yii maintenance/enable --{:option}1='{:value}1' --{:option}2='{:value}2' ...", [
+            ':option' => $this->mb_lcfirst(trim($option)),
+            ':value' => $this->mb_lcfirst(trim($value))
+        ]);
+        $this->stdout($message);
+    }
+
+    /**
+     * To update the maintenance mode,
+     * use:
+     * php yii maintenance/update --option='value'
+     */
+    public function renderUpdateMaintenanceMode()
+    {
+        $message = Maintenance::t('app', "To update the maintenance mode,\nuse:");
+        $this->stdout(PHP_EOL . $message . PHP_EOL);
+
+        $option = Maintenance::t('app', 'Option');
+        $value = Maintenance::t('app', 'Value');
+        $message = Maintenance::t('app', "php yii maintenance/update --{:option}1='{:value}1' --{:option}2='{:value}2' ...", [
+            ':option' => $this->mb_lcfirst(trim($option)),
+            ':value' => $this->mb_lcfirst(trim($value))
+        ]);
+        $this->stdout($message);
     }
 
     /**
      * Options and aliases
      */
-    public function getOptionsTable()
+    public function renderOptionsTable()
     {
+        $option = Maintenance::t('app', 'Option');
+        $alias = Maintenance::t('app', 'Alias');
+        $value = Maintenance::t('app', 'Value');
+        $exampleDat = $this->exampleDateFormat();
+        $this->stdout(PHP_EOL);
         $this->stdout('---------------------------------------------' . PHP_EOL);
-        $this->stdout('|   Option    | Alias | Value               |' . PHP_EOL);
+        $this->stdout('|   ' . $option . '    | ' . $alias . ' | ' . $value . '            |' . PHP_EOL);
         $this->stdout('|=============|=======|=====================|' . PHP_EOL);
-        $this->stdout('| --date      | -d    | ' . $this->exampleDateFormat() . ' |' . PHP_EOL);
+        $this->stdout('| --date      | -d    | ' . $exampleDat . ' |' . PHP_EOL);
         $this->stdout('| --title     | -t    | string              |' . PHP_EOL);
         $this->stdout('| --content   | -c    | string              |' . PHP_EOL);
         $this->stdout('| --subscribe | -s    | true/false          |' . PHP_EOL);

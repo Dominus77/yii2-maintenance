@@ -1,13 +1,13 @@
 Console commands
 ================
 
-| Command                         | Description                             |
-|:------------------------------- |:--------------------------------------- |
-| `php yii maintenance`           | Mode status                             |
-| `php yii maintenance/enable`    | Enable mode                             |
-| `php yii maintenance/update`    | Editing mode                            |
-| `php yii maintenance/followers` | Alert Subscribers                       |
-| `php yii maintenance/disable`   | Turn off the mode and send alerts       |
+| Command                           | Description                             |
+|:--------------------------------- |:--------------------------------------- |
+| `php yii maintenance`             | Mode status                             |
+| `php yii maintenance/enable`      | Enable mode                             |
+| `php yii maintenance/update`      | Editing mode                            |
+| `php yii maintenance/subscribers` | Alert Subscribers                       |
+| `php yii maintenance/disable`     | Turn off the mode and send alerts       |
 
 The following options are available for `enable` and `update`:
 

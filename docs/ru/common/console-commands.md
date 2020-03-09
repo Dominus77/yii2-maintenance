@@ -1,13 +1,13 @@
 Консольные команды
 ==================
 
-| Команда                         | Описание                                |
-|:------------------------------- |:--------------------------------------- |
-| `php yii maintenance`           | Статус режима                           |
-| `php yii maintenance/enable`    | Включение режима                        |
-| `php yii maintenance/update`    | Редактирование режима                   |
-| `php yii maintenance/followers` | Подписчики на оповещение                |
-| `php yii maintenance/disable`   | Отключение режима и отправка оповещений |
+| Команда                           | Описание                                |
+|:--------------------------------- |:--------------------------------------- |
+| `php yii maintenance`             | Статус режима                           |
+| `php yii maintenance/enable`      | Включение режима                        |
+| `php yii maintenance/update`      | Редактирование режима                   |
+| `php yii maintenance/subscribers` | Подписчики на оповещение                |
+| `php yii maintenance/disable`     | Отключение режима и отправка оповещений |
 
 Для `enable` и `update` доступны следующие опции:
 
