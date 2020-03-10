@@ -28,13 +28,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require dominus77/yii2-maintenance "dev-master"
+php composer.phar require dominus77/yii2-maintenance
 ```
 
 or add
 
 ```
-"dominus77/yii2-maintenance": "dev-master"
+"dominus77/yii2-maintenance": "^1.0"
 ```
 
 to the require section of your `composer.json` file.
