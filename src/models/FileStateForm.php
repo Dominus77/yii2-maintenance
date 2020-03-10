@@ -26,9 +26,6 @@ use DateTime;
  */
 class FileStateForm extends BaseForm implements StateFormInterface
 {
-    const MAINTENANCE_NOTIFY_SENDER_KEY = 'notifySender';
-    const MAINTENANCE_UPDATE_KEY = 'maintenanceUpdate';
-
     /**
      * Select mode
      * @var int|string

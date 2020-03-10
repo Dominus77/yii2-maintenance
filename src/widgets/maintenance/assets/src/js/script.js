@@ -21,7 +21,7 @@ $(function () {
         });
 
         setTimeout(function () {
-            $('.notify').fadeOut(2000, 'swing');
+            $('.alert').fadeOut(2000, 'swing');
         }, 3000);
     }
 

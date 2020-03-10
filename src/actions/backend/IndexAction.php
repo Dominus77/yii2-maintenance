@@ -2,11 +2,11 @@
 
 namespace dominus77\maintenance\actions\backend;
 
-use dominus77\maintenance\models\SubscribeForm;
 use Yii;
 use yii\base\Action;
 use yii\web\Response;
 use dominus77\maintenance\models\FileStateForm;
+use dominus77\maintenance\models\SubscribeForm;
 use dominus77\maintenance\BackendMaintenance;
 use yii\web\Session;
 
@@ -69,11 +69,11 @@ class IndexAction extends Action
     {
         /** @var Session $session */
         $session = Yii::$app->session;
-        if (is_bool($result) && $result === true) {
-            $session->setFlash(FileStateForm::MAINTENANCE_UPDATE_KEY, $message);
+        if (is_bool($result) && $result === true && $message) {
+            $session->setFlash('success', $message);
         }
         if (is_numeric($result)) {
-            $session->setFlash(FileStateForm::MAINTENANCE_NOTIFY_SENDER_KEY, BackendMaintenance::t('app',
+            $session->setFlash('success', BackendMaintenance::t('app',
                 '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}',
                 ['n' => $result])
             );

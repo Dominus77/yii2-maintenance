@@ -70,7 +70,7 @@ class FileState extends BaseObject implements StateInterface
      * Page size to backend
      * @var int
      */
-    public $pageSize = 16;
+    public $pageSize = 12;
 
     /**
      * Initialization

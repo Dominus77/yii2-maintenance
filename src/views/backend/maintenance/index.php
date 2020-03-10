@@ -1,9 +1,9 @@
 <?php
 
-use yii\grid\SerialColumn;
 use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\grid\SerialColumn;
 use yii\widgets\LinkPager;
 use dominus77\maintenance\models\FileStateForm;
 use dominus77\maintenance\models\SubscribeForm;
@@ -51,11 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]
                         ]) ?>
                     </div>
-                    <div class="pull-right">
-                        <?php if (($message = Yii::$app->session->getFlash($model::MAINTENANCE_UPDATE_KEY)) && $message !== null) { ?>
-                            <p class="notify" style="color: green"><?= $message ?></p>
-                        <?php } ?>
-                    </div>
+                    <div class="pull-right"></div>
                 </div>
             </div>
         </div>
@@ -89,11 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]) ?>
                 </div>
                 <div class="box-footer">
-                    <div class="pull-left">
-                        <?php if (($message = Yii::$app->session->getFlash($model::MAINTENANCE_NOTIFY_SENDER_KEY)) && $message !== null) { ?>
-                            <p class="notify" style="color: green"><?= $message ?>.</p>
-                        <?php } ?>
-                    </div>
+                    <div class="pull-left"></div>
                     <div class="pull-right">
                         <?= LinkPager::widget([
                             'pagination' => $dataProvider->pagination,

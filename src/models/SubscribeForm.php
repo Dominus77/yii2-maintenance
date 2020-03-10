@@ -16,7 +16,7 @@ use dominus77\maintenance\BackendMaintenance;
  * @property string $path
  * @property array $followers
  * @property int $pageSize
- * @property \yii\data\ArrayDataProvider $dataProvider
+ * @property ArrayDataProvider $dataProvider
  */
 class SubscribeForm extends BaseForm implements SubscribeFormInterface
 {
