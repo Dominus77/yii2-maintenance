@@ -16,7 +16,7 @@ Maintenance Mode
 ![maintenance.png](docs/images/maintenance.png)
 
 Maintenance mode managering
-![maintenance.png](docs/images/maintenance-backend.png)
+![maintenance.png](docs/images/_maintenance-backend.png)
 
 Management of the regime is also carried out using [console commands](docs/en/common/console-commands.md).
 
