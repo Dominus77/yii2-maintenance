@@ -27,6 +27,8 @@ class SubscribeFormTest extends Unit
 
     protected function _after()
     {
+        $subscribeForm = new SubscribeForm();
+        $subscribeForm->deleteFile();
     }
 
     // tests
@@ -121,5 +123,36 @@ class SubscribeFormTest extends Unit
             }
         }
         $this->tester->assertTrue($subscribeForm->deleteFile());
+    }
+
+    public function testIsSubscribe()
+    {
+        $emailArray = [
+            'test@email.com',
+            'test2@email.com',
+            'test3@email.com'
+        ];
+        $subscribeForm = new SubscribeForm();
+        $subscribeForm->email = $emailArray[0];
+        $subscribeForm->subscribe();
+
+        $subscribeForm->email = $emailArray[0];
+        $this->tester->assertFalse($subscribeForm->subscribe());
+    }
+
+    public function testGetFrom()
+    {
+        $emailArray = [
+            'test@email.com',
+            'test2@email.com',
+            'test3@email.com'
+        ];
+        Yii::$app->params['senderEmail'] = $emailArray[0];
+        $subscribeForm = new SubscribeForm();
+        $this->tester->assertEquals($subscribeForm->getFrom($emailArray[1]), $emailArray[0]);
+
+        Yii::$app->params['senderEmail'] = '';
+        Yii::$app->params['supportEmail'] = $emailArray[1];
+        $this->tester->assertEquals($subscribeForm->getFrom($emailArray[0]), $emailArray[1]);
     }
 }

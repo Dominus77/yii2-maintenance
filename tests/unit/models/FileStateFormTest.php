@@ -122,4 +122,55 @@ class FileStateFormTest extends Unit
         $model->date = '12-03-2020 12:05:23';
         $this->tester->assertNull($model->validateDateAttribute('date'));
     }
+
+    public function testDefaultTitleAndText()
+    {
+        $model = new FileStateForm();
+        $this->tester->assertEquals($model->getDefaultTitle(), $this->state->defaultTitle);
+        $this->tester->assertEquals($model->getDefaultText(), $this->state->defaultContent);
+    }
+
+    public function testEnableDisable()
+    {
+        $model = new FileStateForm();
+        $this->tester->assertTrue($model->enable());
+        $this->tester->assertTrue($model->disable());
+    }
+
+    public function testGetTimestamp()
+    {
+        $model = new FileStateForm();
+        // wrong
+        $model->date = '14-03-2020';
+        $date = new DateTime(date($model->getDateFormat()));
+        $this->tester->assertEquals($model->getTimestamp(), $date->getTimestamp());
+        // correct
+        $model->date = '14-03-2020 14:05:00';
+        $date = new DateTime('14-03-2020 14:05:00');
+        $this->tester->assertEquals($model->getTimestamp(), $date->getTimestamp());
+    }
+
+    public function testIsTimer()
+    {
+        $model = new FileStateForm();
+        $model->countDown = true;
+        $this->tester->assertTrue($model->isTimer());
+    }
+
+    public function testIsSubscribe()
+    {
+        $model = new FileStateForm();
+        $model->subscribe = false;
+        $this->tester->assertFalse($model->isSubscribe());
+    }
+
+    public function testSave()
+    {
+        $model = new FileStateForm();
+        $model->mode = Maintenance::STATUS_CODE_MAINTENANCE;
+        $this->tester->assertTrue($model->save());
+
+        $model->mode = Maintenance::STATUS_CODE_OK;
+        $this->tester->assertEquals($model->save(), 0);
+    }
 }

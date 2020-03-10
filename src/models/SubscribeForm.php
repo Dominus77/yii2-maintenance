@@ -6,7 +6,6 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use dominus77\maintenance\interfaces\SubscribeFormInterface;
 use dominus77\maintenance\BackendMaintenance;
-use RuntimeException;
 
 /**
  * Class SubscribeForm
@@ -87,30 +86,24 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
      */
     public function send()
     {
-        try {
-            $emails = $this->getEmails();
-            $messages = [];
-            $mailer = Yii::$app->mailer;
-            foreach ($emails as $email) {
-                $messages[] = $mailer->compose(
-                    $this->subscribeOptions['template'], [
-                    'backLink' => $this->subscribeOptions['backLink']
-                ])
-                    ->setFrom([$this->subscribeOptions['from'] => Yii::$app->name])
-                    ->setTo($email)
-                    ->setSubject($this->subscribeOptions['subject']);
+        $emails = $this->getEmails();
+        $messages = [];
+        $mailer = Yii::$app->mailer;
+        foreach ($emails as $email) {
+            $messages[] = $mailer->compose(
+                $this->subscribeOptions['template'], [
+                'backLink' => $this->subscribeOptions['backLink']
+            ])
+                ->setFrom([$this->subscribeOptions['from'] => Yii::$app->name])
+                ->setTo($email)
+                ->setSubject($this->subscribeOptions['subject']);
 
-            }
-            $result = $mailer->sendMultiple($messages);
-            if ($result >= 0) {
-                $this->deleteFile();
-            }
-            return $result;
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                'Attention: Error sending notifications to subscribers!'
-            );
         }
+        $result = $mailer->sendMultiple($messages);
+        if ($result >= 0) {
+            $this->deleteFile();
+        }
+        return $result;
     }
 
     /**
@@ -204,7 +197,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
      * @param $from string
      * @return mixed|string
      */
-    protected function getFrom($from)
+    public function getFrom($from)
     {
         if (isset(Yii::$app->params['senderEmail']) && !empty(Yii::$app->params['senderEmail'])) {
             $from = Yii::$app->params['senderEmail'];
