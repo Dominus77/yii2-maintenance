@@ -91,8 +91,7 @@ return [
                         'users' => [
                             'admin',
                         ],
-                    ]
-                    // Подробнее: https://github.com/Dominus77/yii2-maintenance/blob/master/docs/ru/common/filters.md
+                    ]                    
                 ],
             ],
             StateInterface::class => [

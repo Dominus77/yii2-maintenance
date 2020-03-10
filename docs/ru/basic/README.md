@@ -48,8 +48,7 @@ $config = [
                         'class' => UserFilter::class,
                         'checkedAttribute' => 'username',
                         'users' => ['admin']
-                    ]
-                    // Подробнее: https://github.com/Dominus77/yii2-maintenance/blob/master/docs/ru/common/filters.md
+                    ]                    
                 ],
             ],
             StateInterface::class => [
