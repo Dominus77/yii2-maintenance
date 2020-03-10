@@ -7,7 +7,6 @@ use yii\base\Model;
 use dominus77\maintenance\interfaces\StateInterface;
 use yii\base\InvalidConfigException;
 use yii\di\NotInstantiableException;
-use RuntimeException;
 use Generator;
 
 /**
@@ -71,7 +70,7 @@ class BaseForm extends Model
     /**
      * Prepare data to load in model
      *
-     * @param $path
+     * @param $path string
      * @return array
      */
     public function prepareLoadModel($path)
@@ -94,7 +93,7 @@ class BaseForm extends Model
      * @param $file string
      * @return array
      */
-    protected function getContentArray($file)
+    public function getContentArray($file)
     {
         $contents = $this->readTheFile($file);
         $items = [];
@@ -107,24 +106,18 @@ class BaseForm extends Model
     /**
      * Read generator
      *
-     * @param $file
+     * @param $file string
      * @return Generator
      */
     protected function readTheFile($file)
     {
-        try {
-            if (file_exists($file) && $handle = fopen($file, 'rb')) {
-                if ($handle !== false) {
-                    while (!feof($handle)) {
-                        yield trim(fgets($handle));
-                    }
+        if (file_exists($file) && $handle = fopen($file, 'rb')) {
+            if ($handle !== false) {
+                while (!feof($handle)) {
+                    yield trim(fgets($handle));
                 }
-                fclose($handle);
             }
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Failed to read $file file"
-            );
+            fclose($handle);
         }
     }
 }

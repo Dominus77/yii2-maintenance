@@ -28,7 +28,7 @@ return [
     'Subscribe' => 'Подписка',
     'Count Down' => 'Таймер',
     'Save' => 'Сохранить',
-    'Followers' => 'Подписчики',
+    'Subscribers' => 'Подписчики',
     'Invalid date format. Use example: {:example}' => 'Не допустимый формат даты. Пример использования: {:example}',
     'Maintenance mode successfully updated!' => 'Режим обслуживания успешно обновлен!',
     '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}' => '{n, plural, =0{Нет подписчиков, сообщения не отправлены} =1{Отправлено одно сообщение} one{Отправлено # сообщение} few{Отправлено # сообщения} many{Отправлено #  сообщений} other{Отправлено # сообщения}}',

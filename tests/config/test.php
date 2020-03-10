@@ -4,6 +4,7 @@ use dominus77\maintenance\interfaces\StateInterface;
 use dominus77\maintenance\states\FileState;
 use dominus77\maintenance\controllers\frontend\MaintenanceController;
 use dominus77\maintenance\BackendMaintenance;
+use yii\swiftmailer\Mailer;
 
 $params = [
     'frontendUrl' => 'http://test.loc',
@@ -53,6 +54,10 @@ return [
         'request' => [
             'csrfParam' => '_csrf-maintenance-test',
             'enableCsrfValidation' => false
-        ]
+        ],
+        'mailer' => [
+            'class' => Mailer::class,
+            'useFileTransport' => true,
+        ],
     ]
 ];

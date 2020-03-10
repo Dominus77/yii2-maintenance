@@ -12,7 +12,10 @@ use RuntimeException;
  * Class SubscribeForm
  * @package dominus77\maintenance\models
  *
+ *
  * @property array $emails
+ * @property string $path
+ * @property array $followers
  */
 class SubscribeForm extends BaseForm implements SubscribeFormInterface
 {
@@ -27,12 +30,13 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     /**
      * @var array
      */
-    protected $followers;
+    protected $subscribeOptions;
 
     /**
-     * @var array
+     * Path to file
+     * @var string
      */
-    protected $subscribeOptions;
+    private $_path;
 
     /**
      * @inheritDoc
@@ -40,6 +44,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     public function init()
     {
         parent::init();
+        $this->_path = $this->state->getSubscribePath();
         $urlManager = Yii::$app->urlManager;
         $subscribeOptions = [
             'template' => $this->state->getSubscribeOptionsTemplate(),
@@ -48,7 +53,6 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
             'subject' => BackendMaintenance::t('app', 'Notification of completion of technical work')
         ];
         $this->subscribeOptions = ArrayHelper::merge($subscribeOptions, $this->state->getSubscribeOptions());
-        $this->setFollowers();
     }
 
     /**
@@ -61,7 +65,7 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'string', 'max' => 255],
+            ['email', 'string', 'max' => 255]
         ];
     }
 
@@ -116,21 +120,11 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
      */
     public function save()
     {
-        $str = $this->prepareData();
-        $file = $this->state->getSubscribePath();
-        try {
-            if (is_string($file) && $str && $fp = fopen($file, 'ab')) {
-                fwrite($fp, $str . PHP_EOL);
-                fclose($fp);
-                chmod($file, 0765);
-                return true;
-            }
-            return false;
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Attention: Subscriber cannot be added because {$file} could not be save."
-            );
-        }
+        $str = $this->prepareSaveData();
+        $file = $this->getPath();
+        file_put_contents($file, $str, FILE_APPEND);
+        chmod($file, 0765);
+        return true;
     }
 
     /**
@@ -140,26 +134,20 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     public function deleteFile()
     {
         $file = $this->state->getSubscribePath();
-        try {
-            $result = false;
-            if (file_exists($file)) {
-                $result = unlink($file);
-            }
-            return $result;
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(
-                "Attention: Error deleting {$file} file."
-            );
+        $result = false;
+        if (file_exists($file)) {
+            $result = unlink($file);
         }
+        return $result;
     }
 
     /**
      * This prepare data on before save
      * @return string
      */
-    protected function prepareData()
+    public function prepareSaveData()
     {
-        return date($this->dateFormat) . ' = ' . $this->email;
+        return $this->email . ' = ' . date($this->dateFormat) . PHP_EOL;
     }
 
     /**
@@ -180,10 +168,10 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
      */
     public function getEmails()
     {
-        $subscribeData = $this->prepareLoadModel($this->state->getSubscribePath());
+        $subscribeData = $this->getFollowers();
         $emails = [];
-        foreach ($subscribeData as $email) {
-            $emails[] = $email;
+        foreach ($subscribeData as $key => $values) {
+            $emails[] = $values['email'];
         }
         return $emails;
     }
@@ -202,19 +190,13 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
      */
     public function getFollowers()
     {
+        $subscribeData = $this->prepareLoadModel($this->getPath());
         $items = [];
-        foreach ($this->followers as $follower) {
-            $items[]['email'] = $follower;
+        foreach ($subscribeData as $email => $date) {
+            $items[$email]['email'] = $email;
+            $items[$email]['date'] = $date;
         }
         return $items;
-    }
-
-    /**
-     * @param array $followers
-     */
-    public function setFollowers($followers = [])
-    {
-        $this->followers = $followers ?: $this->getEmails();
     }
 
     /**
@@ -230,5 +212,14 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
             $from = Yii::$app->params['supportEmail'];
         }
         return $from;
+    }
+
+    /**
+     * Path to file
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->_path;
     }
 }
