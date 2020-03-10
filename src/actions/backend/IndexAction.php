@@ -2,6 +2,7 @@
 
 namespace dominus77\maintenance\actions\backend;
 
+use dominus77\maintenance\models\SubscribeForm;
 use Yii;
 use yii\base\Action;
 use yii\web\Response;
@@ -85,9 +86,11 @@ class IndexAction extends Action
      */
     protected function getViewRenderParams($model)
     {
+        $subscribeModel = new SubscribeForm();
         return [
             'name' => $this->defaultName,
             'model' => $model,
+            'dataProvider' => $subscribeModel->getDataProvider()
         ];
     }
 

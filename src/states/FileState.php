@@ -67,6 +67,12 @@ class FileState extends BaseObject implements StateInterface
     public $dateFormat = 'd-m-Y H:i:s';
 
     /**
+     * Page size to backend
+     * @var int
+     */
+    public $pageSize = 16;
+
+    /**
      * Initialization
      */
     public function init()
@@ -154,6 +160,14 @@ class FileState extends BaseObject implements StateInterface
     public function getDefaultContent()
     {
         return $this->defaultContent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPageSize()
+    {
+        return (int)$this->pageSize ?: 18;
     }
 
     /**

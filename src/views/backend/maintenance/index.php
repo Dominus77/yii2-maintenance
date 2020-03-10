@@ -1,17 +1,21 @@
 <?php
 
+use yii\grid\SerialColumn;
 use yii\web\View;
 use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\LinkPager;
 use dominus77\maintenance\models\FileStateForm;
+use dominus77\maintenance\models\SubscribeForm;
 use dominus77\maintenance\widgets\maintenance\MaintenanceFormWidget;
 use dominus77\maintenance\widgets\timer\CountDownWidget;
-use dominus77\maintenance\widgets\followers\FollowersWidget;
 use dominus77\maintenance\BackendMaintenance;
 
 /**
  * @var $this View
  * @var $name string
  * @var $model FileStateForm
+ * @var $dataProvider SubscribeForm
  * @var $isEnable bool
  */
 
@@ -63,13 +67,41 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-tools pull-right"></div>
                 </div>
                 <div class="box-body">
-                    <?= FollowersWidget::widget() ?>
+                    <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'layout' => '{items}',
+                        'tableOptions' => [
+                            'class' => 'table table-bordered table-hover'
+                        ],
+                        'columns' => [
+                            ['class' => SerialColumn::class],
+                            [
+                                'attribute' => 'email',
+                                'label' => BackendMaintenance::t('app', 'Email'),
+                                'format' => 'email',
+                            ],
+                            [
+                                'attribute' => 'date',
+                                'label' => BackendMaintenance::t('app', 'Date'),
+                                'format' => 'datetime',
+                            ]
+                        ]
+                    ]) ?>
                 </div>
                 <div class="box-footer">
                     <div class="pull-left">
                         <?php if (($message = Yii::$app->session->getFlash($model::MAINTENANCE_NOTIFY_SENDER_KEY)) && $message !== null) { ?>
                             <p class="notify" style="color: green"><?= $message ?>.</p>
                         <?php } ?>
+                    </div>
+                    <div class="pull-right">
+                        <?= LinkPager::widget([
+                            'pagination' => $dataProvider->pagination,
+                            'registerLinkTags' => true,
+                            'options' => [
+                                'class' => 'pagination pagination-sm no-margin',
+                            ]
+                        ]) ?>
                     </div>
                 </div>
             </div>

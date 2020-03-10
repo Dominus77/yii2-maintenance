@@ -68,6 +68,11 @@ interface StateInterface
     public function getDefaultContent();
 
     /**
+     * @return int
+     */
+    public function getPageSize();
+
+    /**
      * @return int|string
      */
     public function statusCode();

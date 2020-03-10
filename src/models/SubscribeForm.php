@@ -3,6 +3,7 @@
 namespace dominus77\maintenance\models;
 
 use Yii;
+use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use dominus77\maintenance\interfaces\SubscribeFormInterface;
 use dominus77\maintenance\BackendMaintenance;
@@ -11,10 +12,11 @@ use dominus77\maintenance\BackendMaintenance;
  * Class SubscribeForm
  * @package dominus77\maintenance\models
  *
- *
  * @property array $emails
  * @property string $path
  * @property array $followers
+ * @property int $pageSize
+ * @property \yii\data\ArrayDataProvider $dataProvider
  */
 class SubscribeForm extends BaseForm implements SubscribeFormInterface
 {
@@ -176,6 +178,27 @@ class SubscribeForm extends BaseForm implements SubscribeFormInterface
     public function isEmail()
     {
         return ArrayHelper::isIn($this->email, $this->getEmails());
+    }
+
+    /**
+     * @return ArrayDataProvider
+     */
+    public function getDataProvider()
+    {
+        return new ArrayDataProvider([
+            'allModels' => $this->getFollowers(),
+            'pagination' => [
+                'pageSize' => $this->getPageSize()
+            ],
+        ]);
+    }
+
+    /**
+     * @return int
+     */
+    public function getPageSize()
+    {
+        return $this->state->getPageSize();
     }
 
     /**

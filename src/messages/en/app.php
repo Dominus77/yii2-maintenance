@@ -32,6 +32,8 @@ return [
     'Invalid date format. Use example: {:example}' => 'Invalid date format. Use example: {:example}',
     'Maintenance mode successfully updated!' => 'Maintenance mode successfully updated!',
     '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}' => '{n, plural, =0{no followers} =1{one message sent} other{# messages sent}}',
+    'Email' => 'Email',
+    'Date' => 'Date',
     // Console
     'ENABLED' => 'ENABLED',
     'UPDATED' => 'UPDATED',

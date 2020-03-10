@@ -15,7 +15,7 @@ use dominus77\maintenance\widgets\followers\assets\FollowersAsset;
  * Class FollowersWidget
  * @package dominus77\maintenance\widgets\followers
  *
- * @property ArrayDataProvider $listDataProvider
+ * @property ArrayDataProvider $dataProvider
  */
 class FollowersWidget extends Widget
 {
@@ -64,7 +64,7 @@ class FollowersWidget extends Widget
         if ($this->status === true) {
             $this->registerResource();
             echo ListView::widget([
-                'dataProvider' => $this->getListDataProvider(),
+                'dataProvider' => $this->getDataProvider(),
                 'layout' => "{summary}\n{items}\n{pager}",
                 'options' => $this->options,
                 'itemView' => static function ($model) {
@@ -86,7 +86,7 @@ class FollowersWidget extends Widget
     /**
      * @return ArrayDataProvider
      */
-    protected function getListDataProvider()
+    protected function getDataProvider()
     {
         return new ArrayDataProvider([
             'allModels' => $this->model->getFollowers(),
