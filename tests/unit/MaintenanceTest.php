@@ -59,14 +59,14 @@ class MaintenanceTest extends Unit
     {
         $this->state->enable();
         $maintenance = new Maintenance($this->state);
+        $maintenance->retryAfter = 'Tue, 10 Mar 2020 12:42:50 GMT';
         $maintenance->bootstrap(Yii::$app);
 
         $headers = Yii::$app->response->getHeaders()->toArray();
         $this->tester->seeMyVar($headers['retry-after']);
         $this->tester->assertArrayHasKey('retry-after', $headers);
 
-        $timestamp = $this->state->timestamp();
-        $this->tester->assertEquals($headers['retry-after'][0], gmdate('D, d M Y H:i:s \G\M\T', $timestamp));
+        $this->tester->assertEquals($headers['retry-after'][0], 'Tue, 10 Mar 2020 12:42:50 GMT');
         $this->state->disable();
     }
 }
