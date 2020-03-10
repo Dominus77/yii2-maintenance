@@ -270,4 +270,3 @@ class MaintenanceController extends ConsoleController
         }
     }
 }
-

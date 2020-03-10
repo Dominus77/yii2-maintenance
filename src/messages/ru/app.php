@@ -51,5 +51,5 @@ return [
     'Value' => 'Значение',
     "To enable the maintenance mode,\nuse:" => "Чтобы включить режим обслуживания,\nиспользуйте:",
     "php yii maintenance/enable --{:option}1='{:value}1' --{:option}2='{:value}2' ..." => "php yii maintenance/enable --{:option}1'='{:value}1 --{:option}2='{:value}2' ...",
-    'No subscribers' => 'Подписчиков нет',
+    'No subscribers' => 'Подписчиков нет'
 ];
