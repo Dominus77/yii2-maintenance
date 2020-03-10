@@ -33,11 +33,13 @@ class MaintenanceController extends ConsoleController
      */
     public $content;
     /**
+     * Subscribe
      * @var string
      */
     public $subscribe;
 
     /**
+     * Count Down
      * @var string
      */
     public $timer;

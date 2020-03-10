@@ -4,10 +4,10 @@ namespace dominus77\maintenance\base;
 
 use Yii;
 use yii\console\Controller;
+use yii\helpers\Console;
 use dominus77\maintenance\Maintenance;
 use dominus77\maintenance\models\FileStateForm;
 use dominus77\maintenance\models\SubscribeForm;
-use yii\helpers\Console;
 
 /**
  * Class ConsoleController
@@ -167,8 +167,9 @@ class ConsoleController extends Controller
      */
     protected function renderSubscriptionInfo()
     {
+        $count = count($this->subscribeForm->getEmails());
         $message = Maintenance::t('app', '{n, plural, =0{No subscribers} =1{Total one subscriber} other{Total # subscribers}}.', [
-            'n' => count($this->subscribeForm->getEmails())
+            'n' => $count
         ]);
         $this->stdout($message);
     }
@@ -220,11 +221,11 @@ class ConsoleController extends Controller
         $message = Maintenance::t('app', "To enable the maintenance mode,\nuse:");
         $this->stdout(PHP_EOL . $message . PHP_EOL);
 
-        $option = Maintenance::t('app', 'Option');
-        $value = Maintenance::t('app', 'Value');
+        $option = $this->mbLcFirst(trim(Maintenance::t('app', 'Option')));
+        $value = $this->mbLcFirst(trim(Maintenance::t('app', 'Value')));
         $message = Maintenance::t('app', "php yii maintenance/enable --{:option}1='{:value}1' --{:option}2='{:value}2' ...", [
-            ':option' => $this->mb_lcfirst(trim($option)),
-            ':value' => $this->mb_lcfirst(trim($value))
+            ':option' => $option,
+            ':value' => $value
         ]);
         $this->stdout($message);
     }
@@ -239,11 +240,11 @@ class ConsoleController extends Controller
         $message = Maintenance::t('app', "To update the maintenance mode,\nuse:");
         $this->stdout(PHP_EOL . $message . PHP_EOL);
 
-        $option = Maintenance::t('app', 'Option');
-        $value = Maintenance::t('app', 'Value');
+        $option = $this->mbLcFirst(trim(Maintenance::t('app', 'Option')));
+        $value = $this->mbLcFirst(trim(Maintenance::t('app', 'Value')));
         $message = Maintenance::t('app', "php yii maintenance/update --{:option}1='{:value}1' --{:option}2='{:value}2' ...", [
-            ':option' => $this->mb_lcfirst(trim($option)),
-            ':value' => $this->mb_lcfirst(trim($value))
+            ':option' => $option,
+            ':value' => $value
         ]);
         $this->stdout($message);
     }
@@ -270,11 +271,10 @@ class ConsoleController extends Controller
     }
 
     /**
-     * lcfirst()
      * @param $str string
      * @return string
      */
-    protected function mb_lcfirst($str = '')
+    protected function mbLcFirst($str = '')
     {
         if (is_string($str) && !empty($str)) {
             $charset = Yii::$app->charset;
