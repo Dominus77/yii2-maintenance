@@ -6,7 +6,7 @@ Maintenance mode for Yii2
 [![Build Status](https://travis-ci.org/Dominus77/yii2-maintenance.svg?branch=master)](https://travis-ci.org/Dominus77/yii2-maintenance)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Dominus77/yii2-maintenance/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Dominus77/yii2-maintenance/?branch=master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/Dominus77/yii2-maintenance/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
-[![SymfonyInsight](https://insight.symfony.com/projects/056b7d4e-da1d-42bd-9f18-9381ffa7ad85/mini.svg)](https://insight.symfony.com/projects/056b7d4e-da1d-42bd-9f18-9381ffa7ad85)
+[![SymfonyInsight](https://insight.symfony.com/projects/ea04db21-8bf0-4f76-926f-d58763ef0379/mini.svg)](https://insight.symfony.com/projects/ea04db21-8bf0-4f76-926f-d58763ef0379)
 
 Switching the site on Yii2 to maintenance mode with a timer, a subscription form and sending notifications to users.
 
@@ -50,4 +50,4 @@ The MIT License (MIT). Please see [License File](https://github.com/Dominus77/yi
 
 SymfonyInsight
 --------------
-[![SymfonyInsight](https://insight.symfony.com/projects/056b7d4e-da1d-42bd-9f18-9381ffa7ad85/big.svg)](https://insight.symfony.com/projects/056b7d4e-da1d-42bd-9f18-9381ffa7ad85)
+[![SymfonyInsight](https://insight.symfony.com/projects/ea04db21-8bf0-4f76-926f-d58763ef0379/big.svg)](https://insight.symfony.com/projects/ea04db21-8bf0-4f76-926f-d58763ef0379)
