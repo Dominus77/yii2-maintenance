@@ -46,3 +46,7 @@ Documentation
 License
 -------
 The MIT License (MIT). Please see [License File](https://github.com/Dominus77/yii2-maintenance/blob/master/LICENSE.md) for more information.
+
+SymfonyInsight
+--------------
+[![SymfonyInsight](https://insight.symfony.com/projects/056b7d4e-da1d-42bd-9f18-9381ffa7ad85/big.svg)](https://insight.symfony.com/projects/056b7d4e-da1d-42bd-9f18-9381ffa7ad85)
