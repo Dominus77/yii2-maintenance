@@ -29,9 +29,6 @@
             "url": "https://asset-packagist.org"
         }
     ],
-    "extra": {
-        "bootstrap": "dominus77\\maintenance\\Maintenance"
-    },
     "autoload": {
         "psr-4": {
             "dominus77\\maintenance\\": "src"
