@@ -80,6 +80,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'date',
                                 'label' => BackendMaintenance::t('app', 'Date'),
                                 'format' => 'datetime',
+                                'value' => static function ($data) {
+                                    return strtotime($data['date']);
+                                }
                             ]
                         ]
                     ]) ?>
